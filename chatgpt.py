@@ -10,7 +10,7 @@ class Staff:
     def __init__(self, id, name, role, password, date_of_register,status):
         self.id = id
         self.name = name
-        if role in ['Manager','Customer Service Staff I','Customer Service Staff II']:
+        if role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
             self.role = role
         else:
             self.role = 'N/A'
@@ -28,7 +28,8 @@ class Staff:
                 return 'Wrong Password'
         else:
             return 'Invalid StaffID'
-        
+    
+'''
     def update_staff(self, staff_id, field, new_value):
         if staff_id in self.staff_data:
             self.staff_data[staff_id][field] = new_value
@@ -40,6 +41,25 @@ class Staff:
     def update_profile(self, field, new_value):
         setattr(self, field, new_value)
 
+'''
+
+class Customer:
+    
+    CustomerList = {}
+    CustomerID = 'C100001'
+
+    def __init__(self, name, nric, passport_number, date_of_register,status):
+        self.name = name
+        if role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
+            self.role = role
+        else:
+            self.role = 'N/A'
+        self.password = password
+        self.date_of_register = date_of_register
+        self.status = status
+        __class__.StaffList[id] = self
+
+'''     
 
 class CustomerServiceStaffI:
     def __init__(self, username, password):
@@ -159,3 +179,5 @@ class CarServiceStaff:
 
     def update_profile(self, field, new_value):
         setattr(self, field, new_value)
+
+'''
