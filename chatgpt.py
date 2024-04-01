@@ -5,9 +5,9 @@ from datetime import datetime
 
 class Staff:
 
-    StaffList = {}
+    _StaffList = {}
 
-    def __init__(self, id, name, role, password, date_of_register,status):
+    def __init__(self, id, name, role, password, registration_date,status):
         self.id = id
         self.name = name
         if role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
@@ -15,20 +15,20 @@ class Staff:
         else:
             self.role = 'N/A'
         self.password = password
-        self.date_of_register = date_of_register
+        self.registration_date = registration_date
         self.status = status
-        __class__.StaffList[id] = self
+        __class__._StaffList[id] = self
 
     def login(username, password):
-        if username in __class__.StaffList:
-            staff = __class__.StaffList[username]
+        if username in __class__._StaffList:
+            staff = __class__._StaffList[username]
             if password == staff.password:
                 return staff
             else:
                 return 'Wrong Password'
         else:
             return 'Invalid StaffID'
-    
+
 '''
     def update_staff(self, staff_id, field, new_value):
         if staff_id in self.staff_data:
@@ -45,19 +45,20 @@ class Staff:
 
 class Customer:
     
-    CustomerList = {}
-    CustomerID = 'C100001'
+    _CustomerList = {}
+    _NewCustomerID = 100001
 
-    def __init__(self, name, nric, passport_number, date_of_register,status):
+    def __init__(self, name, nric, passport_number, license_no, address, phone, registration_date):
+        self.id = f'C{__class__.CustomerID}'
         self.name = name
-        if role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
-            self.role = role
-        else:
-            self.role = 'N/A'
-        self.password = password
-        self.date_of_register = date_of_register
-        self.status = status
-        __class__.StaffList[id] = self
+        self.nric = passport_number
+        self.license_no = license_no
+        self.address = address
+        self.phone = phone
+        self.registration_date = registration_date
+        __class__._CustomerList[id] = self
+        __class__._NewCustomerID += 1
+
 
 '''     
 
