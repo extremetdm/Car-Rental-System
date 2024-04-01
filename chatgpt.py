@@ -4,9 +4,12 @@
 from datetime import datetime
 
 class Staff:
+<<<<<<< HEAD
     
     StaffList = {}
 
+=======
+>>>>>>> 01bd9e85b25dbcf9ce3e08f9153f10415b109f0a
     def __init__(self, id, name, role, password, date_of_register,status):
         self.id = id
         self.name = name
