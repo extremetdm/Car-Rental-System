@@ -17,12 +17,17 @@ class Staff:
         self.password = password
         self.date_of_register = date_of_register
         self.status = status
+        __class__.StaffList[id] = self
 
-    def login(self, username, password):
-        if username == self.username and password == self.password:
-            return True
+    def login(username, password):
+        if username in __class__.StaffList:
+            staff = __class__.StaffList[username]
+            if password == staff.password:
+                return staff
+            else:
+                return 'Wrong Password'
         else:
-            return False
+            return 'Invalid StaffID'
         
     def update_staff(self, staff_id, field, new_value):
         if staff_id in self.staff_data:
