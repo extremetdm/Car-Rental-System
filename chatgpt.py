@@ -5,14 +5,7 @@ from datetime import datetime
 
 class Staff:
     
-
-
-
-
-
-
-
-
+    StaffList = {}
 
     def __init__(self, id, name, role, password, date_of_register,status):
         self.id = id
@@ -30,16 +23,7 @@ class Staff:
             return True
         else:
             return False
-
-    def register_staff(self, staff_id, staff_name, staff_role, password, register_date, status):
-        self.staff_data[staff_id] = {
-            'Staff Name': staff_name,
-            'Staff Role': staff_role,
-            'Password': password,
-            'Date of Register': register_date,
-            'Status': status
-        }
-
+        
     def update_staff(self, staff_id, field, new_value):
         if staff_id in self.staff_data:
             self.staff_data[staff_id][field] = new_value
