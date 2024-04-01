@@ -3,11 +3,27 @@
 
 from datetime import datetime
 
-class Manager:
-    def __init__(self, username, password):
-        self.username = username
+class Staff:
+    
+
+
+
+
+
+
+
+
+
+    def __init__(self, id, name, role, password, date_of_register,status):
+        self.id = id
+        self.name = name
+        if role in ['Manager','Customer Service Staff I','Customer Service Staff II']:
+            self.role = role
+        else:
+            self.role = 'N/A'
         self.password = password
-        self.staff_data = {}
+        self.date_of_register = date_of_register
+        self.status = status
 
     def login(self, username, password):
         if username == self.username and password == self.password:
