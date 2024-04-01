@@ -4,16 +4,6 @@
 from datetime import datetime
 
 class Staff:
-    
-
-
-
-
-
-
-
-
-
     def __init__(self, id, name, role, password, date_of_register,status):
         self.id = id
         self.name = name
