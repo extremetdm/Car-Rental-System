@@ -1,6 +1,7 @@
-import DataStructures.py
-if __name__ == '__main__':
-  print('Hello World')
+from DataStructures import *
 
 def login():
   
+
+if __name__ == '__main__':
+  print('Hello World')

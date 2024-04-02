@@ -16,7 +16,10 @@ class Staff:
             self.role = 'N/A'
         self.password = password
         self.registration_date = registration_date
-        self.status = status
+        if self.status in ['Active','Inacive']:
+            self.status = status
+        else:
+            self.status = 'Active'
 
         __class__._StaffList[id] = self
 
