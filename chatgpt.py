@@ -17,6 +17,7 @@ class Staff:
         self.password = password
         self.registration_date = registration_date
         self.status = status
+
         __class__._StaffList[id] = self
 
     def login(username, password):
@@ -56,10 +57,47 @@ class Customer:
         self.address = address
         self.phone = phone
         self.registration_date = registration_date
+
         __class__._CustomerList[id] = self
         __class__._NewCustomerID += 1
 
+class Car:
 
+    _CarList = {}
+
+    def __init__(self, registration_no, manufacturer, model, manufacture_year, capacity, last_service_date, insurance_policy_number, insurance_expiry, road_tax_expiry, rental_rate = 250, availability = 'Available'):
+        self.registration_no = registration_no
+        self.manufacturer = manufacturer
+        self.model = model
+        self.manufacture_year = manufacture_year
+        self.capacity = capacity
+        self.last_service_date = last_service_date
+        self.insurance_policy_number = insurance_policy_number
+        self.insurance_expiry = insurance_expiry
+        self.road_tax_expiry = road_tax_expiry
+        self.rental_rate = rental_rate
+        if availability in ['Available','Reserved','Rented','Under Service','Disposed']:
+            self.availability = availability
+        else:
+            self.availability = 'Available'
+
+        __class__._CarList[id] = self
+
+class Rental:
+    
+    _RentalList = []
+    
+    def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime):
+        self.car = car
+        self.customer = customer
+        self.rental_date = rental_date
+        self.return_date = return_date
+
+        self.rental_period = (return_date - rental_date).days
+        self.rental_fee = car.rental_rate * self.rental_period
+
+        __class__._RentalList.append(self)
+    
 '''     
 
 class CustomerServiceStaffI:
