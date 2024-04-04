@@ -5,6 +5,7 @@ def loginMenu():
 
   print('\nLogin\n')
 
+  # Taking and checking input
   while isinstance((loginStatus := Staff.login(input('Username: '),input('Password: '))),int):
     if loginStatus == 0:
       print('\nInvalid StaffID!\n')
