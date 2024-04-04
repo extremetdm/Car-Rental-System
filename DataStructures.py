@@ -5,7 +5,8 @@ from datetime import datetime
 
 class Staff:
 
-    _StaffList = {}
+    _staffList = {}
+    _loginAttempts = 0
 
     def __init__(self, id, name, role, password, registration_date,status):
         self.id = id
@@ -16,22 +17,27 @@ class Staff:
             self.role = 'N/A'
         self.password = password
         self.registration_date = registration_date
-        if self.status in ['Active','Inacive']:
+        if status in ['Active','Inacive']:
             self.status = status
         else:
             self.status = 'Active'
 
-        __class__._StaffList[id] = self
+        __class__._staffList[id] = self
 
-    def login(username, password):
-        if username in __class__._StaffList:
-            staff = __class__._StaffList[username]
+    @classmethod
+    # Returns the user info if credentials are correct.
+    # If StaffID doesn't exist, returns 0
+    # If password is incorrect, returns the attempt count.
+    def login(cls,username, password):
+        if username in cls._staffList:
+            staff = cls._staffList[username]
             if password == staff.password:
                 return staff
             else:
-                return 'Wrong Password'
+                cls._loginAttempts += 1
+                return cls._loginAttempts
         else:
-            return 'Invalid StaffID'
+            return 0
 
 '''
     def update_staff(self, staff_id, field, new_value):
