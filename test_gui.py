@@ -1,14 +1,16 @@
+
 import tkinter as tk
 from tkinter import messagebox, font
 import tkinter.ttk as ttk
 
-def validate_login():
+def validate_login(event=None): # Allow the function to be called with an event argument
     userid = username_entry.get()
     password = password_entry.get()
     if userid == "Oguess" and password == "hello world":
         messagebox.showinfo("Login Successful", "Welcome, Oguess!")
     else:
         messagebox.showerror("Login Failed", "Invalid username or password")
+
 
 # Function to re-center and resize the login frame upon window resize
 def resize_widgets(event=None):
@@ -24,6 +26,8 @@ def resize_widgets(event=None):
     new_font_size = max(int(min(window_width, window_height) / 25), 8)  # Minimum font size of 8
     login_font.config(size=new_font_size)
 
+
+
 # Create the main window
 parent = tk.Tk()
 parent.title("Login Form")
@@ -32,9 +36,14 @@ parent.title("Login Form")
 parent.geometry("800x600")
 parent.resizable(True, True)
 
+# Create the background label to simulate the gradient
+bg_label = tk.Label(parent, bg='#ADD8E6')  # Light blue color
+bg_label.pack(fill='both', expand=True)
+
 # Create a frame to contain the login widgets
 login_frame = ttk.Frame(parent)
 login_frame.pack()
+
 
 # Create a font object for the labels
 login_font = font.Font(family='Helvetica', size=12)
