@@ -18,8 +18,7 @@ def loginMenu():
   return loginStatus
 
 if __name__ == '__main__':
-  
-  testcase = Staff('mohdali','Mohammad Ali','Manager','123','01-01-2024','Available')
-  
+
+  Staff.readRecord()
   user = loginMenu()
   print(f'\nWelcome, {user.name}\n')

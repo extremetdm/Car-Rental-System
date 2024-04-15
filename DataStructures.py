@@ -18,10 +18,10 @@ class Staff:
         __class__._staffList[id] = self
 
     @classmethod
+    def login(cls,username:str, password:str):
     # Returns the user info if credentials are correct.
     # If StaffID doesn't exist, returns 0
     # If password is incorrect, returns the attempt count.
-    def login(cls,username:str, password:str):
         if username in cls._staffList:
             staff = cls._staffList[username]
             if password == staff.password:
@@ -32,35 +32,68 @@ class Staff:
         else:
             return 0
 
+    @classmethod
+    def readRecord(cls):
+        with open('StaffRecord.txt','r') as f:
+            for staffinfo in f.readlines():
+                staffinfo = staffinfo.rstrip()
+                if staffinfo != '':
+                    staffinfo = staffinfo.split('|')
+                    staffinfo[-1] = datetime.strptime(staffinfo[-1],'%Y-%m-%d')
+                    cls(*staffinfo)
+
+    @classmethod
+    def updateRecord(cls):
+        with open('StaffRecord.txt','w') as f:
+            for staff in cls._staffList.values():
+                f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}\n")
+
 class Customer:
 
-    _CustomerList = {}
+    _customerList = {}
 
     # Auto incrementing CustomerID
-    _NewCustomerID = 100001
+    _newCustomerID = 100001
 
     def __init__(self, name:str, nric:str, passport_number:str, license_no:str, address:str, phone:str, registration_date:datetime,id=None):
         # Generates CustomerID if no CustomerID given
         if id == None:
-            self.id = f'C{__class__._NewCustomerID}'
+            self.id = f'C{__class__._newCustomerID}'
         else:
             self.id = id
         self.name = name
-        self.nric = passport_number
+        self.nric = nric
+        self.passport_number = passport_number
         self.license_no = license_no
         self.address = address
         self.phone = phone
         self.registration_date = registration_date
 
-        __class__._CustomerList[id] = self
+        __class__._customerList[id] = self
 
         # Increments CustomerID until next empty CustomerId
-        while f'C{__class__._NewCustomerID}' in __class__._CustomerList:
-            __class__._NewCustomerID += 1
+        while f'C{__class__._newCustomerID}' in __class__._customerList:
+            __class__._newCustomerID += 1
+
+    @classmethod
+    def readRecord(cls):
+        with open('CustomerRecord.txt','r') as f:
+            for customerinfo in f.readlines():
+                customerinfo = customerinfo.rstrip()
+                if customerinfo != '':
+                    customerinfo = customerinfo.split('|')
+                    customerinfo[-2] = datetime.strptime(customerinfo[-2],'%Y-%m-%d')
+                    cls(*customerinfo)
+
+    @classmethod
+    def updateRecord(cls):
+        with open('CustomerRecord.txt','w') as f:
+            for customer in cls._customerList.values():
+                f.write(f"{customer.name}|{customer.nric}|{customer.passport_number}|{customer.license_no}|{customer.address}|{customer.phone}|{customer.registration_date}|{customer.id}\n")
 
 class Car:
 
-    _CarList = {}
+    _carList = {}
 
     def __init__(self, registration_no, manufacturer, model, manufacture_year, capacity, last_service_date, insurance_policy_number, insurance_expiry, road_tax_expiry, rental_rate = 250, availability = 'Available'):
         self.registration_no = registration_no
@@ -78,11 +111,11 @@ class Car:
         else:
             self.availability = 'Available'
 
-        __class__._CarList[id] = self
+        __class__._carList[id] = self
 
 class Rental:
     
-    _RentalList = []
+    _rentalList = []
     
     def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime):
         self.car = car
@@ -93,4 +126,4 @@ class Rental:
         self.rental_period = (return_date - rental_date).days
         self.rental_fee = car.rental_rate * self.rental_period
 
-        __class__._RentalList.append(self)
+        __class__._rentalList.append(self)
