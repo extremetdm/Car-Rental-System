@@ -1,6 +1,6 @@
 Records
 
-- Staff record (Needs updating)
+- Staff record (Done)
 a.	Staff ID, example, mohdali
 b.	Staff Name, example, Mohamad Ali
 c.	Staff Roles, example, the staff is either manager, customer service staff or car service staff
