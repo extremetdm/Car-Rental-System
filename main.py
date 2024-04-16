@@ -2,7 +2,7 @@ from DataStructures import *
 
 def login():
 # Login menu
-# Returns user information if login successful
+# Returns user information if login successful. Exits program otherwise.
   print('\nLogin\n')
 
   # Taking and checking input
