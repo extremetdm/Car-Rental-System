@@ -1,8 +1,8 @@
 from DataStructures import *
 
+def login():
+# Login menu
 # Returns user information if login successful
-def loginMenu():
-
   print('\nLogin\n')
 
   # Taking and checking input
@@ -17,19 +17,33 @@ def loginMenu():
   
   return loginStatus
 
+def managerMenu(user:Staff):
+  pass
+
+def customer1Menu(user:Staff):
+  pass
+
+def customer2Menu(user:Staff):
+  pass
+
+def carMenu(user:Staff):
+  pass
+
 if __name__ == '__main__':
-
+  
   Staff.readRecord()
-
   Customer.readRecord()
-  Customer.updateRecord()
-
   Car.readRecord()
-  Car.updateRecord()
-
   Rental.readRecord()
-  Rental.updateRecord()
 
-
-  user = loginMenu()
+  user:Staff = login()
   print(f'\nWelcome, {user.name}\n')
+  match user.role:
+    case 'Manager':
+      managerMenu(user)
+    case 'Customer Service Staff I':
+      customer1Menu(user)
+    case 'Customer Service Staff II':
+      customer2Menu(user)
+    case 'Car Service Staff':
+      carMenu(user)
