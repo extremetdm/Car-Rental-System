@@ -20,5 +20,16 @@ def loginMenu():
 if __name__ == '__main__':
 
   Staff.readRecord()
+
+  Customer.readRecord()
+  Customer.updateRecord()
+
+  Car.readRecord()
+  Car.updateRecord()
+
+  Rental.readRecord()
+  Rental.updateRecord()
+
+
   user = loginMenu()
   print(f'\nWelcome, {user.name}\n')

@@ -30,6 +30,7 @@ o	(you may add other relevant information)
 •	Road Tax Expiry Date: for example, 31-12-2024
 •	Car Renting Rate per day: 250.00
 •	Rental Availability, for example, either, available, reserved, rented, under service or disposed.
+- “Available” when a new car is registered
 
 - Rental record (Done)
 o	Car Registration Number, example, KV1234E (Car must be registered to the system before it can be rented.)
