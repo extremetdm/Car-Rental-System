@@ -40,7 +40,7 @@ o	Car Returning Date, for example, 3 February 2024
 o	Rental Periods (Days), for example, 3 days (Automatic generated from the system from the given rental and returned date.)
 o	Total Rental: 750.00 (Automatic generated from the car rental price multiplied by rental periods.)
 
-- Read stored records
+- Read stored records (Done)
 
 - All Staff Login, only 3 attempts allowed (Done)
 

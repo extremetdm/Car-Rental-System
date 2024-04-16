@@ -47,3 +47,8 @@ if __name__ == '__main__':
       customer2Menu(user)
     case 'Car Service Staff':
       carMenu(user)
+
+  Staff.updateRecord()
+  Customer.updateRecord()
+  Car.updateRecord()
+  Rental.updateRecord()
