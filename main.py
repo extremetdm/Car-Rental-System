@@ -18,7 +18,12 @@ def login():
   return loginStatus
 
 def updateProfile(user:Staff):
+  Staff.updateStaff(user.id,input("new name: "),input("new password: "))
+  
+def registerStaff(user:Staff):
+  
   pass
+
 
 def managerMenu(user:Staff):
   while True:
@@ -36,6 +41,7 @@ def managerMenu(user:Staff):
         updateProfile(user)
 
       case '2':
+        registerStaff(user)
         pass
 
       case '3':

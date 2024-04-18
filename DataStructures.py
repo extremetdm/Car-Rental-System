@@ -69,12 +69,12 @@ class Staff:
         else:
             return False
     
-    @classmethod
+    """@classmethod
     def newStaff(cls, id:str, name:str=None, role:str=None, password:str=None, registration_date:datetime=None):
         if id not in cls._staffList:
             with open('StaffRecord.txt','a') as f:
                 f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}\n")
-
+"""
 class Customer:
 
     _customerList = {}
