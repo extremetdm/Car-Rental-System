@@ -69,12 +69,20 @@ class Staff:
         else:
             return False
     
-    """@classmethod
-    def newStaff(cls, id:str, name:str=None, role:str=None, password:str=None, registration_date:datetime=None):
+    #adding new staff
+    #for new staff by default password will be same as id
+    @classmethod
+    def newStaff(cls, id:str, name:str=None, role:str=None):
         if id not in cls._staffList:
-            with open('StaffRecord.txt','a') as f:
-                f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}\n")
-"""
+            while True:
+                if role in['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
+                    break
+                else:
+                    print("unknown role assign".upper())
+                    role = input("\n\nNew Staff Role: ")
+            Staff(id,name,role,password = id,registration_date = datetime.now())
+        else:
+            print("StaffID assist")
 class Customer:
 
     _customerList = {}

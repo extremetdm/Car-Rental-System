@@ -18,11 +18,10 @@ def login():
   return loginStatus
 
 def updateProfile(user:Staff):
-  Staff.updateStaff(user.id,input("new name: "),input("new password: "))
+  user.updateStaff(user.id,input("new name: "),input("new password: "))
   
 def registerStaff(user:Staff):
-  
-  pass
+  user.newStaff(input("New Staff ID: "), input("New Staff Name: " ), input("New Staff Role: "))
 
 
 def managerMenu(user:Staff):
@@ -42,7 +41,6 @@ def managerMenu(user:Staff):
 
       case '2':
         registerStaff(user)
-        pass
 
       case '3':
         pass
