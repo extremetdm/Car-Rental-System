@@ -51,6 +51,29 @@ class Staff:
     @classmethod
     def getStaff(cls,id):
         return cls._staffList[id]
+    
+    #update staff own profile
+    @classmethod
+    def updateStaff(cls, id:str, name:str=None, role:str=None, password:str=None, registration_date:datetime=None):
+        if id in cls._staffList:
+            staff = cls._staffList[id]
+            if name is not None:
+                staff.name = name
+            if role is not None and role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
+                staff.role = role
+            if password is not None:
+                staff.password = password
+            if registration_date is not None:
+                staff.registration_date = registration_date
+            return True
+        else:
+            return False
+    
+    @classmethod
+    def newStaff(cls, id:str, name:str=None, role:str=None, password:str=None, registration_date:datetime=None):
+        if id not in cls._staffList:
+            with open('StaffRecord.txt','a') as f:
+                f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}\n")
 
 class Customer:
 
