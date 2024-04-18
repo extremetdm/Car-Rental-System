@@ -22,6 +22,9 @@ def updateProfile(user:Staff):
   
 def registerStaff(user:Staff):
   user.newStaff(input("New Staff ID: "), input("New Staff Name: " ), input("New Staff Role: "))
+  
+def deleteStaff_Record(user:Staff):
+  user.delete_staff(id = input('Delete Staff record with ID: '))
 
 
 def managerMenu(user:Staff):
@@ -46,7 +49,7 @@ def managerMenu(user:Staff):
         pass
 
       case '4':
-        pass
+        deleteStaff_Record(user)
 
       case '5':
         pass

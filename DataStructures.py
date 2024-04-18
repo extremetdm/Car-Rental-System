@@ -76,6 +76,14 @@ class Staff:
             Staff(id,name,role,password = id,registration_date = datetime.now())
         else:
             print("StaffID assist")
+            
+    @classmethod
+    def delete_staff(cls,id:str):
+        if id in cls._staffList:
+            del cls._staffList[id]
+            print(f"\nStaff with ID \'{id}\' has been deleted.")
+        else:
+            print(f"\nNo staff found with ID {id}.")
 class Customer:
 
     _customerList = {}
