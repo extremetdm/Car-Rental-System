@@ -54,20 +54,13 @@ class Staff:
     
     #update staff own profile
     @classmethod
-    def updateStaff(cls, id:str, name:str=None, role:str=None, password:str=None, registration_date:datetime=None):
+    def updateStaff(cls, id:str, name:str=None, password:str=None):
         if id in cls._staffList:
             staff = cls._staffList[id]
             if name is not None:
                 staff.name = name
-            if role is not None and role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
-                staff.role = role
             if password is not None:
                 staff.password = password
-            if registration_date is not None:
-                staff.registration_date = registration_date
-            return True
-        else:
-            return False
     
     #adding new staff
     #for new staff by default password will be same as id

@@ -56,7 +56,6 @@ def managerMenu(user:Staff):
 
       case '7':
         return
-      
 
 def customer1Menu(user:Staff):
   while True:
