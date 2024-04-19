@@ -1,26 +1,5 @@
 from DataStructures import *
-
-def login():
-# Login menu
-# Returns user information if login successful. Exits program otherwise.
-  print('\nLogin\n')
-
-  # Taking and checking input
-  while isinstance((loginStatus := Staff.login(input('Username: '),input('Password: '))),int):
-    if loginStatus == 0:
-      print('\nInvalid StaffID!\n')
-    elif loginStatus < 3:
-      print(f'\nWrong Password! {3-loginStatus} attempt(s) remaining.')
-    elif loginStatus == 3:
-      print(f'\nWrong Password! Program will now exit.')
-      exit()
-  
-  return loginStatus
-
-def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
-  while not validCondition(enteredinput := input(inputMsg)):
-    print(errorMsg)
-  return enteredinput
+from function import *
 
 
 #@ to be edit from here
