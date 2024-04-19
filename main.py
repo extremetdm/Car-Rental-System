@@ -16,18 +16,7 @@ def updateProfile(user:Staff, code:str= None, edit:str=None):
       print("unknown role assign".upper())
       info[2] = input("\n\nNew Staff Role: ")
   print(user.newStaff(info))
-#@ to be edit to here
 
-def registerStaff(user:Staff):
-  user.updateStaff()
-  
-def deleteStaff_Record(user:Staff):
-  while True:
-    print(user.updateStaff(id = input('Delete Staff record with ID: '), code = 'remove'))
-    run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
-    if run == 'N':
-      break
-      
 
 def registerCustomer():
   name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')

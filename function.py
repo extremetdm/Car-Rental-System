@@ -22,14 +22,14 @@ def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
     print(errorMsg)
   return enteredinput
 
-def updateStaff(cls, id:str = None, name:str=None, role:str=None, password:str = None, code:str = None, edit:int = None):
-        if id not in cls._staffList and code == 'new':
+def updateStaff(user:Staff, id:str = None, name:str=None, role:str=None, password:str = None, code:str = None, edit:int = None):
+        if id not in Staff._staffList and code == 'new':
             Staff(id, name, role, password = id, registration_date = datetime.now())
             return "New Staff has been added"
         match code:
             case 'update':
-                if id in cls._staffList:
-                    staff = cls._staffList[id]
+                if id in Staff._staffList:
+                    staff = Staff._staffList[id]
                     match edit:
                         case 1:
                             if id is not None:
@@ -45,8 +45,18 @@ def updateStaff(cls, id:str = None, name:str=None, role:str=None, password:str =
                         case _:
                             return 'invalid input'
             case 'remove':
-                if id in cls._staffList:
-                    del cls._staffList[id]
+                if id in Staff._staffList:
+                    del Staff._staffList[id]
                     return f"\nStaff with ID \'{id}\' has been deleted."
                 else:
                     return f"\nNo staff found with ID {id}."
+
+def registerStaff(user:Staff):
+  user.updateStaff()
+  
+def deleteStaff_Record(user:Staff):
+  while True:
+    print(user.updateStaff(id = input('Delete Staff record with ID: '), code = 'remove'))
+    run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
+    if run == 'N':
+      break
