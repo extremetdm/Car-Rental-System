@@ -53,6 +53,10 @@ class Staff:
         return cls._staffList[id]
     
     #update staff own profile
+    # problems to be resolved: 
+    # 1. redundancy (don't use classmethod since this is instance specific change)
+    # 2. unable to select which specific attribute to edit
+    # 3. vulnarable to null data ('' (no input) is not the same as None)
     @classmethod
     def updateStaff(cls, id:str, name:str=None, password:str=None):
         if id in cls._staffList:
@@ -64,6 +68,10 @@ class Staff:
     
     #adding new staff
     #for new staff by default password will be same as id
+    # problems to be resolved:
+    # 1. messy (better to do input validation n print output in main.py)
+    # 2. vulnarable to null data (id and name)
+    # 3. unsmooth user experience (staffid exists -> back to main menu)
     @classmethod
     def newStaff(cls, id:str, name:str=None, role:str=None):
         if id not in cls._staffList:
@@ -75,15 +83,18 @@ class Staff:
                     role = input("\n\nNew Staff Role: ")
             Staff(id,name,role,password = id,registration_date = datetime.now())
         else:
-            print("StaffID assist")
+            print("StaffID already exists")
             
     @classmethod
     def delete_staff(cls,id:str):
+        # problems to be resolved:
+        # 1. messy (better to do input validation n print output in main.py)
         if id in cls._staffList:
             del cls._staffList[id]
             print(f"\nStaff with ID \'{id}\' has been deleted.")
         else:
             print(f"\nNo staff found with ID {id}.")
+
 class Customer:
 
     _customerList = {}
