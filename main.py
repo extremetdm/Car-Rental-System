@@ -18,7 +18,14 @@ def login():
   return loginStatus
 
 def updateProfile(user:Staff):
-  print('\n')
+  user.updateStaff(user.id,input("new name: "),input("new password: "))
+  
+def registerStaff(user:Staff):
+  user.newStaff(input("New Staff ID: "), input("New Staff Name: " ), input("New Staff Role: "))
+  
+def deleteStaff_Record(user:Staff):
+  user.delete_staff(id = input('Delete Staff record with ID: '))
+
 
 def managerMenu(user:Staff):
   while True:
@@ -36,13 +43,13 @@ def managerMenu(user:Staff):
         updateProfile(user)
 
       case '2':
-        pass
+        registerStaff(user)
 
       case '3':
         pass
 
       case '4':
-        pass
+        deleteStaff_Record(user)
 
       case '5':
         pass
@@ -52,7 +59,6 @@ def managerMenu(user:Staff):
 
       case '7':
         return
-      
 
 def customer1Menu(user:Staff):
   while True:

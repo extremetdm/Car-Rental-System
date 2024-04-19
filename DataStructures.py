@@ -51,7 +51,39 @@ class Staff:
     @classmethod
     def getStaff(cls,id):
         return cls._staffList[id]
-
+    
+    #update staff own profile
+    @classmethod
+    def updateStaff(cls, id:str, name:str=None, password:str=None):
+        if id in cls._staffList:
+            staff = cls._staffList[id]
+            if name is not None:
+                staff.name = name
+            if password is not None:
+                staff.password = password
+    
+    #adding new staff
+    #for new staff by default password will be same as id
+    @classmethod
+    def newStaff(cls, id:str, name:str=None, role:str=None):
+        if id not in cls._staffList:
+            while True:
+                if role in['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
+                    break
+                else:
+                    print("unknown role assign".upper())
+                    role = input("\n\nNew Staff Role: ")
+            Staff(id,name,role,password = id,registration_date = datetime.now())
+        else:
+            print("StaffID assist")
+            
+    @classmethod
+    def delete_staff(cls,id:str):
+        if id in cls._staffList:
+            del cls._staffList[id]
+            print(f"\nStaff with ID \'{id}\' has been deleted.")
+        else:
+            print(f"\nNo staff found with ID {id}.")
 class Customer:
 
     _customerList = {}
