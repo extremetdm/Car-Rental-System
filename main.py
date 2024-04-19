@@ -23,15 +23,32 @@ def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
   return enteredinput
 
 
-
-def updateProfile(user:Staff):
-  user.updateStaff(user.id,input("new name: "),input("new password: "))
+#@ to be edit from here
+def updateProfile(user:Staff, code:str= None, edit:str=None):
+  pass
   
+  
+  
+  info = (input("New Staff ID: "), input("New Staff Name: " ), input("New Staff Role: "))
+  while True:
+    if info[2] in['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
+      break
+    else:
+      print("unknown role assign".upper())
+      info[2] = input("\n\nNew Staff Role: ")
+  print(user.newStaff(info))
+#@ to be edit to here
+
 def registerStaff(user:Staff):
-  user.newStaff(input("New Staff ID: "), input("New Staff Name: " ), input("New Staff Role: "))
+  user.updateStaff()
   
 def deleteStaff_Record(user:Staff):
-  user.delete_staff(id = input('Delete Staff record with ID: '))
+  while True:
+    print(user.updateStaff(id = input('Delete Staff record with ID: '), code = 'remove'))
+    run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
+    if run == 'N':
+      break
+      
 
 def registerCustomer():
   name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')

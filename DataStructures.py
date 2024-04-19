@@ -51,49 +51,36 @@ class Staff:
     @classmethod
     def getStaff(cls,id):
         return cls._staffList[id]
-    
-    #update staff own profile
-    # problems to be resolved: 
-    # 1. redundancy (don't use classmethod since this is a class instance specific change)
-    # 2. unable to select which specific attribute to edit
-    # 3. vulnarable to null data ('' (no input) is not the same as None)
+
     @classmethod
-    def updateStaff(cls, id:str, name:str=None, password:str=None):
-        if id in cls._staffList:
-            staff = cls._staffList[id]
-            if name is not None:
-                staff.name = name
-            if password is not None:
-                staff.password = password
-    
-    #adding new staff
-    #for new staff by default password will be same as id
-    # problems to be resolved:
-    # 1. messy (better to do input validation n print output in main.py)
-    # 2. vulnarable to null data (id and name)
-    # 3. unsmooth user experience (staffid exists -> back to main menu)
-    @classmethod
-    def newStaff(cls, id:str, name:str=None, role:str=None):
-        if id not in cls._staffList:
-            while True:
-                if role in['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
-                    break
+    def updateStaff(cls, id:str = None, name:str=None, role:str=None, password:str = None, code:str = None, edit:int = None):
+        if id not in cls._staffList and code == 'new':
+            Staff(id, name, role, password = id, registration_date = datetime.now())
+            return "New Staff has been added"
+        match code:
+            case 'update':
+                if id in cls._staffList:
+                    staff = cls._staffList[id]
+                    match edit:
+                        case 1:
+                            if id is not None:
+                                staff.id = id
+                        case 2:
+                            if name is not None:
+                                staff.name = name
+                        case 3:
+                            if password is not None:
+                                staff.password = password
+                        case 4:
+                            return 0
+                        case _:
+                            return 'invalid input'
+            case 'remove':
+                if id in cls._staffList:
+                    del cls._staffList[id]
+                    return f"\nStaff with ID \'{id}\' has been deleted."
                 else:
-                    print("unknown role assign".upper())
-                    role = input("\n\nNew Staff Role: ")
-            Staff(id,name,role,password = id,registration_date = datetime.now())
-        else:
-            print("StaffID already exists")
-            
-    @classmethod
-    def delete_staff(cls,id:str):
-        # problems to be resolved:
-        # 1. messy (better to do input validation n print output in main.py)
-        if id in cls._staffList:
-            del cls._staffList[id]
-            print(f"\nStaff with ID \'{id}\' has been deleted.")
-        else:
-            print(f"\nNo staff found with ID {id}.")
+                    return f"\nNo staff found with ID {id}."
 
 class Customer:
 
