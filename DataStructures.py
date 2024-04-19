@@ -54,7 +54,7 @@ class Staff:
     
     #update staff own profile
     # problems to be resolved: 
-    # 1. redundancy (don't use classmethod since this is instance specific change)
+    # 1. redundancy (don't use classmethod since this is a class instance specific change)
     # 2. unable to select which specific attribute to edit
     # 3. vulnarable to null data ('' (no input) is not the same as None)
     @classmethod
@@ -102,7 +102,7 @@ class Customer:
     # Auto incrementing CustomerID
     _newCustomerID = 100001
 
-    def __init__(self, name:str, nric:str, passport_number:str, license_no:str, address:str, phone:str, registration_date:datetime,id=None):
+    def __init__(self, name:str, nric:str, passport_number:str, license_no:str, address:str, phone:str, registration_date:datetime,id:str=None):
         # Generates CustomerID if no CustomerID given
         if id == None:
             self.id = f'C{__class__._newCustomerID}'
@@ -146,7 +146,7 @@ class Car:
 
     _carList = {}
 
-    def __init__(self, registration_no:str, manufacturer:str, model:str, manufacture_year:int, capacity:int, last_service_date:datetime, insurance_policy_number:str, insurance_expiry:datetime, road_tax_expiry:datetime, rental_rate = 250, availability = 'Available'):
+    def __init__(self, registration_no:str, manufacturer:str, model:str, manufacture_year:int, capacity:int, last_service_date:datetime, insurance_policy_number:str, insurance_expiry:datetime, road_tax_expiry:datetime, rental_rate:int = 250, availability:str = 'Available'):
         self.registration_no = registration_no
         self.manufacturer = manufacturer
         self.model = model

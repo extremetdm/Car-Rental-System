@@ -17,6 +17,13 @@ def login():
   
   return loginStatus
 
+def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
+  while not validCondition(enteredinput := input(inputMsg)):
+    print(errorMsg)
+  return enteredinput
+
+
+
 def updateProfile(user:Staff):
   user.updateStaff(user.id,input("new name: "),input("new password: "))
   
@@ -25,6 +32,24 @@ def registerStaff(user:Staff):
   
 def deleteStaff_Record(user:Staff):
   user.delete_staff(id = input('Delete Staff record with ID: '))
+
+def registerCustomer():
+  name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')
+  localness = getValidInput('\nIs customer a local? (Y/N): ',lambda x:x.upper() in ('Y','N'))
+  if localness == 'Y':
+    # if im bothered enough imma do further validation with date, state code and input with - but for now this is good enough 
+    nric = getValidInput('\nEnter customer NRIC (without -): ',lambda x:x.isnumeric() & (len(x) == 12),'\nInvalid NRIC!')
+    passport = None
+  else:
+    nric = None
+    passport = getValidInput('\nEnter customer passport number: ',lambda x:x != '','\nPassport number cannot be empty!')
+  licenseNo = getValidInput('\nEnter customer driving license card number: ',lambda x:x != '','\nDriving license card number cannot be empty!')
+  address = getValidInput('\nEnter customer address: ',lambda x:x != '','\nAddress cannot be empty!')
+  # if im bothered enough may actually validate phone number but for now this is fine
+  phone = getValidInput('\nEnter customer phone number: ',lambda x:x != '','\nPhone number cannot be empty!')
+  registrationDate = datetime.today()
+  Customer(name,nric,passport,licenseNo,address,phone,registrationDate)
+  print('\nCustomer has been successfully registered.\n')
 
 
 def managerMenu(user:Staff):
@@ -75,7 +100,7 @@ def customer1Menu(user:Staff):
         updateProfile(user)
 
       case '2':
-        pass
+        registerCustomer()
 
       case '3':
         pass
