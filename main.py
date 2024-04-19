@@ -22,8 +22,6 @@ def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
     print(errorMsg)
   return enteredinput
 
-
-
 def updateProfile(user:Staff):
   user.updateStaff(user.id,input("new name: "),input("new password: "))
   
