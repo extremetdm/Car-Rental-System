@@ -18,7 +18,7 @@ def login():
   return loginStatus
 
 def updateProfile(user:Staff):
-  pass
+  print('\n')
 
 def managerMenu(user:Staff):
   while True:
@@ -160,6 +160,8 @@ if __name__ == '__main__':
       customer2Menu(user)
     case 'Car Service Staff':
       carMenu(user)
+    case 'N/A':
+      print('An error has occured. Please contact a manager.')
 
   Staff.updateRecord()
   Customer.updateRecord()

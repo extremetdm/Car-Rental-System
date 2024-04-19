@@ -159,7 +159,7 @@ class Rental:
 
     @classmethod
     def readRecord(cls):
-        with open('RentalRecord.txt','r') as f:
+        with open('RentalRecord.txt','r') as  f:
             for rentalinfo in f.readlines():
                 rentalinfo = rentalinfo.rstrip()
                 if rentalinfo != '':
@@ -172,3 +172,5 @@ class Rental:
         with open('RentalRecord.txt','w') as f:
             for rental in cls._rentalList:
                 f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}\n")
+
+    
