@@ -14,7 +14,7 @@ def managerMenu(user:Staff):
       print('\nInvalid operation number!')
     match operation:
       case '1':
-        updateProfile(user)
+        updateStaff(user)
 
       case '2':
         registerStaff(user)
