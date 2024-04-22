@@ -63,7 +63,7 @@ def registerStaff(user:Staff):
         else:
             break
     while True:
-        role = getValidInput('\nEnter Staff role: ',lambda x:x != ''),'\nStaff role cannot be empty or not in role!')
+        role = getValidInput('\nEnter Staff role: ',lambda x:x != '','\nStaff role cannot be empty or not in role!')
         if role in ROLES:
             break
         else:
