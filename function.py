@@ -66,7 +66,8 @@ def deleteStaff_Record(user:Staff):
         run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
         if run == 'N':
             break
-  
+
+"""for Customer"""
 def registerCustomer():
     name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')
     localness = getValidInput('\nIs customer a local? (Y/N): ',lambda x:x.upper() in ('Y','N'))
