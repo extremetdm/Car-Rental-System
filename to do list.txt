@@ -42,7 +42,7 @@ o	Total Rental: 750.00 (Automatic generated from the car rental price multiplied
 
 - Read stored records (Done)
 
-- All Staff Login, only 3 attempts allowed (Done)
+- All Staff Login, only 3 attempts allowed, disable account if fail
 
 Staff Functionalities:
 
