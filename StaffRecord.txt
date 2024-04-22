@@ -3,3 +3,4 @@ oguess|Oguess Yap|Manager|oguess|2024-03-17
 iwanttodie|Natsuki|Customer Service Staff II|666666|2024-04-12
 asdfghjkl|MLG Gamer 123|N/A|qwertyuiop|2024-03-22
 some|hello|Customer Service Staff I|lazy|2024-04-18
+Gabriel|Gabril How|Manager|Gabriel|2024-04-22
