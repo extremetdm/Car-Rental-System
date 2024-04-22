@@ -1,5 +1,5 @@
 from DataStructures import *
-ROLES = ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']
+ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
 
 def login():
 # Login menu

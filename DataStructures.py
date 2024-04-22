@@ -49,8 +49,11 @@ class Staff:
                 f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}\n")
 
     @classmethod
-    def getStaff(cls,id):
+    def getStaff(cls,id) -> object:
         return cls._staffList[id]
+    
+    def __repr__(self) -> str:
+        pass
 
 
 class Customer:
@@ -97,7 +100,7 @@ class Customer:
                 f.write(f"{customer.name}|{customer.nric}|{customer.passport_number}|{customer.license_no}|{customer.address}|{customer.phone}|{customer.registration_date.strftime('%Y-%m-%d')}|{customer.id}\n")
 
     @classmethod
-    def getCustomer(cls,id):
+    def getCustomer(cls,id) -> object:
         return cls._customerList[id]
 
 class Car:
@@ -140,7 +143,7 @@ class Car:
                 f.write(f"{car.registration_no}|{car.manufacturer}|{car.model}|{car.manufacture_year}|{car.capacity}|{car.last_service_date.strftime('%Y-%m-%d')}|{car.insurance_policy_number}|{car.insurance_expiry.strftime('%Y-%m-%d')}|{car.road_tax_expiry.strftime('%Y-%m-%d')}|{car.rental_rate}|{car.availability}\n")
 
     @classmethod
-    def getCar(cls,registration_no):
+    def getCar(cls,registration_no) -> object:
         return cls._carList[registration_no]
 
 class Rental:
