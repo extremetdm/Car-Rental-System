@@ -1,3 +1,6 @@
+from DataStructures import *
+from function import *
+
 def customer2Menu(user:Staff):
   # may subject to change because it is kinda unclear what is expected from the program here
   while True:

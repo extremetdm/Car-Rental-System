@@ -1,3 +1,6 @@
+from DataStructures import *
+from function import *
+
 def managerMenu(user:Staff):
   while True:
     print('1.\tUpdate own profile')
