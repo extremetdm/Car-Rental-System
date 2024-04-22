@@ -1,3 +1,6 @@
+from DataStructures import *
+from function import *
+
 def carMenu(user:Staff):
   while True:
     print('1.\tUpdate own profile')
@@ -10,7 +13,7 @@ def carMenu(user:Staff):
       print('\nInvalid operation number!')
     match operation:
       case '1':
-        updateProfile(user)
+        updateStaff(user)
 
       case '2':
         pass
