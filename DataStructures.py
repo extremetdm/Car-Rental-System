@@ -50,7 +50,10 @@ class Staff:
 
     @classmethod
     def getStaff(cls,id):
-        return cls._staffList[id]
+        if id in cls._staffList:
+            return cls._staffList[id]
+        else:
+            return None
 
 
 class Customer:
@@ -98,7 +101,10 @@ class Customer:
 
     @classmethod
     def getCustomer(cls,id):
-        return cls._customerList[id]
+        if id in cls._customerList:
+            return cls._customerList[id]
+        else:
+            return None
 
 class Car:
 
@@ -141,7 +147,10 @@ class Car:
 
     @classmethod
     def getCar(cls,registration_no):
-        return cls._carList[registration_no]
+        if id in cls._carList:
+            return cls._carList[registration_no]
+        else:
+            return None
 
 class Rental:
     
