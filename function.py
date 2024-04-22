@@ -54,10 +54,13 @@ def deleteStaff_Record(user:Staff):
     while True:
         id = getValidInput('\nEnter Staff Id to delete record: ',lambda x:x != '','\nStaff Id cannot be empty!')
         if id in user._staffList:
-            print('Staff id with <{id}> found')
+            print(f'Staff id with <{id}> found')
             run = getValidInput('\nDo you want to delete this record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
-            del user._staffList[id]
-            print(f"\nStaff with ID \'{id}\' has been deleted.")
+            if run == 'Y':
+                del user._staffList[id]
+                print(f"\nStaff with ID \'{id}\' has been deleted.")
+            else:
+                print(f'has cancel deletion process for Staff id <{id}>')
         else:
             print(f"\nNo staff found with ID {id}.")
         run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
