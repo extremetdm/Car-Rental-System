@@ -1,6 +1,9 @@
 from DataStructures import *
 from function import *
 
+"""for all role"""
+ROLES = ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']
+
 def login():
 # Login menu
 # Returns user information if login successful. Exits program otherwise.
@@ -23,9 +26,12 @@ def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
         print(errorMsg)
     return enteredinput
 
-def updateStaff(user:Staff, edit:int = None, code:str = None):
+
+"""for role = Staff"""
+def updateStaff(user:Staff, id:str = None, edit:int = None, code:str = None):
         match code:
             case 'update':
+                pass
                 if id in Staff._staffList:
                     staff = Staff._staffList[id]
                     match edit:
@@ -50,14 +56,17 @@ def updateStaff(user:Staff, edit:int = None, code:str = None):
                     return f"\nNo staff found with ID {id}."
 
 def registerStaff(user:Staff):
-    id = getValidInput('\nEnter Staff id: ',lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty!')
-    role = getValidInput('\nEnter Staff name: ',lambda x:x != '','\nStaff name cannot be empty!')
+    while True:
+        id = getValidInput('\nEnter Staff id: ',lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!')
+        if id in ROLES:
+            continue
+        else:
+            break
+    role = getValidInput('\nEnter Staff role: ',lambda x:((x in ROLES) and (x != '')),'\nStaff role cannot be empty!')
     name = getValidInput('\nEnter Staff name: ',lambda x:x != '','\nStaff name cannot be empty!')
     
-    
-    if id not in Staff._staffList:
-            Staff(id, Staff.name, Staff.role, id, registration_date = datetime.now())
-            return "New Staff has been added"
+    Staff(id, name, role, id, registration_date = datetime.now())
+    return "New Staff has been added"
   
 def deleteStaff_Record(user:Staff):
     while True:
@@ -65,7 +74,8 @@ def deleteStaff_Record(user:Staff):
         run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
         if run == 'N':
             break
-        
+
+"""for role = Customer"""
 def registerCustomer():
   name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')
   localness = getValidInput('\nIs customer a local? (Y/N): ',lambda x:x.upper() in ('Y','N'))

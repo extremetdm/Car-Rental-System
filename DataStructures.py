@@ -147,10 +147,11 @@ class Car:
 
     @classmethod
     def getCar(cls,registration_no):
-        if id in cls._carList:
+        try:
             return cls._carList[registration_no]
-        else:
+        except KeyError:
             return None
+        
 
 class Rental:
     
