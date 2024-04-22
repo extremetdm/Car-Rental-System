@@ -64,7 +64,7 @@ def registerStaff(user:Staff):
             break
     role = getValidInput('\nEnter Staff role: ',lambda x:((x in ROLES) and (x != '')),'\nStaff role cannot be empty!')
     name = getValidInput('\nEnter Staff name: ',lambda x:x != '','\nStaff name cannot be empty!')
-    
+    print("push")
     Staff(id, name, role, id, registration_date = datetime.now())
     return "New Staff has been added"
   
