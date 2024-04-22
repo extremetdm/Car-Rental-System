@@ -1,4 +1,6 @@
 from DataStructures import *
+
+"""for all roles"""
 ROLES = ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']
 
 def login():
@@ -56,10 +58,17 @@ def registerStaff(user:Staff):
     while True:
         id = getValidInput('\nEnter Staff id: ',lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!')
         if id in ROLES:
+            print('Staff ID already exist')
             continue
         else:
             break
-    role = getValidInput('\nEnter Staff role: ',lambda x:((x in ROLES) and (x != '')),'\nStaff role cannot be empty!')
+    while True:
+        role = getValidInput('\nEnter Staff role: ',lambda x:x != ''),'\nStaff role cannot be empty or not in role!')
+        if role in ROLES:
+            break
+        else:
+            print('unexpected role given')
+            continue
     name = getValidInput('\nEnter Staff name: ',lambda x:x != '','\nStaff name cannot be empty!')
     
     Staff(id, name, role, id, registration_date = datetime.now())
@@ -71,3 +80,6 @@ def deleteStaff_Record(user:Staff):
     run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
     if run == 'N':
       break
+  
+def registerCustomer():
+    pass
