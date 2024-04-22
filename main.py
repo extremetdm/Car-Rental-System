@@ -1,26 +1,5 @@
 from DataStructures import *
-
-def login():
-# Login menu
-# Returns user information if login successful. Exits program otherwise.
-  print('\nLogin\n')
-
-  # Taking and checking input
-  while isinstance((loginStatus := Staff.login(input('Username: '),input('Password: '))),int):
-    if loginStatus == 0:
-      print('\nInvalid StaffID!\n')
-    elif loginStatus < 3:
-      print(f'\nWrong Password! {3-loginStatus} attempt(s) remaining.')
-    elif loginStatus == 3:
-      print(f'\nWrong Password! Program will now exit.')
-      exit()
-  
-  return loginStatus
-
-def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
-  while not validCondition(enteredinput := input(inputMsg)):
-    print(errorMsg)
-  return enteredinput
+from function import *
 
 
 #@ to be edit from here
@@ -37,18 +16,7 @@ def updateProfile(user:Staff, code:str= None, edit:str=None):
       print("unknown role assign".upper())
       info[2] = input("\n\nNew Staff Role: ")
   print(user.newStaff(info))
-#@ to be edit to here
 
-def registerStaff(user:Staff):
-  user.updateStaff()
-  
-def deleteStaff_Record(user:Staff):
-  while True:
-    print(user.updateStaff(id = input('Delete Staff record with ID: '), code = 'remove'))
-    run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
-    if run == 'N':
-      break
-      
 
 def registerCustomer():
   name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')

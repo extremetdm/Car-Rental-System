@@ -54,7 +54,7 @@ Staff Functionalities:
 
 -	Update own profile.
 
-- Delete staff who have resigned from position.
+- Delete staff who have resigned from position.（Done）
 
 - Set and update the car renting rate per day in car record, for example, 200.00 for 4
 passengers’ car, 300 for 7 passengers’ car and 400 for 9 passengers’ car.
