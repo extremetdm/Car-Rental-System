@@ -20,7 +20,7 @@ def managerMenu(user:Staff):
         registerStaff(user)
 
       case '3':
-        pass
+        updateStaff_access(user)
 
       case '4':
         deleteStaff_Record(user)

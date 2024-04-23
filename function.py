@@ -73,20 +73,35 @@ def registerStaff(user:Staff):
         else:
             break
     while True:
-        print(ROLES)
+        print(f'{i}) {ROLES[i]}' for i in range(4))
         role = getValidInput('\nEnter Staff role: ',lambda x:x != '','\nStaff role cannot be empty or not in role!')
-        if role in ROLES:
+        if role in ('1','2','3','4'):
             break
         else:
             print('Unexpected role given')
             continue
     name = getValidInput('\nEnter Staff name: ',lambda x:x != '','\nStaff name cannot be empty!')
+    match role:
+        case '1':
+            role = ROLES[0]
+        case '2':
+            role = ROLES[1]
+        case '3':
+            role = ROLES[2]
+        case '4':
+            role = ROLES[3]  
     
     Staff(id, name, role, id, registration_date = datetime.now())
     print("New Staff has been added")
-  
+    
+def updateStaff_access(user:Staff):
+    pass
+
+#delete staff all done
 def deleteStaff_Record(user:Staff):
-    for staff in user.getStaff(staff):
+    header = f"|{'Staff ID':^20}|{'Name':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
+    print(header,'\n','-' * (len(header) - 2))
+    for staff in Staff.getStaffList():
         print(staff)
     while True:
         #print('\n'.join((user._staffList[i][0]) for i in range(len(user._staffList))))
