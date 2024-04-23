@@ -27,17 +27,19 @@ def login() -> Staff:
         
         else:
             # Check password & keeping track of login attempts
-            while (user.attempts < 3) & ((password := input('Password: ')) != user.password):
-                print(f'\nWrong Password! {3-user.attempts} attempt(s) remaining.\n')
+            while (password := input('Password: ')) != user.password:
                 user.attempts += 1
-
+                if user.attempts == 3:
+                    break
+                print(f"\nWrong Password! {3-user.attempts} attempt{'' if user.attempts == 2 else 's'} remaining.\n")
+            
             # Lock account when too many login attempts
             if user.attempts == 3:
                 user = print(f'\nWrong Password! You account has been locked.\n')
 
             # Reset login attempt counter when login successful
             else:
-                user.attempts = 1
+                user.attempts = 0
     return user
 
 """For Staff"""
