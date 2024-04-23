@@ -47,8 +47,24 @@ def login() -> Staff:
 def updateProfile(user:Staff):
     os.system('cls')
     updateMsg = [f'Staff ID\t: {user.id}',f'Staff Name\t: {user.name}',f'Staff Role\t: {user.role}',f'Register Date\t: {user.registration_date.date()}']
-    print(f'Current Staff Record'.center((max(len(s) for s in updateMsg)) + 2, '-'))
-    print('\n'.join(updateMsg))
+    print(f'Current Staff Record'.center((max(len(s) for s in updateMsg)) + 2, '-'),'\n','\n'.join(updateMsg))
+    while True:
+        print('\nWhich data would you like to edit?', '\n-> '.join(['\n-> ID', 'Name', 'Password']))
+        dataChange = getValidInput('\nEnter your choice: ',lambda x:((x != '')),'\nchoice cannot be empty!')
+        if dataChange.capitalize() in ('Id','Name','Password'):
+            break
+        else:
+            print('invalid choice input\n')
+            
+    match dataChange.capitalize():
+        case 'Id':
+            user.id = getValidInput('\nEnter your new Staff ID: ',lambda x:((x != '')),'\nStaff ID cannot be empty!')
+        case 'Name':
+            user.name = getValidInput('\nEnter your new Name: ',lambda x:((x != '')),'\nStaff name cannot be empty!')
+        case 'Password':
+            user.password = getValidInput('\nEnter your new Password: ',lambda x:((x != '')),'\nPassword cannot be empty!')
+        case _:
+            print(dataChange.capitalize(), ' is not in match list')
 
 def registerStaff(user:Staff):
     while True:
@@ -72,6 +88,8 @@ def registerStaff(user:Staff):
     print("New Staff has been added")
   
 def deleteStaff_Record(user:Staff):
+    for staff in user.getStaff(staff):
+        print(staff)
     while True:
         #print('\n'.join((user._staffList[i][0]) for i in range(len(user._staffList))))
         id = getValidInput('\nEnter Staff Id to delete record: ',lambda x:x != '','\nStaff Id cannot be empty!')
