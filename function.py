@@ -110,14 +110,17 @@ def registerStaff(user:Staff):
             role = ROLES[3]  
     
     Staff(id, name, role, id, registration_date = datetime.now())
-    print("\nNew Staff detail:\n")
+    print("\n")
     header = f"|{'Staff ID':^20}|{'Name':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
+    print('New Staff detail'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header,'\n','-' * (len(header) - 2))
     print(user.getStaff(id),'\n')
     
 def updateExitingStaff(user:Staff):
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|{'Status':^20}|"
     os.system('cls')
+    
+    print('Staff Record'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header, '\n', '-' * len(header))
     
     for staff in Staff.getStaffList():
@@ -144,6 +147,7 @@ def deleteStaff_Record(user:Staff):
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|"
     
     os.system('cls')
+    print('Staff Record'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header,'\n','-' * (len(header) - 2))
     for staff in Staff.getStaffList():
         print(f"|{staff.name:^20}|{staff.id:^20}|{staff.role:^30}|")
@@ -164,6 +168,33 @@ def deleteStaff_Record(user:Staff):
         if run.upper() == 'N':
             break
     print('\n')
+    
+def monthlyRevenue():
+    os.system('cls')
+    total_revenue_by_car = {}
+
+    for rental in Rental.rentalList:
+        revenue = rental.rental_fee
+        
+        if rental.car in total_revenue_by_car:
+            total_revenue_by_car[rental.car] += revenue
+        else:
+            total_revenue_by_car[rental.car] = revenue
+
+    header = f"|{'Car Plate':^20}|{'Manufacturer':^20}|{'Model':^20}|{'Total Revenue(RM)':^25}|"
+    print()
+    print('Monthly Revenue'.center(len(header)),'\n','-' * (len(header) - 2))
+    print(header,'\n','-' * (len(header) - 2))
+    for car, total_revenue in total_revenue_by_car.items():
+        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{total_revenue:^25}|')
+        
+    sum = 0
+    for i in total_revenue_by_car:
+        sum += total_revenue_by_car[i]
+        
+    print(f'\nMonthly revenue -> RM{sum}\n')
+
+
 
 """for Customer"""
 def registerCustomer():

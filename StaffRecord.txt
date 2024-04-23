@@ -2,7 +2,7 @@ mohdali|Ali Mohamad|Manager|P4$$w0rd|2024-04-02|0
 oguess|Oguess Yap|Manager|oguess|2024-03-17|0
 iwanttodie|Natsuki|Customer Service Staff II|666666|2024-04-12|0
 asdfghjkl|MLG Gamer 123|N/A|qwertyuiop|2024-03-22|0
-some|hello|Customer Service Staff I|lazy|2024-04-18|0
+some|hello|Customer Service Staff I|lazy|2024-04-18|3
 Gabriel|Gabril How|Manager|Gabriel|2024-04-22|0
 Eric|Vollerai|Car Service Staff|Eric1|2024-04-22|0
-hello|hello world|Customer Service Staff I|hello|2024-04-23|3
+hello|hello world|Customer Service Staff I|hello|2024-04-23|0

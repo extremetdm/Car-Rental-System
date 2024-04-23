@@ -29,7 +29,7 @@ def managerMenu(user:Staff):
         pass
 
       case '6':
-        pass
+        monthlyRevenue()
 
       case '7':
         return
