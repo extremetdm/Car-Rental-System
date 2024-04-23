@@ -28,7 +28,9 @@ def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
 
 """For Staff"""
 def updateProfile(user:Staff):
-    pass
+    updateMsg = [f'Staff ID:\t{user.id}',f'Staff Name:\t{user.name}',f'Staff Role:\t{user.role}',f'Register Date:\t{user.registration_date}']
+    print(f'Current Staff Record'.center(max(len(s) for s in updateMsg), '-'))
+    print('\n'.join(updateMsg))
 
 def registerStaff(user:Staff):
     while True:
@@ -39,6 +41,7 @@ def registerStaff(user:Staff):
         else:
             break
     while True:
+        print(ROLES)
         role = getValidInput('\nEnter Staff role: ',lambda x:x != '','\nStaff role cannot be empty or not in role!')
         if role in ROLES:
             break
@@ -48,25 +51,27 @@ def registerStaff(user:Staff):
     name = getValidInput('\nEnter Staff name: ',lambda x:x != '','\nStaff name cannot be empty!')
     
     Staff(id, name, role, id, registration_date = datetime.now())
-    return "New Staff has been added"
+    print("New Staff has been added")
   
 def deleteStaff_Record(user:Staff):
     while True:
+        #print('\n'.join((user._staffList[i][0]) for i in range(len(user._staffList))))
         id = getValidInput('\nEnter Staff Id to delete record: ',lambda x:x != '','\nStaff Id cannot be empty!')
         if id in user._staffList:
             print(f'Staff id with <{id}> found')
             run = getValidInput('\nDo you want to delete this record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
             if run == 'Y':
                 del user._staffList[id]
-                print(f"\nStaff with ID \'{id}\' has been deleted.")
+                print(f"\nStaff ID <{id}> has been deleted.")
             else:
-                print(f'has cancel deletion process for Staff id <{id}>')
+                print(f'Deletion process for Staff id <{id}> has cancel')
         else:
-            print(f"\nNo staff found with ID {id}.")
+            print(f"\nNo staff found with ID <{id}>.")
         run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
         if run == 'N':
             break
-  
+
+"""for Customer"""
 def registerCustomer():
     name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')
     localness = getValidInput('\nIs customer a local? (Y/N): ',lambda x:x.upper() in ('Y','N'))
