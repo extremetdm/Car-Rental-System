@@ -1,33 +1,47 @@
 from DataStructures import *
 import os
 
-"""for all roles"""
+# for all roles
 ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
-
-def login():
-# Login menu
-# Returns user information if login successful. Exits program otherwise.
-  print('\nLogin\n')
-
-  # Taking and checking input
-  while isinstance((loginStatus := Staff.login(input('Username: '),input('Password: '))),int):
-    if loginStatus == 0:
-      print('\nInvalid StaffID!\n')
-    elif loginStatus < 3:
-      print(f'\nWrong Password! {3-loginStatus} attempt(s) remaining.')
-    elif loginStatus == 3:
-      print(f'\nWrong Password! Program will now exit.')
-      exit()
-  
-  return loginStatus
 
 def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
   while not validCondition(enteredinput := input(inputMsg)):
     print(errorMsg)
   return enteredinput
 
+# Login menu
+def login() -> Staff:
+# Returns user information if login successful.
+ 
+    user:Staff = print('\nLogin\n')
+
+    # Taking and checking input
+    while user == None:
+
+        # Input StaffID and get the corresponding info
+        user = Staff.getStaff(getValidInput('StaffID: ',lambda x:Staff.getStaff(x) != None,'\nInvalid StaffID!\n'))
+
+        # Block access to accounts with too many login attempts
+        if user.attempts == 3:
+            user = print('\nThis account has been locked! Please contact a manager.\n')  
+        
+        else:
+            # Check password & keeping track of login attempts
+            while (user.attempts < 3) & ((password := input('Password: ')) != user.password):
+                print(f'\nWrong Password! {3-user.attempts} attempt(s) remaining.\n')
+                user.attempts += 1
+
+            # Lock account when too many login attempts
+            if user.attempts == 3:
+                user = print(f'\nWrong Password! You account has been locked.\n')
+
+            # Reset login attempt counter when login successful
+            else:
+                user.attempts = 1
+    return user
 
 """For Staff"""
+
 def updateProfile(user:Staff):
     os.system('cls')
     updateMsg = [f'Staff ID\t: {user.id}',f'Staff Name\t: {user.name}',f'Staff Role\t: {user.role}',f'Register Date\t: {user.registration_date.date()}']

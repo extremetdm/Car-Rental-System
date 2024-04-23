@@ -12,7 +12,7 @@ if __name__ == '__main__':
   Car.readRecord()
   Rental.readRecord()
 
-  user:Staff = login()
+  user = login()
 
   print(f'\nWelcome, {user.name}\n')
   match user.role:

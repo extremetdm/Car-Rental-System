@@ -42,7 +42,7 @@ o	Total Rental: 750.00 (Automatic generated from the car rental price multiplied
 
 - Read stored records (Done)
 
-- All Staff Login, only 3 attempts allowed, disable account if fail
+- All Staff Login, only 3 attempts allowed, disable account if fail (Done)
 
 Staff Functionalities:
 
@@ -77,7 +77,7 @@ o	Update customer details - phone number, address, license no and passport no (i
 
 3.	Customer Service Staff II
 
-o Get the request from customer and check the availability of a car to be rented.
+o Check the availability of a car to be rented.
 Example, customer request a car that can take certain number of passengers, and
 customer service staff must check any cars that can serves number of passengers
 given by the customer
@@ -107,7 +107,6 @@ o “Available” when a customer returns a car.
 • Insurance Policy Number
 • Insurance Expiry Date
 • Road Tax Expiry Date
-• Car Renting Rate per day
 • Rental Availability, for example, either, available, reserved, rented, under
 service or disposed.
 - “Available” when a new car is registered or a car ready for rental.
