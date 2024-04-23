@@ -2,7 +2,7 @@ from datetime import datetime
 
 class Staff:
 
-    _staffList = {}
+    _staffList:dict[str:object] = {}
 
     def __init__(self, id:str, name:str, role:str, password:str, registration_date:datetime,attempts:int=1):
         self.id = id
@@ -45,13 +45,13 @@ class Staff:
         return f"|{self.id:^20}|{self.name:^20}|{self.role:^30}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
     
     @classmethod
-    def getStaffList(cls):
+    def getStaffList(cls) -> list[object]:
         return cls._staffList.values()
 
 
 class Customer:
 
-    _customerList = {}
+    _customerList:dict[str:object] = {}
 
     # Auto incrementing CustomerID
     _newCustomerID = 100001
@@ -100,12 +100,12 @@ class Customer:
         return f"|{self.id:^20}|{self.name:^20}|{self.nric:^20}|{self.passport_number:^20}|{self.license_no:^20}|{self.address:^50}|{self.phone:^20}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
     
     @classmethod
-    def getCustomerList(cls):
+    def getCustomerList(cls) -> list[object]:
         return cls._customerList.values()
 
 class Car:
 
-    _carList = {}
+    _carList:dict[str:object] = {}
 
     def __init__(self, registration_no:str, manufacturer:str, model:str, manufacture_year:int, capacity:int, last_service_date:datetime, insurance_policy_number:str, insurance_expiry:datetime, road_tax_expiry:datetime, rental_rate:int = 250, availability:str = 'Available'):
         self.registration_no = registration_no
@@ -150,12 +150,12 @@ class Car:
         return f"{self.registration_no:^20}|{self.manufacturer:^20}|{self.model:^20}|{self.manufacture_year:^20}|{self.capacity:^20}|{self.last_service_date.strftime('%Y-%m-%d'):^20}|{self.insurance_policy_number:^20}|{self.insurance_expiry.strftime('%Y-%m-%d'):^20}|{self.road_tax_expiry.strftime('%Y-%m-%d'):^20}|{self.rental_rate:^20}|{self.availability:^20}"
 
     @classmethod
-    def getCarList(cls):
+    def getCarList(cls) -> list[object]:
         return cls._carList.values()
 
 class Rental:
     
-    rentalList = []
+    rentalList:list[object] = []
     
     def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime):
         self.car = car
