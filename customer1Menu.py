@@ -6,20 +6,21 @@ def customer1Menu(user:Staff):
     print('1.\tUpdate own profile')
     print('2.\tRegister new customer')
     print('3.\tView registered customers')
-    print('4.\tUpdate existing customer record')
-    print('5.\tDelete customer record')
+    print('4.\tUpdate existing customer')
+    print('5.\tDelete inactive customer')
     print('6.\tExit program')
-    while (operation := input('\nEnter operation number: ')) not in ('1','2','3','4','5','6'):
-      print('\nInvalid operation number!')
+
+    operation = getValidInput('\nEnter operation number: ',lambda x:x in '123456','\nInvalid operation number!')
+
     match operation:
       case '1':
-        updateStaff(user)
+        updateProfile(user)
 
       case '2':
         registerCustomer()
 
       case '3':
-        pass
+        viewCustomer()
 
       case '4':
         pass

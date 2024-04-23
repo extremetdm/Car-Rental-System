@@ -9,8 +9,9 @@ def carMenu(user:Staff):
     print('4.\tUpdate existing car record')
     print('5.\tDelete car record')
     print('6.\tExit program')
-    while (operation := input('\nEnter operation number: ')) not in ('1','2','3','4','5','6'):
-      print('\nInvalid operation number!')
+  
+    operation = getValidInput('\nEnter operation number: ',lambda x:x in '123456','\nInvalid operation number!')
+
     match operation:
       case '1':
         updateProfile(user)

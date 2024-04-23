@@ -4,7 +4,7 @@ class Staff:
 
     _staffList:dict[str:object] = {}
 
-    def __init__(self, id:str, name:str, role:str, password:str, registration_date:datetime,attempts:int=1):
+    def __init__(self, id:str, name:str, role:str, password:str, registration_date:datetime,attempts:int=0):
         self.id = id
         self.name = name
         if role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:

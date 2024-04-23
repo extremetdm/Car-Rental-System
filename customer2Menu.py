@@ -2,7 +2,6 @@ from DataStructures import *
 from function import *
 
 def customer2Menu(user:Staff):
-  # may subject to change because it is kinda unclear what is expected from the program here
   while True:
     print('1.\tUpdate own profile')
     print('2.\tCheck car availability')
@@ -11,11 +10,12 @@ def customer2Menu(user:Staff):
     print('5.\tView rental transactions')
     print('6.\tDelete rental record')
     print('7.\tExit program')
-    while (operation := input('\nEnter operation number: ')) not in ('1','2','3','4','5','6','7'):
-      print('\nInvalid operation number!')
+    
+    operation = getValidInput('\nEnter operation number: ',lambda x:x in '1234567','\nInvalid operation number!')
+
     match operation:
       case '1':
-        updateStaff(user)
+        updateProfile(user)
 
       case '2':
         pass

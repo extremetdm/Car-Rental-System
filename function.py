@@ -125,3 +125,9 @@ def registerCustomer():
     registrationDate = datetime.today()
     Customer(name,nric,passport,licenseNo,address,phone,registrationDate)
     print('\nCustomer has been successfully registered.\n')
+
+def viewCustomer():
+    print()
+    for customer in Customer.getCustomerList():
+        print(customer)
+    print()

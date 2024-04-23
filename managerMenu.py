@@ -7,11 +7,12 @@ def managerMenu(user:Staff):
     print('2.\tRegister new staff')
     print('3.\tUpdate existing staff record')
     print('4.\tDelete staff record')
-    print('5.\tUpdate car renting rate') # who has the say? why default 250 n then manager can set other default? then car service staff can change???
+    print('5.\tUpdate car renting rate')
     print('6.\tView monthly revenue report')
     print('7.\tExit program')
-    while (operation := input('\nEnter operation number: ')) not in ('1','2','3','4','5','6','7'):
-      print('\nInvalid operation number!')
+    
+    operation = getValidInput('\nEnter operation number: ',lambda x:x in '1234567','\nInvalid operation number!')
+
     match operation:
       case '1':
         updateProfile(user)
