@@ -13,6 +13,7 @@ if __name__ == '__main__':
   Rental.readRecord()
 
   user:Staff = login()
+
   print(f'\nWelcome, {user.name}\n')
   match user.role:
     case 'Manager':
