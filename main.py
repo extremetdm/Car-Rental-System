@@ -18,7 +18,7 @@ if __name__ == '__main__':
   match user.role:
     case 'Manager':
       managerMenu(user)
-    case 'Customer Service Staff I':
+    case 'Customemonr Service Staff I':
       customer1Menu(user)
     case 'Customer Service Staff II':
       customer2Menu(user)
