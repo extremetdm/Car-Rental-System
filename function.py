@@ -1,4 +1,5 @@
 from DataStructures import *
+import os
 
 # for all roles
 ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
@@ -42,8 +43,9 @@ def login() -> Staff:
 """For Staff"""
 
 def updateProfile(user:Staff):
-    updateMsg = [f'Staff ID:\t{user.id}',f'Staff Name:\t{user.name}',f'Staff Role:\t{user.role}',f'Register Date:\t{user.registration_date}']
-    print(f'Current Staff Record'.center(max(len(s) for s in updateMsg), '-'))
+    os.system('cls')
+    updateMsg = [f'Staff ID\t: {user.id}',f'Staff Name\t: {user.name}',f'Staff Role\t: {user.role}',f'Register Date\t: {user.registration_date.date()}']
+    print(f'Current Staff Record'.center((max(len(s) for s in updateMsg)) + 2, '-'))
     print('\n'.join(updateMsg))
 
 def registerStaff(user:Staff):
