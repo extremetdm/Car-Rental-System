@@ -3,9 +3,8 @@ from datetime import datetime
 class Staff:
 
     _staffList = {}
-    _loginAttempts = 0
 
-    def __init__(self, id:str, name:str, role:str, password:str, registration_date:datetime):
+    def __init__(self, id:str, name:str, role:str, password:str, registration_date:datetime,attempts:int=1):
         self.id = id
         self.name = name
         if role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
@@ -17,20 +16,7 @@ class Staff:
 
         __class__._staffList[id] = self
 
-    @classmethod
-    def login(cls,username:str, password:str):
-    # Returns the user info if credentials are correct.
-    # If StaffID doesn't exist, returns 0
-    # If password is incorrect, returns the attempt count.
-        if username in cls._staffList:
-            staff = cls._staffList[username]
-            if password == staff.password:
-                return staff
-            else:
-                cls._loginAttempts += 1
-                return cls._loginAttempts
-        else:
-            return 0
+        self.attempts = attempts
 
     @classmethod
     def readRecord(cls):
@@ -39,21 +25,28 @@ class Staff:
                 staffinfo = staffinfo.rstrip()
                 if staffinfo != '':
                     staffinfo = staffinfo.split('|')
-                    staffinfo[-1] = datetime.strptime(staffinfo[-1],'%Y-%m-%d')
+                    staffinfo[-2:] = datetime.strptime(staffinfo[-2],'%Y-%m-%d'), int(staffinfo[-1]) 
                     cls(*staffinfo)
 
     @classmethod
     def updateRecord(cls):
         with open('StaffRecord.txt','w') as f:
             for staff in cls._staffList.values():
-                f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}\n")
+                f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}|{staff.attempts}\n")
 
     @classmethod
     def getStaff(cls,id) -> object:
-        return cls._staffList[id]
+        if id in cls._staffList:
+            return cls._staffList[id]
+        else:
+            return None
     
     def __repr__(self) -> str:
         return f"|{self.id:^20}|{self.name:^20}|{self.role:^30}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
+    
+    @classmethod
+    def getStaffList(cls):
+        return cls._staffList.values()
 
 
 class Customer:
@@ -105,6 +98,10 @@ class Customer:
     
     def __repr__(self) -> str:
         return f"|{self.id:^20}|{self.name:^20}|{self.nric:^20}|{self.passport_number:^20}|{self.license_no:^20}|{self.address:^50}|{self.phone:^20}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
+    
+    @classmethod
+    def getCustomerList(cls):
+        return cls._customerList.values()
 
 class Car:
 
@@ -152,9 +149,13 @@ class Car:
     def __repr__(self) -> str:
         return f"{self.registration_no:^20}|{self.manufacturer:^20}|{self.model:^20}|{self.manufacture_year:^20}|{self.capacity:^20}|{self.last_service_date.strftime('%Y-%m-%d'):^20}|{self.insurance_policy_number:^20}|{self.insurance_expiry.strftime('%Y-%m-%d'):^20}|{self.road_tax_expiry.strftime('%Y-%m-%d'):^20}|{self.rental_rate:^20}|{self.availability:^20}"
 
+    @classmethod
+    def getCarList(cls):
+        return cls._carList.values()
+
 class Rental:
     
-    _rentalList = []
+    rentalList = []
     
     def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime):
         self.car = car
@@ -165,7 +166,7 @@ class Rental:
         self.rental_period = (return_date - rental_date).days
         self.rental_fee = car.rental_rate * self.rental_period
 
-        __class__._rentalList.append(self)
+        __class__.rentalList.append(self)
 
     @classmethod
     def readRecord(cls):
@@ -180,7 +181,7 @@ class Rental:
     @classmethod
     def updateRecord(cls):
         with open('RentalRecord.txt','w') as f:
-            for rental in cls._rentalList:
+            for rental in cls.rentalList:
                 f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}\n")
 
     def __repr__(self) -> str:
