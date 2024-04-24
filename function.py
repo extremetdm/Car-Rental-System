@@ -1,17 +1,12 @@
 from DataStructures import *
 import os
-import getpass
 
 # for all roles
 ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
 
-def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!',hide_input:int = 0):
-    if hide_input == 1:
-        while not validCondition(enteredinput := getpass.getpass(inputMsg)):
-            print(errorMsg)
-    else:
-        while not validCondition(enteredinput := input(inputMsg)):
-            print(errorMsg)
+def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
+    while not validCondition(enteredinput := input(inputMsg)):
+        print(errorMsg)
     return enteredinput
 
 # Login menu
@@ -32,7 +27,7 @@ def login() -> Staff:
         
         else:
             # Check password & keeping track of login attempts
-            while (password := getpass.getpass('Password: ')) != user.password:
+            while input('Password: ') != user.password:
                 user.attempts += 1
                 if user.attempts == 3:
                     break
@@ -69,8 +64,8 @@ def updateProfile(user:Staff):
             user.name = getValidInput('\nEnter your new Name: ',lambda x:((x != '')),'\nStaff name cannot be empty!')
         case 'Password':
             while True:
-                password1 = getValidInput('\nEnter your new Password: ',lambda x:((x != '')),'\nPassword cannot be empty!',1)
-                password2 = getValidInput('\nPlease comfirm your Password: ',lambda x:((x != '')),'\nPassword Incorrect!',1)
+                password1 = getValidInput('\nEnter your new Password: ',lambda x:((x != '')),'\nPassword cannot be empty!')
+                password2 = getValidInput('\nPlease comfirm your Password: ',lambda x:((x != '')),'\nPassword Incorrect!')
                 if password1 == password2:
                     break
             user.password = password1
