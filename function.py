@@ -169,6 +169,38 @@ def deleteStaff_Record(user:Staff):
             break
     print('\n')
     
+def Update_rentingRate():
+    header = f"|{'Car Plate':^20}|{'Manufacturer':^20}|{'Model':^20}|{'Capacity':^20}|{'Rental Rate':^20}|"
+    
+    os.system('cls')
+    print('Current rental rate per day'.center(len(header)),'\n','-' * (len(header) - 2))
+    print(header,'\n','-' * (len(header) - 2))
+    
+    for car in Car.getCarList():
+        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.rental_rate:^20}|')
+    
+    if getValidInput('\nDo you want to change the rental rate per day? (Y/N): ',lambda x:x.upper() in ('Y','N')).upper() == 'Y':
+        while True:
+            updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',lambda x:x != ''))
+            if any(car.capacity == updateCapacity for car in Car.getCarList()):
+                break
+            else:
+                print('\nCapacity not found.')
+        updateRate = float(getValidInput('\nThe latest rental rate: RM', lambda x:x!= '','\nRental rate cannot be empty'))
+        for car in Car.getCarList():
+            if car.capacity == updateCapacity:
+                car.rental_rate = int(updateRate) if updateRate.is_integer() else updateRate
+                
+    print('After update'.center(len(header)),'\n','-' * (len(header) - 2))
+    print(header,'\n','-' * (len(header) - 2))
+    for car in Car.getCarList():
+        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.rental_rate:^20}|')
+    
+    print('\n')
+
+
+
+
 def monthlyRevenue():
     os.system('cls')
     total_revenue_by_car = {}

@@ -26,7 +26,7 @@ def managerMenu(user:Staff):
         deleteStaff_Record(user)
 
       case '5':
-        pass
+        Update_rentingRate()
 
       case '6':
         monthlyRevenue()
