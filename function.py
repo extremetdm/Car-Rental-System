@@ -178,23 +178,42 @@ def Update_rentingRate():
     for car in Car.getCarList():
         print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.rental_rate:^20}|')
     
-    if getValidInput('\nDo you want to change the rental rate per day? (Y/N): ',lambda x:x.upper() in ('Y','N')).upper() == 'Y':
-        while True:
-            updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',lambda x:x != ''))
-            if any(car.capacity == updateCapacity for car in Car.getCarList()):
-                break
-            else:
-                print('\nCapacity not found.')
-        updateRate = float(getValidInput('\nThe latest rental rate: RM', lambda x:x!= '','\nRental rate cannot be empty'))
-        for car in Car.getCarList():
-            if car.capacity == updateCapacity:
-                car.rental_rate = int(updateRate) if updateRate.is_integer() else updateRate
+    if getValidInput('\nDo you want to change the rental rate? (Y/N): ',lambda x:x.upper() in ('Y','N')).upper() == 'Y':
+        updateCheck = getValidInput('\nHow would you like to be change? (capacity/model): ', lambda x:(x != '') and (x.lower() in ('capacity','model')))
+        if updateCheck.lower() == 'capacity':
+            while True:
+                updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',lambda x:x != ''))
+                if any(car.capacity == updateCapacity for car in Car.getCarList()):
+                    break
+                else:
+                    print('\nCapacity not found.')
+                    
+            updateRate = float(getValidInput('\nThe latest rental rate: RM', lambda x:x!= '','\nRental rate cannot be empty'))
+                    
+            for car in Car.getCarList():
+                if car.capacity == updateCapacity:
+                    car.rental_rate = int(updateRate) if updateRate.is_integer() else updateRate
+        
+        elif updateCheck.lower() == 'model':
+            while True:
+                updateModel = getValidInput('\nWhich model rental rate you would like to change? ',lambda x:(x != ''),'\nType of model cannot be empty')
+                if any(car.model == updateModel for car in Car.getCarList()):
+                    break
+                else:
+                    print('\nModel not found.')
+                    
+            updateRate = float(getValidInput('\nThe latest rental rate: RM', lambda x:x!= '','\nRental rate cannot be empty'))
+            
+            for car in Car.getCarList():
+                if car.model == updateModel:
+                    car.rental_rate = int(updateRate) if updateRate.is_integer() else updateRate
                 
     print('After update'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header,'\n','-' * (len(header) - 2))
     for car in Car.getCarList():
         print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.rental_rate:^20}|')
     
+    Car.updateRecord()
     print('\n')
 
 def monthlyRevenue():
