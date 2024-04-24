@@ -14,7 +14,7 @@ class Staff:
         self.password = password
         self.registration_date = registration_date
 
-        __class__._staffList[id] = self
+        __class__._staffList[self.id] = self
 
         self.attempts = attempts
 
@@ -35,11 +35,18 @@ class Staff:
                 f.write(f"{staff.id}|{staff.name}|{staff.role}|{staff.password}|{staff.registration_date.strftime('%Y-%m-%d')}|{staff.attempts}\n")
 
     @classmethod
-    def getStaff(cls,id) -> object | None:
+    def getStaff(cls,id:str) -> object | None:
         if id in cls._staffList:
             return cls._staffList[id]
         else:
             return None
+    
+    @classmethod
+    def staffInRecord(cls,id:str) -> bool:
+        if id in cls._staffList:
+            return True
+        else:
+            return False
     
     def __repr__(self) -> str:
         return f"|{self.id:^20}|{self.name:^20}|{self.role:^30}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
@@ -56,7 +63,7 @@ class Customer:
     # Auto incrementing CustomerID
     _newCustomerID = 100001
 
-    def __init__(self, name:str, nric:str|None, passport_number:str|None, license_no:str, address:str, phone:str, registration_date:datetime,id:str|None=None):
+    def __init__(self, name:str, nric:str, passport_number:str, license_no:str, address:str, phone:str, registration_date:datetime,id:str|None=None):
         # Generates CustomerID if no CustomerID given
         if id == None:
             self.id = f'C{__class__._newCustomerID}'
@@ -70,7 +77,7 @@ class Customer:
         self.phone = phone
         self.registration_date = registration_date
 
-        __class__._customerList[id] = self
+        __class__._customerList[self.id] = self
 
         # Increments CustomerID until next empty CustomerId
         while f'C{__class__._newCustomerID}' in __class__._customerList:
@@ -83,10 +90,6 @@ class Customer:
                 customerinfo = customerinfo.rstrip()
                 if customerinfo != '':
                     customerinfo = customerinfo.split('|')
-                    if customerinfo[1] == 'None':
-                        customerinfo[1] = None
-                    if customerinfo[2] == 'None':
-                        customerinfo[2] = None
                     customerinfo[-2] = datetime.strptime(customerinfo[-2],'%Y-%m-%d')
                     cls(*customerinfo)
 
@@ -97,12 +100,19 @@ class Customer:
                 f.write(f"{customer.name}|{customer.nric}|{customer.passport_number}|{customer.license_no}|{customer.address}|{customer.phone}|{customer.registration_date.strftime('%Y-%m-%d')}|{customer.id}\n")
 
     @classmethod
-    def getCustomer(cls,id) -> object|None:
+    def getCustomer(cls,id:str) -> object|None:
         if id in cls._customerList:
             return cls._customerList[id]
         else:
             return None
     
+    @classmethod
+    def customerInRecord(cls,id:str) -> bool:
+        if id in cls._customerList:
+            return True
+        else:
+            return False
+
     def __repr__(self) -> str:
         return f"|{self.id:^20}|{self.name:^20}|{self.nric:^20}|{self.passport_number:^20}|{self.license_no:^20}|{self.address:^50}|{self.phone:^20}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
     
@@ -130,7 +140,7 @@ class Car:
         else:
             self.availability = 'Available'
 
-        __class__._carList[registration_no] = self
+        __class__._carList[self.registration_no] = self
 
     @classmethod
     def readRecord(cls):
@@ -150,11 +160,18 @@ class Car:
                 f.write(f"{car.registration_no}|{car.manufacturer}|{car.model}|{car.manufacture_year}|{car.capacity}|{car.last_service_date.strftime('%Y-%m-%d')}|{car.insurance_policy_number}|{car.insurance_expiry.strftime('%Y-%m-%d')}|{car.road_tax_expiry.strftime('%Y-%m-%d')}|{car.rental_rate}|{car.availability}\n")
 
     @classmethod
-    def getCar(cls,registration_no) -> object|None:
+    def getCar(cls,registration_no:str) -> object|None:
         if registration_no in cls._carList:
             return cls._carList[registration_no]
         else:
             return None
+        
+    @classmethod
+    def carInRecord(cls,registration_no:str) -> bool:
+        if registration_no in cls._carList:
+            return True
+        else:
+            return False
 
     def __repr__(self) -> str:
         return f"{self.registration_no:^20}|{self.manufacturer:^20}|{self.model:^20}|{self.manufacture_year:^20}|{self.capacity:^20}|{self.last_service_date.strftime('%Y-%m-%d'):^20}|{self.insurance_policy_number:^20}|{self.insurance_expiry.strftime('%Y-%m-%d'):^20}|{self.road_tax_expiry.strftime('%Y-%m-%d'):^20}|{self.rental_rate:^20}|{self.availability:^20}"

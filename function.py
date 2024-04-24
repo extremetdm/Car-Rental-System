@@ -28,7 +28,7 @@ def login() -> Staff:
     while user == None:
 
         # Input StaffID and get the corresponding info
-        user = Staff.getStaff(getValidInput('StaffID: ',(lambda x:Staff.getStaff(x) != None,'\nInvalid StaffID!\n')))
+        user = Staff.getStaff(getValidInput('StaffID: ',(lambda x:Staff.staffInRecord(x),'\nInvalid StaffID!\n')))
 
         # Block access to accounts with too many login attempts
         if user.attempts == 3:
@@ -261,40 +261,6 @@ def monthlyRevenue():
         sum += total_revenue_by_car[i]
         
     print(f'\nMonthly revenue -> RM{sum}\n')
-
 """Staff function end"""
 
 """for Customer"""
-def registerCustomer():
-    name = getValidInput('\nEnter customer name: ',
-                         (lambda x:x != '','\nCustomer name cannot be empty!') )
-    localness = getValidInput('\nIs customer a local? (Y/N): ',
-                              (lambda x:x.upper() in ('Y','N'),'Invalid input!') ).upper()
-    if localness == 'Y':
-        # if im bothered enough imma do further validation with date, state code and input with - but for now this is good enough 
-        nric = getValidInput('\nEnter customer NRIC (without -): ',
-                             (lambda x:x.isnumeric() & (len(x) == 12),'\nInvalid NRIC!') )
-        passport = None
-    else:
-        nric = None
-        passport = getValidInput('\nEnter customer passport number: ',
-                                 (lambda x:x != '','\nPassport number cannot be empty!'),
-                                 (lambda x:' ' in x,'\nPassport number cannot contain space!') )
-    licenseNo = getValidInput('\nEnter customer driving license card number: ',
-                              (lambda x:x != '','\nDriving license card number cannot be empty!'),
-                              (lambda x:' ' in x,'\nDriving license card number cannot contain space!') )
-    address = getValidInput('\nEnter customer address: ',
-                            (lambda x:x != '','\nAddress cannot be empty!') )
-    # if im bothered enough may actually validate phone number but for now this is fine
-    phone = getValidInput('\nEnter customer phone number: ',
-                          (lambda x:x != '','\nPhone number cannot be empty!'),
-                          (lambda x:' ' in x,'\nPhone number cannot contain space!') )
-    registrationDate = datetime.today()
-    Customer(name,nric,passport,licenseNo,address,phone,registrationDate)
-    print('\nCustomer has been successfully registered.\n')
-
-def viewCustomer():
-    print()
-    for customer in Customer.getCustomerList():
-        print(customer)
-    print()
