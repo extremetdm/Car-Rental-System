@@ -142,7 +142,6 @@ def updateExitingStaff(user:Staff):
         else:
             print(f"\nNo staff found with <{staff_id}>.\n")
 
-
 def deleteStaff_Record(user:Staff):
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|"
     
@@ -198,27 +197,29 @@ def Update_rentingRate():
     
     print('\n')
 
-
-
-
 def monthlyRevenue():
     os.system('cls')
     total_revenue_by_car = {}
+    total_rentalPeriod = {}
 
     for rental in Rental.rentalList:
         revenue = rental.rental_fee
-        
+        rentalPeriod = rental.rental_period
+        int(revenue) if revenue.is_integer() else revenue
         if rental.car in total_revenue_by_car:
             total_revenue_by_car[rental.car] += revenue
+            total_rentalPeriod[rental.car] += rentalPeriod
         else:
             total_revenue_by_car[rental.car] = revenue
+            total_rentalPeriod[rental.car] = rentalPeriod
+        total_revenue_by_car[rental.car] = int(total_revenue_by_car[rental.car]) if total_revenue_by_car[rental.car].is_integer() else total_revenue_by_car[rental.car]
 
-    header = f"|{'Car Plate':^20}|{'Manufacturer':^20}|{'Model':^20}|{'Total Revenue(RM)':^25}|"
+    header = f"|{'Car Plate':^20}|{'Manufacturer':^20}|{'Model':^20}|{'Total rental period(day)':^26}|{'Total Revenue(RM)':^25}|"
     print()
-    print('Monthly Revenue'.center(len(header)),'\n','-' * (len(header) - 2))
+    print('Monthly Revenue Report'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header,'\n','-' * (len(header) - 2))
     for car, total_revenue in total_revenue_by_car.items():
-        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{total_revenue:^25}|')
+        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{total_rentalPeriod[car]:^26}|{total_revenue:^25}|')
         
     sum = 0
     for i in total_revenue_by_car:
@@ -226,7 +227,7 @@ def monthlyRevenue():
         
     print(f'\nMonthly revenue -> RM{sum}\n')
 
-
+"""Staff function end"""
 
 """for Customer"""
 def registerCustomer():
