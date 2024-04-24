@@ -164,7 +164,7 @@ class Rental:
         self.return_date = return_date
 
         self.rental_period = (return_date - rental_date).days
-        self.rental_fee = car.rental_rate * self.rental_period
+        self.rental_fee = float(car.rental_rate) * int(self.rental_period)
 
         __class__.rentalList.append(self)
 

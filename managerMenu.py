@@ -21,16 +21,16 @@ def managerMenu(user:Staff):
         registerStaff(user)
 
       case '3':
-        updateStaff_access(user)
+        updateExitingStaff(user)
 
       case '4':
         deleteStaff_Record(user)
 
       case '5':
-        pass
+        Update_rentingRate()
 
       case '6':
-        pass
+        monthlyRevenue()
 
       case '7':
         return
