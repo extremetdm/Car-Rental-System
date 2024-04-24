@@ -4,9 +4,18 @@ import os
 # for all roles
 ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
 
-def getValidInput(inputMsg:str,validCondition,errorMsg:str = 'Invalid Input!'):
-    while not validCondition(enteredinput := input(inputMsg)):
-        print(errorMsg)
+def getValidInput(inputMsg:str,*validConditionAndErrorMsg:tuple[any,str]) -> str:
+    
+    invalidInput = True
+    while invalidInput:
+        invalidInput = False
+        enteredinput = input(inputMsg).strip()
+        for validCondition, errorMsg in validConditionAndErrorMsg:
+            if not validCondition(enteredinput):
+                invalidInput = True
+                print(errorMsg)
+                break
+            
     return enteredinput
 
 # Login menu
@@ -19,7 +28,7 @@ def login() -> Staff:
     while user == None:
 
         # Input StaffID and get the corresponding info
-        user = Staff.getStaff(getValidInput('StaffID: ',lambda x:Staff.getStaff(x) != None,'\nInvalid StaffID!\n'))
+        user = Staff.getStaff(getValidInput('StaffID: ',(lambda x:Staff.getStaff(x) != None,'\nInvalid StaffID!\n')))
 
         # Block access to accounts with too many login attempts
         if user.attempts == 3:
@@ -50,7 +59,7 @@ def updateProfile(user:Staff):
     print(f'Current Staff Record'.center((max(len(s) for s in updateMsg)) + 2, '-'),'\n\b','\n'.join(updateMsg))
     while True:
         print('\nWhich data would you like to edit?', '\n-> '.join(['\n-> ID', 'Name', 'Password','Exit']))
-        dataChange = getValidInput('\nEnter your choice: ',lambda x:((x != '')),'\nchoice cannot be empty!')
+        dataChange = getValidInput('\nEnter your choice: ',(lambda x:((x != '')),'\nchoice cannot be empty!'))
         dataChange = dataChange.replace(' ','')
         if dataChange.capitalize() in ('Id','Name','Password','Exit'):
             break
@@ -59,13 +68,13 @@ def updateProfile(user:Staff):
             
     match dataChange.capitalize():
         case 'Id':
-            user.id = getValidInput('\nEnter your new Staff ID: ',lambda x:((x != '')),'\nStaff ID cannot be empty!')
+            user.id = getValidInput('\nEnter your new Staff ID: ',(lambda x:((x != '')),'\nStaff ID cannot be empty!'))
         case 'Name':
-            user.name = getValidInput('\nEnter your new Name: ',lambda x:((x != '')),'\nStaff name cannot be empty!')
+            user.name = getValidInput('\nEnter your new Name: ',(lambda x:((x != '')),'\nStaff name cannot be empty!'))
         case 'Password':
             while True:
-                password1 = getValidInput('\nEnter your new Password: ',lambda x:((x != '')),'\nPassword cannot be empty!')
-                password2 = getValidInput('\nPlease comfirm your Password: ',lambda x:((x != '')),'\nPassword Incorrect!')
+                password1 = getValidInput('\nEnter your new Password: ',(lambda x:((x != '')),'\nPassword cannot be empty!'))
+                password2 = getValidInput('\nPlease comfirm your Password: ',(lambda x:((x != '')),'\nPassword Incorrect!'))
                 if password1 == password2:
                     break
             user.password = password1
@@ -78,17 +87,17 @@ def updateProfile(user:Staff):
 
 def registerStaff(user:Staff):
     while True:
-        id = getValidInput('\nEnter new Staff id: ',lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!')
+        id = getValidInput('\nEnter new Staff id: ',(lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!'))
         if id in ROLES:
             print('Staff ID already exist')
             continue
         else:
             break
-    name = getValidInput('\nEnter Staff name: ',lambda x:x != '','\nStaff name cannot be empty!')
+    name = getValidInput('\nEnter Staff name: ',(lambda x:x != '','\nStaff name cannot be empty!'))
     while True:
         print('\n','Role'.center((max(len(s) for s in ROLES)) + 2, '-'))
         print('\n'.join(f'{i+1}) {ROLES[i]}' for i in range(4)))
-        role = getValidInput('\nEnter Staff role (\'1\',\'2\',\'3\',\'4\'): ',lambda x:x != '','\nStaff role cannot be empty or not in role!')
+        role = getValidInput('\nEnter Staff role (\'1\',\'2\',\'3\',\'4\'): ',(lambda x:x != '','\nStaff role cannot be empty or not in role!'))
         if role in ('1','2','3','4'):
             break
         else:
@@ -119,38 +128,47 @@ def updateExitingStaff(user:Staff):
     print(header, '\n', '-' * len(header))
     
     for staff in Staff.getStaffList():
-        accountStatus = 'Block' if staff.attempts == 3 else 'Active'
-        print(f"|{staff.name:^20}|{staff.id:^20}|{staff.role:^30}|{accountStatus:^20}|")
+        if staff != user:
+            accountStatus = 'Block' if staff.attempts == 3 else 'Active'
+            print(f"|{staff.name:^20}|{staff.id:^20}|{staff.role:^30}|{accountStatus:^20}|")
 
-    check = getValidInput('\nDo you want to block or unblock an account? (Y/N): ',lambda x:x.upper() in ('Y','N'))
-    if check.upper() == 'Y':
-        staff_id = getValidInput('\nEnter Staff ID: ',lambda x:x != '','\nStaff ID cannot be empty!')
-        staffDetail = Staff.getStaff(staff_id)
-        if staffDetail:
-            action = getValidInput('\nWhich action whould you like to take? (block/unblock): ', lambda x:x.lower() in ('block','unblock'))
-            if action.lower() == 'block':
-                staffDetail.attempts = 3
-                print(f"\nStaff account with ID <{staff_id}> has been blocked.\n")
+    #check = getValidInput('\nDo you want to block or unblock an account? (Y/N): ',(lambda x:x.upper() in ('Y','N'), 'Invalid input!'))
+    action = getValidInput('\nWhich action you would like to use?\n\n->\tblock\n->\tunblock\n->\trole\n', (lambda x:x in ('block','unblock','role'), 'Invalid input!'))
+
+    if action.lower() in ('block','unblock'):
+        while True:
+            staff_id = getValidInput('\nEnter Staff ID: ',(lambda x:x != '','\nStaff ID cannot be empty!'))
+            if staff_id == user:
+                continue
             else:
-                staffDetail.attempts = 0
-                print(f"\nStaff account with ID <{staff_id}> has been unblocked.\n")
-        else:
-            print(f"\nNo staff found with <{staff_id}>.\n")
+                staffDetail = Staff.getStaff(staff_id)
+                if staffDetail:
+                    if action.lower() == 'block':
+                        staffDetail.attempts = 3
+                        print(f"\nStaff account with ID <{staff_id}> has been blocked.\n")
+                    else:
+                        staffDetail.attempts = 0
+                        print(f"\nStaff account with ID <{staff_id}> has been unblocked.\n")
+                else:
+                    print(f"\nNo staff found with <{staff_id}>.\n")
+                break
+    elif action.lower() == 'role':
+        pass
 
 def deleteStaff_Record(user:Staff):
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|"
     
     os.system('cls')
     print('Staff Record'.center(len(header)),'\n','-' * (len(header) - 2))
-    print(header,'\n','-' * (len(header) - 2))
+    print(header+'\n','-' * (len(header) - 2))
     for staff in Staff.getStaffList():
         print(f"|{staff.name:^20}|{staff.id:^20}|{staff.role:^30}|")
     while True:
         #print('\n'.join((user._staffList[i][0]) for i in range(len(user._staffList))))
-        id = getValidInput('\nEnter Staff Id to delete record: ',lambda x:x != '','\nStaff Id cannot be empty!')
+        id = getValidInput('\nEnter Staff Id to delete record: ',(lambda x:x != '','\nStaff Id cannot be empty!'))
         if id in user._staffList:
             print(f'Staff id with <{id}> found')
-            run = getValidInput('\nDo you want to delete this record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
+            run = getValidInput('\nDo you want to delete this record? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!'))
             if run.upper() == 'Y':
                 del user._staffList[id]
                 print(f"\nStaff ID <{id}> has been deleted.")
@@ -158,7 +176,7 @@ def deleteStaff_Record(user:Staff):
                 print(f'Deletion process for Staff id <{id}> has cancel')
         else:
             print(f"\nNo staff found with ID <{id}>.")
-        run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',lambda x:x.upper() in ('Y','N'))
+        run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!'))
         if run.upper() == 'N':
             break
     print('\n')
@@ -173,17 +191,20 @@ def Update_rentingRate():
     for car in Car.getCarList():
         print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.rental_rate:^20}|')
     
-    if getValidInput('\nDo you want to change the rental rate? (Y/N): ',lambda x:x.upper() in ('Y','N')).upper() == 'Y':
-        updateCheck = getValidInput('\nHow would you like to be change? (capacity/model): ', lambda x:(x != '') and (x.lower() in ('capacity','model')))
+    if getValidInput('\nDo you want to change the rental rate? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!')).upper() == 'Y':
+        updateCheck = getValidInput('\nHow would you like to be change? (capacity/model): ', (lambda x:(x != '') and (x.lower() in ('capacity','model')),'Invalid input!'))
         if updateCheck.lower() == 'capacity':
             while True:
-                updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',lambda x:x != ''))
+
+                # non integer input will cause error 
+                updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',(lambda x:x != ''),'Invalid input!'))
+
                 if any(car.capacity == updateCapacity for car in Car.getCarList()):
                     break
                 else:
                     print('\nCapacity not found.')
                     
-            updateRate = float(getValidInput('\nThe latest rental rate: RM', lambda x:x!= '','\nRental rate cannot be empty'))
+            updateRate = float(getValidInput('\nThe latest rental rate: RM', (lambda x:x!= '','\nRental rate cannot be empty')))
                     
             for car in Car.getCarList():
                 if car.capacity == updateCapacity:
@@ -191,13 +212,13 @@ def Update_rentingRate():
         
         elif updateCheck.lower() == 'model':
             while True:
-                updateModel = getValidInput('\nWhich model rental rate you would like to change? ',lambda x:(x != ''),'\nType of model cannot be empty')
+                updateModel = getValidInput('\nWhich model rental rate you would like to change? ',(lambda x:(x != ''),'\nType of model cannot be empty'))
                 if any(car.model == updateModel for car in Car.getCarList()):
                     break
                 else:
                     print('\nModel not found.')
                     
-            updateRate = float(getValidInput('\nThe latest rental rate: RM', lambda x:x!= '','\nRental rate cannot be empty'))
+            updateRate = float(getValidInput('\nThe latest rental rate: RM', (lambda x:x!= '','\nRental rate cannot be empty')))
             
             for car in Car.getCarList():
                 if car.model == updateModel:
@@ -245,19 +266,29 @@ def monthlyRevenue():
 
 """for Customer"""
 def registerCustomer():
-    name = getValidInput('\nEnter customer name: ',lambda x:x != '','\nCustomer name cannot be empty!')
-    localness = getValidInput('\nIs customer a local? (Y/N): ',lambda x:x.upper() in ('Y','N'))
+    name = getValidInput('\nEnter customer name: ',
+                         (lambda x:x != '','\nCustomer name cannot be empty!') )
+    localness = getValidInput('\nIs customer a local? (Y/N): ',
+                              (lambda x:x.upper() in ('Y','N'),'Invalid input!') ).upper()
     if localness == 'Y':
         # if im bothered enough imma do further validation with date, state code and input with - but for now this is good enough 
-        nric = getValidInput('\nEnter customer NRIC (without -): ',lambda x:x.isnumeric() & (len(x) == 12),'\nInvalid NRIC!')
+        nric = getValidInput('\nEnter customer NRIC (without -): ',
+                             (lambda x:x.isnumeric() & (len(x) == 12),'\nInvalid NRIC!') )
         passport = None
     else:
         nric = None
-        passport = getValidInput('\nEnter customer passport number: ',lambda x:x != '','\nPassport number cannot be empty!')
-    licenseNo = getValidInput('\nEnter customer driving license card number: ',lambda x:x != '','\nDriving license card number cannot be empty!')
-    address = getValidInput('\nEnter customer address: ',lambda x:x != '','\nAddress cannot be empty!')
+        passport = getValidInput('\nEnter customer passport number: ',
+                                 (lambda x:x != '','\nPassport number cannot be empty!'),
+                                 (lambda x:' ' in x,'\nPassport number cannot contain space!') )
+    licenseNo = getValidInput('\nEnter customer driving license card number: ',
+                              (lambda x:x != '','\nDriving license card number cannot be empty!'),
+                              (lambda x:' ' in x,'\nDriving license card number cannot contain space!') )
+    address = getValidInput('\nEnter customer address: ',
+                            (lambda x:x != '','\nAddress cannot be empty!') )
     # if im bothered enough may actually validate phone number but for now this is fine
-    phone = getValidInput('\nEnter customer phone number: ',lambda x:x != '','\nPhone number cannot be empty!')
+    phone = getValidInput('\nEnter customer phone number: ',
+                          (lambda x:x != '','\nPhone number cannot be empty!'),
+                          (lambda x:' ' in x,'\nPhone number cannot contain space!') )
     registrationDate = datetime.today()
     Customer(name,nric,passport,licenseNo,address,phone,registrationDate)
     print('\nCustomer has been successfully registered.\n')

@@ -11,7 +11,7 @@ def customer2Menu(user:Staff):
     print('6.\tDelete rental record')
     print('7.\tExit program')
     
-    operation = getValidInput('\nEnter operation number: ',lambda x:x in '1','2','3','4','5','6','7','\nInvalid operation number!')
+    operation = getValidInput('\nEnter operation number: ',(lambda x:x in '1','2','3','4','5','6','7','\nInvalid operation number!'))
 
     match operation:
       case '1':

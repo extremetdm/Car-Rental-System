@@ -10,7 +10,7 @@ def customer1Menu(user:Staff):
     print('5.\tDelete inactive customer')
     print('6.\tExit program')
 
-    operation = getValidInput('\nEnter operation number: ',lambda x:x in ('1','2','3','4','5','6'),'\nInvalid operation number!')
+    operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6'),'\nInvalid operation number!'))
 
     match operation:
       case '1':
