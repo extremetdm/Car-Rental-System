@@ -127,14 +127,14 @@ class Customer:
         # Making sure new customer is registered under the first free CustomerID
         if (numericId := int(self.id[1:])) < __class__._newCustomerID:
             __class__._newCustomerID = numericId
-            
+
         del __class__._customerList[self.id]
 
 class Car:
 
     _carList:dict[str:object] = {}
 
-    def __init__(self, registration_no:str, manufacturer:str, model:str, manufacture_year:int, capacity:int, last_service_date:datetime, insurance_policy_number:str, insurance_expiry:datetime, road_tax_expiry:datetime, rental_rate:int = 250, availability:str = 'Available'):
+    def __init__(self, registration_no:str, manufacturer:str, model:str, manufacture_year:int, capacity:int, last_service_date:datetime, insurance_policy_number:str, insurance_expiry:datetime, road_tax_expiry:datetime, rental_rate:float = 250, availability:str = 'Available'):
         self.registration_no = registration_no
         self.manufacturer = manufacturer
         self.model = model
@@ -160,14 +160,14 @@ class Car:
                 if carinfo != '':
                     carinfo = carinfo.split('|')
                     carinfo[3:6] = int(carinfo[3]), int(carinfo[4]), datetime.strptime(carinfo[5],'%Y-%m-%d')
-                    carinfo[7:9] = datetime.strptime(carinfo[7],'%Y-%m-%d'), datetime.strptime(carinfo[8],'%Y-%m-%d')
+                    carinfo[7:10] = datetime.strptime(carinfo[7],'%Y-%m-%d'), datetime.strptime(carinfo[8],'%Y-%m-%d'), float(carinfo[9])
                     cls(*carinfo)
 
     @classmethod
     def updateRecord(cls):
         with open('CarRecord.txt','w') as f:
             for car in cls._carList.values():
-                f.write(f"{car.registration_no}|{car.manufacturer}|{car.model}|{car.manufacture_year}|{car.capacity}|{car.last_service_date.strftime('%Y-%m-%d')}|{car.insurance_policy_number}|{car.insurance_expiry.strftime('%Y-%m-%d')}|{car.road_tax_expiry.strftime('%Y-%m-%d')}|{car.rental_rate}|{car.availability}\n")
+                f.write(f"{car.registration_no}|{car.manufacturer}|{car.model}|{car.manufacture_year}|{car.capacity}|{car.last_service_date.strftime('%Y-%m-%d')}|{car.insurance_policy_number}|{car.insurance_expiry.strftime('%Y-%m-%d')}|{car.road_tax_expiry.strftime('%Y-%m-%d')}|{car.rental_rate:.2f}|{car.availability}\n")
 
     @classmethod
     def getCar(cls,registration_no:str) -> object|None:
@@ -184,7 +184,7 @@ class Car:
             return False
 
     def __repr__(self) -> str:
-        return f"{self.registration_no:^20}|{self.manufacturer:^20}|{self.model:^20}|{self.manufacture_year:^20}|{self.capacity:^20}|{self.last_service_date.strftime('%Y-%m-%d'):^20}|{self.insurance_policy_number:^20}|{self.insurance_expiry.strftime('%Y-%m-%d'):^20}|{self.road_tax_expiry.strftime('%Y-%m-%d'):^20}|{self.rental_rate:^20}|{self.availability:^20}"
+        return f"{self.registration_no:^20}|{self.manufacturer:^20}|{self.model:^20}|{self.manufacture_year:^20}|{self.capacity:^20}|{self.last_service_date.strftime('%Y-%m-%d'):^20}|{self.insurance_policy_number:^20}|{self.insurance_expiry.strftime('%Y-%m-%d'):^20}|{self.road_tax_expiry.strftime('%Y-%m-%d'):^20}|{self.rental_rate:^20.2f}|{self.availability:^20}"
 
     @classmethod
     def getCarList(cls) -> list[object]:
@@ -197,14 +197,18 @@ class Rental:
     
     rentalList:list[object] = []
     
-    def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime):
+    def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime,rental_fee:float|None = None):
         self.car = car
         self.customer = customer
         self.rental_date = rental_date
         self.return_date = return_date
 
         self.rental_period = (return_date - rental_date).days
-        self.rental_fee = car.rental_rate * self.rental_period
+
+        if rental_fee == None:
+            self.rental_fee = car.rental_rate * self.rental_period
+        else:
+            self.rental_fee = rental_fee
 
         __class__.rentalList.append(self)
 
@@ -215,17 +219,21 @@ class Rental:
                 rentalinfo = rentalinfo.rstrip()
                 if rentalinfo != '':
                     rentalinfo = rentalinfo.split('|')
-                    rentalinfo = Car.getCar(rentalinfo[0]), Customer.getCustomer(rentalinfo[1]), datetime.strptime(rentalinfo[2],'%Y-%m-%d'), datetime.strptime(rentalinfo[3],'%Y-%m-%d')
+                    rentalinfo = (Car.getCar(rentalinfo[0]), 
+                                  Customer.getCustomer(rentalinfo[1]), 
+                                  datetime.strptime(rentalinfo[2],'%Y-%m-%d'), 
+                                  datetime.strptime(rentalinfo[3],'%Y-%m-%d'),
+                                  float(rentalinfo[4]))
                     cls(*rentalinfo)
 
     @classmethod
     def updateRecord(cls):
         with open('RentalRecord.txt','w') as f:
             for rental in cls.rentalList:
-                f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}\n")
+                f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}|{rental.rental_fee:.2f}\n")
 
     def __repr__(self) -> str:
-        return f"{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}"
+        return f"{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}|{self.rental_fee:^20.2f}"
     
     @classmethod
     def customerInRecord(cls,customer:Customer) -> bool:
@@ -243,3 +251,16 @@ class Rental:
         
     def delete(self):
         __class__.rentalList.remove(self)
+
+# For debugging purposes only
+if __name__ == '__main__':
+  
+    Staff.readRecord()
+    Customer.readRecord()
+    Car.readRecord()
+    Rental.readRecord()
+
+    Staff.updateRecord()
+    Customer.updateRecord()
+    Car.updateRecord()
+    Rental.updateRecord()
