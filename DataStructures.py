@@ -7,10 +7,7 @@ class Staff:
     def __init__(self, id:str, name:str, role:str, password:str, registration_date:datetime,attempts:int=0):
         self.id = id
         self.name = name
-        if role in ['Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff']:
-            self.role = role
-        else:
-            self.role = 'N/A'
+        self.role = role # 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
         self.password = password
         self.registration_date = registration_date
 
@@ -22,7 +19,7 @@ class Staff:
     def readRecord(cls):
         with open('StaffRecord.txt','r') as f:
             for staffinfo in f.readlines():
-                staffinfo = staffinfo.rstrip()
+                staffinfo = staffinfo.strip()
                 if staffinfo != '':
                     staffinfo = staffinfo.split('|')
                     staffinfo[-2:] = datetime.strptime(staffinfo[-2],'%Y-%m-%d'), int(staffinfo[-1]) 
@@ -90,7 +87,7 @@ class Customer:
     def readRecord(cls):
         with open('CustomerRecord.txt','r') as f:
             for customerinfo in f.readlines():
-                customerinfo = customerinfo.rstrip()
+                customerinfo = customerinfo.strip()
                 if customerinfo != '':
                     customerinfo = customerinfo.split('|')
                     customerinfo[-2] = datetime.strptime(customerinfo[-2],'%Y-%m-%d')
@@ -133,18 +130,21 @@ class Customer:
 class Car:
 
     _carList:dict[str:object] = {}
+    _carRentalRate:dict[int:float] = {}
 
-    def __init__(self, registration_no:str, manufacturer:str, model:str, manufacture_year:int, capacity:int, last_service_date:datetime, insurance_policy_number:str, insurance_expiry:datetime, road_tax_expiry:datetime, rental_rate:float = 250, availability:str = 'Available'):
+    def __init__(self, registration_no:str, manufacturer:str, model:str, manufacture_year:int, capacity:int, last_service_date:datetime, insurance_policy_number:str, insurance_expiry:datetime, road_tax_expiry:datetime, availability:str = 'Available'):
         self.registration_no = registration_no
         self.manufacturer = manufacturer
         self.model = model
         self.manufacture_year = manufacture_year
-        self.capacity = capacity
+        self.capacity = capacity # 2, 4, 5, 6, 7, 8, 9
         self.last_service_date = last_service_date
         self.insurance_policy_number = insurance_policy_number
         self.insurance_expiry = insurance_expiry
         self.road_tax_expiry = road_tax_expiry
-        self.rental_rate = rental_rate
+
+        self.rental_rate = __class__._carRentalRate[capacity]
+
         if availability in ['Available','Reserved','Rented','Under Service','Disposed']:
             self.availability = availability
         else:
@@ -155,19 +155,22 @@ class Car:
     @classmethod
     def readRecord(cls):
         with open('CarRecord.txt','r') as f:
-            for carinfo in f.readlines():
-                carinfo = carinfo.rstrip()
+            record = f.readlines()
+            __class__._carRentalRate = {capacity:float(rentalRate) for capacity, rentalRate in zip((2, 4, 5, 6, 7, 8, 9),record[0].strip().split('|'))}
+            for carinfo in record[1:]:
+                carinfo = carinfo.strip()
                 if carinfo != '':
                     carinfo = carinfo.split('|')
                     carinfo[3:6] = int(carinfo[3]), int(carinfo[4]), datetime.strptime(carinfo[5],'%Y-%m-%d')
-                    carinfo[7:10] = datetime.strptime(carinfo[7],'%Y-%m-%d'), datetime.strptime(carinfo[8],'%Y-%m-%d'), float(carinfo[9])
+                    carinfo[7:9] = datetime.strptime(carinfo[7],'%Y-%m-%d'), datetime.strptime(carinfo[8],'%Y-%m-%d')
                     cls(*carinfo)
 
     @classmethod
     def updateRecord(cls):
         with open('CarRecord.txt','w') as f:
+            f.write('|'.join(map(lambda x:f'{x:.2f}',cls._carRentalRate.values()))+'\n')
             for car in cls._carList.values():
-                f.write(f"{car.registration_no}|{car.manufacturer}|{car.model}|{car.manufacture_year}|{car.capacity}|{car.last_service_date.strftime('%Y-%m-%d')}|{car.insurance_policy_number}|{car.insurance_expiry.strftime('%Y-%m-%d')}|{car.road_tax_expiry.strftime('%Y-%m-%d')}|{car.rental_rate:.2f}|{car.availability}\n")
+                f.write(f"{car.registration_no}|{car.manufacturer}|{car.model}|{car.manufacture_year}|{car.capacity}|{car.last_service_date.strftime('%Y-%m-%d')}|{car.insurance_policy_number}|{car.insurance_expiry.strftime('%Y-%m-%d')}|{car.road_tax_expiry.strftime('%Y-%m-%d')}|{car.availability}\n")
 
     @classmethod
     def getCar(cls,registration_no:str) -> object|None:
@@ -193,6 +196,10 @@ class Car:
     def delete(self):
         del __class__._carList[self.registration_no]
 
+    @classmethod
+    def updateRentalRate(cls,capacity:int,rentalRate:float):
+        cls._carRentalRate[capacity] = rentalRate
+
 class Rental:
     
     rentalList:list[object] = []
@@ -216,7 +223,7 @@ class Rental:
     def readRecord(cls):
         with open('RentalRecord.txt','r') as  f:
             for rentalinfo in f.readlines():
-                rentalinfo = rentalinfo.rstrip()
+                rentalinfo = rentalinfo.strip()
                 if rentalinfo != '':
                     rentalinfo = rentalinfo.split('|')
                     rentalinfo = (Car.getCar(rentalinfo[0]), 
