@@ -2,6 +2,8 @@ from DataStructures import *
 from function import *
 
 def registerCustomer():
+
+  # Gathering all neccessary customer infos
   name = getValidInput('\nEnter customer name: ',
                        (lambda x:x != '','\nCustomer name cannot be empty!') )
   localness = getValidInput('\nIs customer a local? (Y/N): ',
@@ -23,7 +25,10 @@ def registerCustomer():
   phone = getValidInput('\nEnter customer phone number: ',
                         (lambda x:x.isnumeric(),'\nInvalid phone number!') )
   registrationDate = datetime.today()
+
+  # Add customer to the record
   Customer(name,nric,passportNumber,licenseNo,address,phone,registrationDate)
+  Customer.updateRecord()
   print('\nCustomer has been successfully registered.\n')
 
 def viewCustomer(constraint = lambda x:True):
@@ -34,7 +39,11 @@ def viewCustomer(constraint = lambda x:True):
   print()
 
 def updateCustomer():
-  customer:Customer = Customer.getCustomer(getValidInput('\nEnter Customer ID: ',(lambda x:Customer.customerInRecord(x),'\nInvalid Customer ID!')))
+
+  # Querying customer from record
+  customer:Customer = Customer.getCustomer(getValidInput('\nEnter Customer ID: ',(Customer.customerInRecord,'\nInvalid Customer ID!')))
+  
+  # Determining which info needs updating
   print(f'\nWhich info of {customer.name} would you like to change?\n')
   print('1.\tPhone number')
   print('2.\tAddress')
@@ -45,6 +54,8 @@ def updateCustomer():
   else:
     validInputList = ('1','2','3')
   toUpdate = int(getValidInput('\n-> ',(lambda x:x in validInputList,'\nInvalid input!')))
+
+  # Accepting new info to update existing info
   match toUpdate:
     case '1':
       updatedDetail = 'phone number'
@@ -59,18 +70,28 @@ def updateCustomer():
       customer.license_no = getValidInput('\nEnter new customer driving license card number: ',
                                           (lambda x:x.isalnum(),'\nInvalid driving license card number!') )
     case '4':
-      updatedDetail = 'ppassport number'
+      updatedDetail = 'passport number'
       customer.passport_number = getValidInput('\nEnter new customer passport number: ',
                                                (lambda x:x.isalnum(),'\nInvalid passport number!') )
+  
+  # Update customer info in the recoerd
+  Customer.updateRecord()
   print(f"\n{customer.name}'s {updatedDetail} has been changed successfully.\n")
 
 def deleteCustomer():
+
+  # Showing list of inactive customers
   print('\nList of inactive customers:')
   viewCustomer(lambda customer:not Rental.customerInRecord(customer))
+
+  # Determining which customer info to be deleted
   customer:Customer = Customer.getCustomer(getValidInput('Enter Customer ID: ',
-                                                         (lambda customerId:Customer.customerInRecord(customerId),'\nInvalid Customer ID!\n'),
+                                                         (Customer.customerInRecord,'\nInvalid Customer ID!\n'),
                                                          (lambda customerId:not Rental.customerInRecord(Customer.getCustomer(customerId)),'\nCustomer is still active!\n')))
-  del customer
+  
+  # Delete customer info from record
+  customer.delete()
+  Customer.updateRecord()
   print('\nCustomer has been deleted successfully.\n')
 
 def customer1Menu(user:Staff):
@@ -111,8 +132,3 @@ if __name__ == '__main__':
   Rental.readRecord()
 
   customer1Menu(Staff.getStaff('some'))
-
-  Staff.updateRecord()
-  Customer.updateRecord()
-  Car.updateRecord()
-  Rental.updateRecord()

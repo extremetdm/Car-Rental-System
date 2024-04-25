@@ -119,6 +119,11 @@ class Customer:
     @classmethod
     def getCustomerList(cls) -> list[object]:
         return cls._customerList.values()
+    
+    def delete(self):
+        if (numericId := int(self.id[1:])) < __class__._newCustomerID:
+            __class__._newCustomerID = numericId
+        del __class__._customerList[self.id]
 
 class Car:
 
