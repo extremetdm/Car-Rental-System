@@ -26,9 +26,10 @@ def registerCustomer():
   Customer(name,nric,passportNumber,licenseNo,address,phone,registrationDate)
   print('\nCustomer has been successfully registered.\n')
 
-def viewCustomer():
+def viewCustomer(constraint = lambda x:True):
   print()
   for customer in Customer.getCustomerList():
+    if constraint(customer):
       print(customer)
   print()
 
@@ -43,7 +44,7 @@ def updateCustomer():
     print('4.\tPassport number')
   else:
     validInputList = ('1','2','3')
-  toUpdate = getValidInput('\n-> ',(lambda x:x in validInputList,'\nInvalid input!'))
+  toUpdate = int(getValidInput('\n-> ',(lambda x:x in validInputList,'\nInvalid input!')))
   match toUpdate:
     case '1':
       updatedDetail = 'phone number'
@@ -61,7 +62,16 @@ def updateCustomer():
       updatedDetail = 'ppassport number'
       customer.passport_number = getValidInput('\nEnter new customer passport number: ',
                                                (lambda x:x.isalnum(),'\nInvalid passport number!') )
-  print(f"\n{customer.name}'s {updatedDetail} has been changed successfully.")
+  print(f"\n{customer.name}'s {updatedDetail} has been changed successfully.\n")
+
+def deleteCustomer():
+  print('\nList of inactive customers:')
+  viewCustomer(lambda customer:not Rental.customerInRecord(customer))
+  customer:Customer = Customer.getCustomer(getValidInput('Enter Customer ID: ',
+                                                         (lambda customerId:Customer.customerInRecord(customerId),'\nInvalid Customer ID!\n'),
+                                                         (lambda customerId:not Rental.customerInRecord(Customer.getCustomer(customerId)),'\nCustomer is still active!\n')))
+  del customer
+  print('\nCustomer has been deleted successfully.\n')
 
 def customer1Menu(user:Staff):
   while True:
@@ -88,7 +98,7 @@ def customer1Menu(user:Staff):
         updateCustomer()
 
       case '5':
-        pass
+        deleteCustomer()
 
       case '6':
         return

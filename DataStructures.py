@@ -191,7 +191,7 @@ class Rental:
         self.return_date = return_date
 
         self.rental_period = (return_date - rental_date).days
-        self.rental_fee = float(car.rental_rate) * int(self.rental_period)
+        self.rental_fee = car.rental_rate * self.rental_period
 
         __class__.rentalList.append(self)
 
@@ -213,3 +213,17 @@ class Rental:
 
     def __repr__(self) -> str:
         return f"{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}"
+    
+    @classmethod
+    def customerInRecord(cls,customer:Customer) -> bool:
+        if customer in map(lambda x:x.customer,cls.rentalList):
+            return True
+        else:
+            return False
+        
+    @classmethod
+    def carInRecord(cls,car:Car) -> bool:
+        if car in map(lambda x:x.car,cls.rentalList):
+            return True
+        else:
+            return False
