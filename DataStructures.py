@@ -54,6 +54,9 @@ class Staff:
     @classmethod
     def getStaffList(cls) -> list[object]:
         return cls._staffList.values()
+    
+    def delete(self):
+        del __class__._staffList[self.id]
 
 
 class Customer:
@@ -184,6 +187,9 @@ class Car:
     @classmethod
     def getCarList(cls) -> list[object]:
         return cls._carList.values()
+    
+    def delete(self):
+        del __class__._carList[self.registration_no]
 
 class Rental:
     
@@ -232,3 +238,6 @@ class Rental:
             return True
         else:
             return False
+        
+    def delete(self):
+        __class__.rentalList.remove(self)
