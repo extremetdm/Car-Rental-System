@@ -28,7 +28,7 @@ def login() -> Staff:
     while user == None:
 
         # Input StaffID and get the corresponding info
-        user = Staff.getStaff(getValidInput('StaffID: ',(lambda x:Staff.staffInRecord(x),'\nInvalid StaffID!\n')))
+        user = Staff.getStaff(getValidInput('StaffID: ',(Staff.staffInRecord,'\nInvalid StaffID!\n')))
 
         # Block access to accounts with too many login attempts
         if user.attempts == 3:
