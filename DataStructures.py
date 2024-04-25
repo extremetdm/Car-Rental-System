@@ -82,7 +82,7 @@ class Customer:
 
         __class__._customerList[self.id] = self
 
-        # Increments CustomerID until next empty CustomerId
+        # Increments CustomerID until next free CustomerId
         while f'C{__class__._newCustomerID}' in __class__._customerList:
             __class__._newCustomerID += 1
 
@@ -124,8 +124,10 @@ class Customer:
         return cls._customerList.values()
     
     def delete(self):
+        # Making sure new customer is registered under the first free CustomerID
         if (numericId := int(self.id[1:])) < __class__._newCustomerID:
             __class__._newCustomerID = numericId
+            
         del __class__._customerList[self.id]
 
 class Car:
