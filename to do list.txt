@@ -65,13 +65,13 @@ passengers’ car, 300 for 7 passengers’ car and 400 for 9 passengers’ car.
 
 o	Register customer. (Done)
 
-o	Update customer details - phone number, address, license no and passport no (if customer is foreigner).
+o	Update customer details - phone number, address, license no and passport no (if customer is foreigner). (Done)
 
 -	View a list of registered customers. (Done)
 
 -	Update own profile. (Done)
 
-- Delete customers who have no rental transactions recorded.
+- Delete customers who have no rental transactions recorded. (Done)
 
 
 
