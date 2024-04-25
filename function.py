@@ -197,7 +197,7 @@ def Update_rentingRate():
             while True:
 
                 # non integer input will cause error 
-                updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',(lambda x:x != ''),'Invalid input!'))
+                updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',(lambda x:x != '','Invalid input!')))
 
                 if any(car.capacity == updateCapacity for car in Car.getCarList()):
                     break
