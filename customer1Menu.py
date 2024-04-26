@@ -89,10 +89,17 @@ def deleteCustomer():
                                                          (Customer.customerInRecord,'\nInvalid Customer ID!\n'),
                                                          (lambda customerId:not Rental.customerInRecord(Customer.getCustomer(customerId)),'\nCustomer is still active!\n')))
   
+  # Confirm deletion
+  confirmation = getValidInput(f'\nDelete record of {customer.name}? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'\nInvalid Input!')).upper()
+
+  if confirmation == 'Y':
   # Delete customer info from record
-  customer.delete()
-  Customer.updateRecord()
-  print('\nCustomer has been deleted successfully.\n')
+    customer.delete()
+    Customer.updateRecord()
+    print('\nCustomer has been deleted successfully.\n')
+  
+  else:
+    print('\nOperation has been cancelled.\n')
 
 def customer1Menu(user:Staff):
   while True:
