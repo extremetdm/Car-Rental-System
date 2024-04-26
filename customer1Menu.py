@@ -32,11 +32,13 @@ def registerCustomer():
   print('\nCustomer has been successfully registered.\n')
 
 def viewCustomer(constraint = lambda x:True):
-  print()
+  print('\n' + 199*'-')
+  print(f"|{'Customer ID':^20}|{'Name':^20}|{'NRIC':^20}|{'Passport Number':^20}|{'Driving License No.':^20}|{'Address':^50}|{'Phone Number':^20}|{'Registration Date':^20}|")
+  print(199*'-')
   for customer in Customer.getCustomerList():
     if constraint(customer):
       print(customer)
-  print()
+  print(199*'-'+'\n')
 
 def updateCustomer():
 
@@ -49,6 +51,7 @@ def updateCustomer():
   print('2.\tAddress')
   print('3.\tLicense number')
   if customer.nric == 'None':
+    # If customer is foreigner
     validInputList = ('1','2','3','4')
     print('4.\tPassport number')
   else:
@@ -85,7 +88,7 @@ def deleteCustomer():
   viewCustomer(lambda customer:not Rental.customerInRecord(customer))
 
   # Determining which customer info to be deleted
-  customer:Customer = Customer.getCustomer(getValidInput('Enter Customer ID: ',
+  customer:Customer = Customer.getC3stomer(getValidInput('Enter Customer ID: ',
                                                          (Customer.customerInRecord,'\nInvalid Customer ID!\n'),
                                                          (lambda customerId:not Rental.customerInRecord(Customer.getCustomer(customerId)),'\nCustomer is still active!\n')))
   
@@ -103,15 +106,17 @@ def deleteCustomer():
 
 def customer1Menu(user:Staff):
   while True:
+    
+    # Determining operation
     print('1.\tUpdate own profile')
     print('2.\tRegister new customer')
     print('3.\tView registered customers')
     print('4.\tUpdate existing customer')
     print('5.\tDelete inactive customer')
     print('6.\tExit program')
-
     operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6'),'\nInvalid operation number!'))
 
+    # Executing operation
     match operation:
       case '1':
         updateProfile(user)
