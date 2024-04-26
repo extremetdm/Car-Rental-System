@@ -32,7 +32,7 @@ o	(you may add other relevant information)
 •	Rental Availability, for example, either, available, reserved, rented, under service or disposed.
 - “Available” when a new car is registered
 
-- Rental record (Done)
+- Rental record (Done, possibly need a primary key)
 o	Car Registration Number, example, KV1234E (Car must be registered to the system before it can be rented.)
 o	Customer ID, for example, C100001 (Customer must register in the system before a car can be rented to the customer.)
 o	Car Rental Date, for example, 1 February 2024 
