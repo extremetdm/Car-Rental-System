@@ -10,7 +10,7 @@ def customer2Menu(user:Staff):
     print('3.\tRecord new rental request')
     print('4.\tGenerate bill')
     print('5.\tView rental transactions')
-    print('6.\tDelete rental record')
+    print('6.\tCancel and delete rental request')
     print('7.\tExit program')
     
     operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6','7'),'\nInvalid operation number!'))

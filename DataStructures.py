@@ -212,9 +212,21 @@ class Car:
 
 class Rental:
     
-    rentalList:list[object] = []
-    
-    def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime,rental_fee:float|None = None):
+    _rentalList:dict[str:object] = {}
+
+    # Auto incrementing TransactionID
+    _newTransactionID = 1
+
+    def __init__(self, car:Car, customer:Customer, rental_date:datetime, return_date:datetime, 
+                 transactionID:str|None = None, status:str = 'Pending',
+                 rental_fee:float|None = None
+                 ):
+        
+        if transactionID == None:
+            self.transactionID = f'RT{__class__._newTransactionID:0>6}'
+        else:
+            self.transactionID = transactionID
+        
         self.car = car
         self.customer = customer
         self.rental_date = rental_date
@@ -227,7 +239,13 @@ class Rental:
         else:
             self.rental_fee = rental_fee
 
-        __class__.rentalList.append(self)
+        self.status = status
+
+        __class__._rentalList[self.transactionID] = self
+
+        # Increments TransactionID until next free TransactionID
+        while f'RT{__class__._newTransactionID:0>6}' in __class__._rentalList:
+            __class__._newTransactionID += 1
 
     @classmethod
     def readRecord(cls):
@@ -236,38 +254,50 @@ class Rental:
                 rentalinfo = rentalinfo.strip()
                 if rentalinfo != '':
                     rentalinfo = rentalinfo.split('|')
-                    rentalinfo = (Car.getCar(rentalinfo[0]), 
-                                  Customer.getCustomer(rentalinfo[1]), 
-                                  datetime.strptime(rentalinfo[2],'%Y-%m-%d'), 
-                                  datetime.strptime(rentalinfo[3],'%Y-%m-%d'),
-                                  float(rentalinfo[4]))
+                    rentalinfo[:4] = (Car.getCar(rentalinfo[0]), 
+                                      Customer.getCustomer(rentalinfo[1]), 
+                                      datetime.strptime(rentalinfo[2],'%Y-%m-%d'), 
+                                      datetime.strptime(rentalinfo[3],'%Y-%m-%d') )
+                    rentalinfo[6] = None if rentalinfo[6] == 'None' else float(rentalinfo[6])
                     cls(*rentalinfo)
 
     @classmethod
     def updateRecord(cls):
         with open('RentalRecord.txt','w') as f:
-            for rental in cls.rentalList:
-                f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}|{rental.rental_fee:.2f}\n")
+            for rental in cls._rentalList.values():
+                if rental.status == 'Pending':
+                    rentalFee = None
+                else:
+                    rentalFee = f'{rental.rental_fee:.2f}'
+                f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}|{rental.transactionID}|{rental.status}|{rentalFee}\n")
 
     def __repr__(self) -> str:
-        return f"|{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}|{self.rental_fee:^20.2f}|"
+        return f"|{self.transactionID:^20}|{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}|{self.rental_fee:^20.2f}|{self.status}"
     
     @classmethod
     def customerInRecord(cls,customer:Customer) -> bool:
-        if customer in map(lambda x:x.customer,cls.rentalList):
+        if customer in map(lambda x:x.customer,cls._rentalList.values()):
             return True
         else:
             return False
         
     @classmethod
     def carInRecord(cls,car:Car) -> bool:
-        if car in map(lambda x:x.car,cls.rentalList):
+        if car in map(lambda x:x.car,cls._rentalList.values()):
             return True
         else:
             return False
         
     def delete(self):
-        __class__.rentalList.remove(self)
+        # Making sure new transactions is recorded under the first free TransactionID
+        if (numericId := int(self.transactionID[2:])) < __class__._newTransactionID:
+            __class__._newTransactionID = numericId
+
+        del __class__._rentalList[self.transactionID]
+
+    @classmethod
+    def getRentalList(cls):
+        return cls._rentalList.values()
 
 # For debugging purposes only
 if __name__ == '__main__':
