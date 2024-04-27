@@ -5,12 +5,14 @@ def carMenu(user:Staff):
   while True:
     print('1.\tUpdate own profile')
     print('2.\tRegister new car')
-    print('3.\tView car record')
-    print('4.\tUpdate existing car record')
-    print('5.\tDelete car record')
-    print('6.\tExit program')
+    print('3.\tView registered cars')
+    print('4.\tView available cars')
+    print('5.\tView rented cars')
+    print('6.\tUpdate existing car record')
+    print('7.\tDelete car record')
+    print('8.\tExit program')
   
-    operation = getValidInput('\nEnter operation number: ',(lambda x:x in '1','2','3','4','5','6','\nInvalid operation number!'))
+    operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6','7','8'),'\nInvalid operation number!'))
 
     match operation:
       case '1':
@@ -20,15 +22,22 @@ def carMenu(user:Staff):
         pass
 
       case '3':
-        pass
+        viewCar()
 
       case '4':
-        pass
+        viewCar(lambda car:car.availability == 'Available')
 
       case '5':
-        pass
+        # need registration date also
+        viewCar(lambda car:car.availability == 'Rented')
 
       case '6':
+        pass
+
+      case '7':
+        pass
+
+      case '8':
         return
       
 # For debugging purposes only
