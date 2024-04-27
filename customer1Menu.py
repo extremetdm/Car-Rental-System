@@ -88,7 +88,7 @@ def deleteCustomer():
   viewCustomer(lambda customer:not Rental.customerInRecord(customer))
 
   # Determining which customer info to be deleted
-  customer:Customer = Customer.getC3stomer(getValidInput('Enter Customer ID: ',
+  customer:Customer = Customer.getCustomer(getValidInput('Enter Customer ID: ',
                                                          (Customer.customerInRecord,'\nInvalid Customer ID!\n'),
                                                          (lambda customerId:not Rental.customerInRecord(Customer.getCustomer(customerId)),'\nCustomer is still active!\n')))
   
@@ -109,10 +109,10 @@ def customer1Menu(user:Staff):
     
     # Determining operation
     print('1.\tUpdate own profile')
-    print('2.\tRegister new customer')
+    print('2.\tRegister new customer') #for this one if input the customer name that alr record should output msg to let user know the name is exist
     print('3.\tView registered customers')
-    print('4.\tUpdate existing customer')
-    print('5.\tDelete inactive customer')
+    print('4.\tUpdate existing customer')#for this one better display out all the current register in record, also it should add on exit to let user to exit the function if user change his mind
+    print('5.\tDelete inactive customer')#for this one better display in order
     print('6.\tExit program')
     operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6'),'\nInvalid operation number!'))
 
