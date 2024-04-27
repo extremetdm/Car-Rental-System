@@ -272,7 +272,7 @@ class Rental:
                 f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}|{rental.transactionID}|{rental.status}|{rentalFee}\n")
 
     def __repr__(self) -> str:
-        return f"|{self.transactionID:^20}|{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}|{self.rental_fee:^20.2f}|{self.status}"
+        return f"|{self.transactionID:^20}|{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}|{self.rental_fee:^20.2f}|{self.status:^20}|"
     
     @classmethod
     def customerInRecord(cls,customer:Customer) -> bool:

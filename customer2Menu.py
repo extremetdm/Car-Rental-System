@@ -29,7 +29,7 @@ def customer2Menu(user:Staff):
         pass
 
       case '5':
-        pass
+        viewRental()
 
       case '6':
         pass

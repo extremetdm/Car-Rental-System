@@ -59,6 +59,15 @@ def viewCar(constraint = lambda x:True):
       print(car)
   print(217*'-'+'\n')
 
+def viewRental(constraint = lambda x:True):
+  print('\n' + 148*'-')
+  print(f"|{'Transaction ID':^20}|{'Car Plate No.':^20}|{'Customer ID':^20}|{'Rental Date':^20}|{'Return Date':^20}|{'Rental Fee':^20}|{'Status':^20}|")
+  print(148*'-')
+  for rental in Rental.getRentalList():
+    if constraint(rental):
+      print(rental)
+  print(148*'-'+'\n')
+
 """For Staff"""
 
 # for all roles
