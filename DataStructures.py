@@ -207,6 +207,7 @@ class Car:
 
     def setSpecificRentalRate(self,rentalRate:float|None):
         self._specificRentalRate = rentalRate
+    
 
 
 class Rental:
