@@ -1,9 +1,6 @@
 from DataStructures import *
 import os
 
-# for all roles
-ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
-
 def getValidInput(inputMsg:str,*validConditionAndErrorMsg:tuple[any,str]) -> str:
     
     invalidInput = True
@@ -53,7 +50,19 @@ def login() -> Staff:
                 Staff.updateRecord()
     return user
 
+def viewCar(constraint = lambda x:True):
+  print('\n' + 199*'-')
+  print(f"{'Plate No.':^20}|{'Manufacturer':^20}|{'Model':^20}|{'Manufacture Year':^20}|{'Capacity':^20}|{'Last Service Date':^20}|{'Insurance No.':^20}|{'Insurance Exp. Date':^20}|{'Road Tax Exp. Date':^20}|{'Rental Rate':^20}|{'Availability':^20}")
+  print(199*'-')
+  for car in Car.getCarList():
+    if constraint(car):
+      print(car)
+  print(199*'-'+'\n')
+
 """For Staff"""
+
+# for all roles
+ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
 
 def updateProfile(user:Staff):
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
