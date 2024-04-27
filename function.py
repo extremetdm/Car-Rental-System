@@ -107,8 +107,8 @@ def updateProfile(user:Staff):
         print('\nProfile has been update','\n')
 
 def registerStaff(user:Staff):
-    
-    id = getValidInput('\nEnter new Staff id: ',(lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!'), (lambda id: id in ROLES, '\nStaff ID already exist'))
+    ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
+    id = getValidInput('\nEnter new Staff id: ',(lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!'), (lambda id:not Staff.staffInRecord(id), '\nStaff ID already exist'))
     name = getValidInput('\nEnter Staff name: ',(lambda x:x != '','\nStaff name cannot be empty!'))
     
     print('\n','Role'.center((max(len(s) for s in ROLES)) + 2, '-'))
@@ -274,16 +274,34 @@ def Update_rentingRate():
     Car.updateRecord()
     print('\n')
 
+from datetime import datetime
 def monthlyRevenue():
     rentals_by_month = {}
 
     for rental in Rental.rentalList:
-        month_year = rental.rental_date.strftime('%B %Y')  # e.g., 'January 2024'
+        month_year = rental.rental_date.strftime('%B %Y')
         if month_year not in rentals_by_month:
             rentals_by_month[month_year] = []
         rentals_by_month[month_year].append(rental)
 
+    all_month_years = list(rentals_by_month.keys())
+
+    all_month_years = sorted(all_month_years, key=lambda x: datetime.strptime(x, '%B %Y'))
+
+    print("Select the month and year for the report:")
+    for i, month_year in enumerate(all_month_years, start=1):
+        print(f"{i}. {month_year}")
+    print(f"{len(all_month_years) + 1}. All months")
+
+    month_year_input = getValidInput("Enter your choice: ", 
+                                    (lambda x: x.isdigit() and 1 <= int(x) <= len(all_month_years) + 1, "Invalid choice. Please enter a number from the list."))
+
+    month_year_input = all_month_years[int(month_year_input) - 1] if month_year_input != str(len(all_month_years) + 1) else 'all'
+
     for month_year, rentals in rentals_by_month.items():
+        if month_year_input.lower() != 'all' and month_year != month_year_input:
+            continue
+
         header = f"|{'Customer ID':^15}|{'Model':^20}|{'Rental Start Date':^19}|{'Rental End Date':^19}|{'Rental Period(days)':^20}|{'Rental Fee(RM)':^16}|"
         decorative_line = '~' * len(month_year)
         print(f'\n{decorative_line.center(len(header))}')
@@ -292,15 +310,13 @@ def monthlyRevenue():
         print('-' * (len(header)))
         print(header,'\n','-' * (len(header) - 2))
 
-        
         total_revenue = 0
         for rental in rentals:
             rental_period = (rental.return_date - rental.rental_date).days
             print(f'|{rental.customer.id:^15}|{rental.car.model:^20}|{rental.rental_date.strftime("%Y-%m-%d"):^19}|{rental.return_date.strftime("%Y-%m-%d"):^19}|{rental_period:^20}|{rental.rental_fee:^16.2f}|')
             total_revenue += rental.rental_fee
-        print('-' * (len(header)))
-        print(f'Total Revenue: {total_revenue:.2f}')
         print('*' * len(header))
+        print(f'Total Revenue -> RM{total_revenue:.2f}')
 
 
 
