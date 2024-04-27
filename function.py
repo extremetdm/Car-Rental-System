@@ -219,73 +219,82 @@ def Update_rentingRate():
     print(header,'\n','-' * (len(header) - 2))
     
     for car in Car.getCarList():
-        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.rental_rate:^20}|')
+        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.getRentalRate():^20}|')
     
     if getValidInput('\nDo you want to change the rental rate? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!')).upper() == 'Y':
-        updateCheck = getValidInput('\nHow would you like to be change? (capacity/model): ', (lambda x:(x != '') and (x.lower() in ('capacity','model')),'Invalid input!'))
+        updateCheck = getValidInput('\nHow would you like to be change? (capacity/model): ', (lambda x:(x != '') and (x.lower() in ('capacity','model','1','2')),'Invalid input!'))
+        
+        match updateCheck:
+            case '1':
+                updateCheck = 'capacity'
+            case '2':
+                updateCheck = 'model'
+        
         if updateCheck.lower() == 'capacity':
-            updateCapacity = getValidInput('\nWhich capacity rental rate you would like to change? ',
-                                            (lambda x:x != '' ,'Capacity cannot be empty!'),
-                                            (lambda x:x.isalnum(), 'Invalid input'),
-                                            (lambda x:x not in (2, 4, 5, 6, 7, 8, 9), '\nCapacity not found.'))
+            updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',
+                                        (lambda x:x != '' ,'Capacity cannot be empty!'),
+                                        (lambda x:x.isalnum(), 'Invalid input'),
+                                        (lambda x:x not in (2, 4, 5, 6, 7, 8, 9), '\nCapacity not found.')))
 
-                    
+                
             updateRate = float(getValidInput('\nThe latest rental rate: RM', (lambda x:x!= '','\nRental rate cannot be empty')))
-                    
+                
             for car in Car.getCarList():
                 if car.capacity == updateCapacity:
-                    car.rental_rate = int(updateRate) if updateRate.is_integer() else updateRate
-        
+                    Car.updateDefaultRentalRate(updateCapacity, updateRate)
+    
         elif updateCheck.lower() == 'model':
-            while True:
-                updateModel = getValidInput('\nWhich model rental rate you would like to change? ',(lambda x:(x != ''),'\nType of model cannot be empty'))
-                if any(car.model == updateModel for car in Car.getCarList()):
-                    break
-                else:
-                    print('\nModel not found.')
-                    
+            updateModel = getValidInput('\nWhich model rental rate you would like to change? ',
+                            (lambda x:(x != ''),'\nType of model cannot be empty'),
+                            (lambda x: any(car.model == x for car in Car.getCarList()), '\nModel not found.'))
+
+                
             updateRate = float(getValidInput('\nThe latest rental rate: RM', (lambda x:x!= '','\nRental rate cannot be empty')))
-            
+        
             for car in Car.getCarList():
                 if car.model == updateModel:
-                    car.rental_rate = int(updateRate) if updateRate.is_integer() else updateRate
+                    car.setSpecificRentalRate(f'{updateRate:.2f}')
+
                 
+
     print('After update'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header,'\n','-' * (len(header) - 2))
     for car in Car.getCarList():
-        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.rental_rate:^20}|')
+        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.getRentalRate():^20}|')
     
     Car.updateRecord()
     print('\n')
 
 def monthlyRevenue():
-    os.system('cls')
-    total_revenue_by_car = {}
-    total_rentalPeriod = {}
+    rentals_by_month = {}
 
     for rental in Rental.rentalList:
-        revenue = rental.rental_fee
-        rentalPeriod = rental.rental_period
-        int(revenue) if revenue.is_integer() else revenue
-        if rental.car in total_revenue_by_car:
-            total_revenue_by_car[rental.car] += revenue
-            total_rentalPeriod[rental.car] += rentalPeriod
-        else:
-            total_revenue_by_car[rental.car] = revenue
-            total_rentalPeriod[rental.car] = rentalPeriod
-        total_revenue_by_car[rental.car] = int(total_revenue_by_car[rental.car]) if total_revenue_by_car[rental.car].is_integer() else total_revenue_by_car[rental.car]
+        month_year = rental.rental_date.strftime('%B %Y')  # e.g., 'January 2024'
+        if month_year not in rentals_by_month:
+            rentals_by_month[month_year] = []
+        rentals_by_month[month_year].append(rental)
 
-    header = f"|{'Car Plate':^20}|{'Manufacturer':^20}|{'Model':^20}|{'Total rental period(day)':^26}|{'Total Revenue(RM)':^25}|"
-    print()
-    print('Monthly Revenue Report'.center(len(header)),'\n','-' * (len(header) - 2))
-    print(header,'\n','-' * (len(header) - 2))
-    for car, total_revenue in total_revenue_by_car.items():
-        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{total_rentalPeriod[car]:^26}|{total_revenue:^25}|')
+    for month_year, rentals in rentals_by_month.items():
+        header = f"|{'Customer ID':^15}|{'Model':^20}|{'Rental Start Date':^19}|{'Rental End Date':^19}|{'Rental Period(days)':^20}|{'Rental Fee(RM)':^16}|"
+        decorative_line = '~' * len(month_year)
+        print(f'\n{decorative_line.center(len(header))}')
+        print(f'{month_year.center(len(header))}')
+        print(f'{decorative_line.center(len(header))}')
+        print('-' * (len(header)))
+        print(header,'\n','-' * (len(header) - 2))
+
         
-    sum = 0
-    for i in total_revenue_by_car:
-        sum += total_revenue_by_car[i]
-        
-    print(f'\nMonthly revenue -> RM{sum}\n')
+        total_revenue = 0
+        for rental in rentals:
+            rental_period = (rental.return_date - rental.rental_date).days
+            print(f'|{rental.customer.id:^15}|{rental.car.model:^20}|{rental.rental_date.strftime("%Y-%m-%d"):^19}|{rental.return_date.strftime("%Y-%m-%d"):^19}|{rental_period:^20}|{rental.rental_fee:^16.2f}|')
+            total_revenue += rental.rental_fee
+        print('-' * (len(header)))
+        print(f'Total Revenue: {total_revenue:.2f}')
+        print('*' * len(header))
+
+
+
+    print('\n')
 """Staff function end"""
 
