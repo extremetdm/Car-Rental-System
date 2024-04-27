@@ -1,9 +1,9 @@
 Records
 
-- Staff record (Done)
+- Staff record (Done)i
 a.	Staff ID, example, mohdali
 b.	Staff Name, example, Mohamad Ali
-c.	Staff Roles, example, the staff is either manager, customer service staff or car service staff
+c.	Staff Roles, example, the staff is either manager, customer servce staff or car service staff
 d.	Password, example, P4$$w0rd
 e.	Date of register, the date that a staff registered to the system.
 

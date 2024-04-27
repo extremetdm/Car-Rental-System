@@ -4,21 +4,21 @@ from function import *
 def customer2Menu(user:Staff):
   while True:
     print('1.\tUpdate own profile')
-    print('2.\tCheck car availability')
+    print('2.\tView available cars')
     print('3.\tRecord new rental request')
     print('4.\tGenerate bill')
     print('5.\tView rental transactions')
     print('6.\tDelete rental record')
     print('7.\tExit program')
     
-    operation = getValidInput('\nEnter operation number: ',(lambda x:x in '1','2','3','4','5','6','7','\nInvalid operation number!'))
+    operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6','7'),'\nInvalid operation number!'))
 
     match operation:
       case '1':
         updateProfile(user)
 
       case '2':
-        pass
+        viewCar(lambda car:car.availability == 'Available')
 
       case '3':
         pass
