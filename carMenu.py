@@ -1,6 +1,42 @@
 from DataStructures import *
 from function import *
 
+def registerCar():
+  pass
+
+def update_carRecord():
+  pass
+
+def delete_CarRecord():
+    while True:
+        disposed_cars = list(filter(lambda car: car.availability == 'Disposed', Car._carList.values()))
+        if not disposed_cars:
+            print("There are none of the car to be <Disposed> already.")
+            break
+        viewCar(lambda car: car.availability == 'Disposed')
+        
+        if getValidInput('\nWould you like to remove any car that is disposed? (Y/N): ', 
+                         (lambda x: x != '' and x.upper() in ['Y', 'N'], 'Insert cannot be empty or must be Y/N')).upper() != 'Y':
+            break
+          
+        print("\nWhich car would you like to delete?")
+        
+        for i, car in enumerate(disposed_cars, start=1):
+            print(f"{i}. {car.registration_no}")
+        print(f"{len(disposed_cars) + 1}. All")
+        deleteChoice = getValidInput('Enter your choice: ',
+                                     (lambda x: x.isdigit() and 1 <= int(x) <= len(disposed_cars) + 1, 'Invalid choice. Please enter a number from the list.'))
+        if deleteChoice == str(len(disposed_cars) + 1):
+            for car in disposed_cars:
+                del Car._carList[car.registration_no]
+            print("All disposed cars have been removed.")
+        else:
+            car_to_delete = disposed_cars[int(deleteChoice) - 1]
+            del Car._carList[car_to_delete.registration_no]
+            print(f'Car <{car_to_delete.registration_no}> has been removed')
+        Car.updateRecord()
+
+
 def carMenu(user:Staff):
   while True:
     print('1.\tUpdate own profile')
@@ -19,7 +55,7 @@ def carMenu(user:Staff):
         updateProfile(user)
 
       case '2':
-        pass
+        registerCar()
 
       case '3':
         viewCar()
@@ -32,10 +68,10 @@ def carMenu(user:Staff):
         viewCar(lambda car:car.availability == 'Rented')
 
       case '6':
-        pass
+        update_carRecord()
 
       case '7':
-        pass
+        delete_CarRecord()
 
       case '8':
         return

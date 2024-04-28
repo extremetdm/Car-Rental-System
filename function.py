@@ -51,13 +51,14 @@ def login() -> Staff:
     return user
 
 def viewCar(constraint = lambda x:True):
-  print('\n' + 217*'-')
-  print(f"|{'Plate No.':^20}|{'Manufacturer':^15}|{'Model':^15}|{'Manufacture Year':^20}|{'Capacity':^20}|{'Last Service Date':^20}|{'Insurance No.':^20}|{'Insurance Exp. Date':^20}|{'Road Tax Exp. Date':^20}|{'Rental Rate':^20}|{'Availability':^15}|")
-  print(217*'-')
-  for car in Car.getCarList():
-    if constraint(car):
-      print(car)
-  print(217*'-'+'\n')
+    print()
+    header = f"|{'Plate No.':^20}|{'Manufacturer':^15}|{'Model':^15}|{'Manufacture Year':^20}|{'Capacity':^20}|{'Last Service Date':^20}|{'Insurance No.':^20}|{'Insurance Exp. Date':^20}|{'Road Tax Exp. Date':^20}|{'Rental Rate':^20}|{'Availability':^15}|"
+    print('Car Record'.center(len(header)),'\n','-' * (len(header)-2))
+    print(header,'\n','-' * (len(header) - 2))
+    for car in Car.getCarList():
+        if constraint(car):
+            print(car)
+    print(f'{"-" * (len(header) - 2)}'.center(len(header)))
 
 def viewRental(constraint = lambda x:True):
   print('\n' + 148*'-')
