@@ -173,14 +173,14 @@ from datetime import datetime
 def monthlyRevenue():
     rentals_by_month = {}
 
-    for rental in Rental.rentalList:
-        month_year = rental.rental_date.strftime('%B %Y')
-        if month_year not in rentals_by_month:
-            rentals_by_month[month_year] = []
-        rentals_by_month[month_year].append(rental)
+    for rental in Rental._rentalList.values():
+        if rental.status != 'Pending':  # Only include rentals where the customer has paid
+            month_year = rental.rental_date.strftime('%B %Y')
+            if month_year not in rentals_by_month:
+                rentals_by_month[month_year] = []
+            rentals_by_month[month_year].append(rental)
 
     all_month_years = list(rentals_by_month.keys())
-
     all_month_years = sorted(all_month_years, key=lambda x: datetime.strptime(x, '%B %Y'))
 
     print("Select the month and year for the report:")
@@ -212,7 +212,6 @@ def monthlyRevenue():
             total_revenue += rental.rental_fee
         print('*' * len(header))
         print(f'Total Revenue -> RM{total_revenue:.2f}')
-
 
 
     print('\n')
