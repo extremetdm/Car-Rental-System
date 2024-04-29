@@ -169,8 +169,8 @@ def Update_rentingRate():
     Car.updateRecord()
     print('\n')
 
-from datetime import datetime
-def monthlyRevenue():
+def monthlyRevenue():  
+    from datetime import datetime
     rentals_by_month = {}
 
     for rental in Rental._rentalList.values():

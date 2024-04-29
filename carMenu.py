@@ -1,8 +1,57 @@
 from DataStructures import *
 from function import *
 
+#registration_no:str
+#manufacturer:str
+#model:str
+#manufacture_year:int
+#capacity:int
+#last_service_date:datetime
+#insurance_policy_number:str
+#insurance_expiry:datetime
+#road_tax_expiry:datetime
+
+#This is use to check is the car plate match the rule that provide by JBJ
+"""def is_valid_malaysian_plate(plate: str) -> bool:
+  return re.fullmatch(r'[A-Z]{1,3}\s?\d{1,4}\s?[A-Z]{1,3}', plate) is not None"""
+def is_valid_malaysian_plate(plate: str) -> bool:
+  import re
+  return re.fullmatch(r'[A-Z]{1,3}\d{1,4}[A-Z]{0,1}', plate) is not None
+
 def registerCar():
-  pass
+  while True:
+    if getValidInput('Do you want to register a new car for rental? (Y/N): ',
+                    (lambda x: x != '' and x.upper() in ['Y', 'N'], 'Insert cannot be empty or must be Y/N')).upper() != 'Y':
+      break
+    else:
+      print('\nInformation for staff:\nplease take note that if got car plate like <SELANGOR 1>, please contact to Manager to have a manual input')
+      print('New Car detail:\n')
+      registration_no = getValidInput('\n-> Car plate: ', 
+                                      (lambda x:x != '', '\nInput cannot be empty!'), 
+                                      (lambda plate:is_valid_malaysian_plate(plate.upper()), '\nCar Plate does not follow the Malaysia JBJ rules')).upper()
+      
+      manufacturer = getValidInput('\n-> Manufacturer: ', 
+                                   (lambda x:x != '', '\nInput cannot be empty!'))
+      
+      model = getValidInput('\n-> Model: ', 
+                                   (lambda x:x != '', '\nInput cannot be empty!'))
+      
+      manufacture_year = int(getValidInput('\n-> Manufacture year: ', 
+                                   (lambda x:x != '', '\nInput cannot be empty!'),
+                                   (lambda x:x.isdigit(),'\nManufacture year must be number')))
+      
+      capacity = int(getValidInput('\n-> capacity: ', 
+                     (lambda x:x != '', '\nInput cannot be empty!'),
+                     (lambda x:x.isdigit(), '\nCapacity must be in number'),
+                     (lambda x:x in (2, 4, 5, 6, 7, 8, 9), '\nCapacity is not recognise')))
+      
+      last_service_date = getValidInput('\nWhat is the class last service date? ', 
+                                        (lambda x:x != '', '\nLast service date cannot be empty'),
+                                        (lambda x:x.validdate()))
+
+      #for checking
+      print(registration_no)
+      print(manufacturer)
 
 def update_carRecord():
   pass
