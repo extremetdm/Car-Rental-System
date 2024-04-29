@@ -8,10 +8,12 @@ def recordRental():
                                  (lambda car:Car.getCar(car).availability == 'Available','Car unavailable!')))
   customer = Customer.getCustomer(getValidInput('\nEnter Customer ID: ',
                                                 (Customer.customerInRecord,'\nCustomer not registered in customer record!') ))
-  rentalDate = datetime.strptime(getValidInput('\nEnter rental date (YYYY-MM-DD): ', (validDate, '\nInvalid date!')),'%Y-%m-%d')
+  rentalDate = datetime.strptime(getValidInput('\nEnter rental date (YYYY-MM-DD): ', 
+                                               (validDate, '\nInvalid date!'),
+                                               (lambda date:datetime.strptime(date,'%Y-%m-%d').date() >= datetime.today().date(), '\nRental date cannot be before today!')),'%Y-%m-%d')
   returnDate = datetime.strptime(getValidInput('\nEnter return date (YYYY-MM-DD): ', 
                                                (validDate, '\nInvalid date!'),
-                                               (lambda date:datetime.strptime(date,'%Y-%m-%d') > rentalDate, '\nReturn date cannot be before rental date!')),'%Y-%m-%d')
+                                               (lambda date:datetime.strptime(date,'%Y-%m-%d') > rentalDate, '\nReturn date cannot be before and on rental date!')),'%Y-%m-%d')
   
   car.availability = 'Reserved'
   rental = Rental(car,customer,rentalDate,returnDate)

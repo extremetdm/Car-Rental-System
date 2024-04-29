@@ -12,6 +12,20 @@ if __name__ == '__main__':
   Car.readRecord()
   Rental.readRecord()
 
+  # Automatically updates car availability
+  for rental in Rental.getRentalList():
+    if rental.rental_date <= datetime.today() <= rental.return_date:
+      if rental.status == 'Paid':
+        rental.car.availability = 'Rented'
+      else:
+        # Cancel transaction if customer haven't pay before rental date
+        rental.car.availability = 'Available'
+        rental.delete()
+    elif rental.return_date <= datetime.today():
+      if rental.car.availability == 'Rented':
+        rental.car.availability = 'Available'
+  Rental.updateRecord()
+
   user = login()
 
   print(f'\nWelcome, {user.name}\n')
