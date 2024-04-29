@@ -40,10 +40,7 @@ class Staff:
     
     @classmethod
     def staffInRecord(cls,id:str) -> bool:
-        if id in cls._staffList:
-            return True
-        else:
-            return False
+        return id in cls._staffList
     
     def __repr__(self) -> str:
         return f"|{self.id:^20}|{self.name:^20}|{self.role:^30}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
@@ -108,10 +105,7 @@ class Customer:
     
     @classmethod
     def customerInRecord(cls,id:str) -> bool:
-        if id in cls._customerList:
-            return True
-        else:
-            return False
+        return id in cls._customerList
 
     def __repr__(self) -> str:
         return f"|{self.id:^20}|{self.name:^20}|{self.nric:^20}|{self.passport_number:^20}|{self.license_no:^20}|{self.address:^50}|{self.phone:^20}|{self.registration_date.strftime('%Y-%m-%d'):^20}|"
@@ -144,10 +138,7 @@ class Car:
         self.road_tax_expiry = road_tax_expiry
         self._specificRentalRate = specificRentalRate
 
-        if availability in ['Available','Reserved','Rented','Under Service','Disposed']:
-            self.availability = availability
-        else:
-            self.availability = 'Available'
+        self.availability = availability # 'Available','Reserved','Rented','Under Service','Disposed'
 
         __class__._carList[self.registration_no] = self
 
@@ -180,10 +171,7 @@ class Car:
         
     @classmethod
     def carInRecord(cls,registration_no:str) -> bool:
-        if registration_no in cls._carList:
-            return True
-        else:
-            return False
+        return registration_no in cls._carList
 
     def __repr__(self) -> str:
         return f"|{self.registration_no:^20}|{self.manufacturer:^15}|{self.model:^15}|{self.manufacture_year:^20}|{self.capacity:^20}|{self.last_service_date.strftime('%Y-%m-%d'):^20}|{self.insurance_policy_number:^20}|{self.insurance_expiry.strftime('%Y-%m-%d'):^20}|{self.road_tax_expiry.strftime('%Y-%m-%d'):^20}|{self.getRentalRate():^20.2f}|{self.availability:^15}|"
@@ -272,21 +260,15 @@ class Rental:
                 f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}|{rental.transactionID}|{rental.status}|{rentalFee}\n")
 
     def __repr__(self) -> str:
-        return f"|{self.transactionID:^20}|{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}|{self.rental_fee:^20.2f}|{self.status:^20}|"
+        return f"|{self.transactionID:^20}|{self.car.registration_no:^20}|{self.customer.id:^20}|{self.rental_date.strftime('%Y-%m-%d'):^20}|{self.return_date.strftime('%Y-%m-%d'):^20}|{self.rental_fee:^20,.2f}|{self.status:^20}|"
     
     @classmethod
     def customerInRecord(cls,customer:Customer) -> bool:
-        if customer in map(lambda x:x.customer,cls._rentalList.values()):
-            return True
-        else:
-            return False
+        return customer in map(lambda x:x.customer,cls._rentalList.values())
         
     @classmethod
     def carInRecord(cls,car:Car) -> bool:
-        if car in map(lambda x:x.car,cls._rentalList.values()):
-            return True
-        else:
-            return False
+        return car in map(lambda x:x.car,cls._rentalList.values())
         
     def delete(self):
         # Making sure new transactions is recorded under the first free TransactionID
@@ -298,6 +280,18 @@ class Rental:
     @classmethod
     def getRentalList(cls):
         return cls._rentalList.values()
+    
+    @classmethod
+    def getRental(cls,transactionID:str) -> object|None:
+        if transactionID in cls._rentalList:
+            return cls._rentalList[transactionID]
+        else:
+            return None
+
+    @classmethod
+    def rentalInRecord(cls,transactionID):
+        return transactionID in cls._rentalList
+
 
 # For debugging purposes only
 if __name__ == '__main__':

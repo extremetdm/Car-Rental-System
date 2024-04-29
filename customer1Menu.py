@@ -2,7 +2,6 @@ from DataStructures import *
 from function import *
 
 def registerCustomer():
-
   # Gathering all neccessary customer infos
   name = getValidInput('\nEnter customer name: ',
                        (lambda x:x != '','\nCustomer name cannot be empty!') )
