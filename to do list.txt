@@ -86,8 +86,6 @@ o	Accept and record rental details from customers.
 
 o	Generate bills to customers, accept payment from customer and generate receipt. 
 
--	When accept a rental transaction, rental data should be recorded,
-
 - Update the following rental availability in car record,
 o “Reserved” when a customer books a car.
 o “Rented” when a customer rents a car.

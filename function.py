@@ -69,6 +69,14 @@ def viewRental(constraint = lambda x:True):
       print(rental)
   print(148*'-'+'\n')
 
+def validDate(dateInput):
+  # if im bothered enough i avoid try-except but for now this is fine
+  try:
+    datetime.strptime(dateInput,'%Y-%m-%d')
+    return True
+  except ValueError:
+    return False
+
 """For Staff"""
 
 # for all roles
