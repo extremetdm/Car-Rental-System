@@ -110,17 +110,27 @@ def validDate(dateInput):
     return False
 
 def updateProfile(user:Staff):
+    # Define the header for the display table
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
+    
+    # Clear the console
     os.system('cls')
     
+    # Print the current staff record
     print('Current Staff Record'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header+'\n','-' * (len(header) - 2))
     print(f"|{user.name:^20}|{user.id:^20}|{user.role:^30}|{str(user.registration_date.date()):^20}|")
     
+    # Ask the user which data they would like to edit
     print('\nWhich data would you like to edit?', '\n-> '.join(['\n-> ID', 'Name', 'Password','Exit']))
+    
+    # Get the user's choice
     dataChange = getValidInput('\nEnter your choice: ',(lambda x:(x != ''), '\nchoice cannot be empty!'), (lambda x:x.capitalize() in ('Id','Name','Password','Exit','1','2','3','4'), '\nInvalid choice input'))
+    
+    # Remove any spaces from the user's choice
     dataChange = dataChange.replace(' ','')
         
+    # If the user's choice is a number, convert it to the corresponding string
     if dataChange in ('1','2','3','4'):
         match dataChange:
             case '1':
@@ -132,12 +142,14 @@ def updateProfile(user:Staff):
             case '4':
                 dataChange = 'Exit'
             
+    # Depending on the user's choice, update the corresponding attribute of the user
     match dataChange.capitalize():
         case 'Id':
             user.id = getValidInput('\nEnter your new Staff ID: ',(lambda x:((x != '')),'\nStaff ID cannot be empty!'))
         case 'Name':
             user.name = getValidInput('\nEnter your new Name: ',(lambda x:((x != '')),'\nStaff name cannot be empty!'))
         case 'Password':
+            # Ask the user to enter their new password twice for confirmation
             while True:
                 password1 = getValidInput('\nEnter your new Password: ',(lambda x:((x != '')),'\nPassword cannot be empty!'))
                 password2 = getValidInput('\nPlease comfirm your Password: ',(lambda x:((x != '')),'\nPassword Incorrect!'))
@@ -148,5 +160,8 @@ def updateProfile(user:Staff):
             print('\nUpdate profile has been cancel.\n')
         case _:
             print(dataChange.capitalize(), ' is not in match list')
+    
+    # If the user didn't choose to exit, print a confirmation message
     if dataChange.capitalize() != 'Exit':
         print('\nProfile has been update','\n')
+
