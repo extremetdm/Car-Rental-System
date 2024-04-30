@@ -2,29 +2,37 @@ from DataStructures import *
 import os
 
 def getValidInput(inputMsg:str,*validConditionAndErrorMsg:tuple[any,str]) -> str:
-    
-    invalidInput = True
+
+    # Placeholder variable for checking input validity
+    invalidInput:bool = True
+
     while invalidInput:
+
         invalidInput = False
-        enteredinput = input(inputMsg).strip()
+
+        # Taking user input
+        enteredinput:str = input(inputMsg).strip()
+
+        # Checking whether entered input fulfills every condition
         for validCondition, errorMsg in validConditionAndErrorMsg:
             if not validCondition(enteredinput):
+
+                # Output corresponding error message if any condition fails
                 invalidInput = True
                 print(errorMsg)
                 break
             
     return enteredinput
 
-# Login menu
 def login() -> Staff:
-# Returns user information if login successful.
  
-    user:Staff = print('\nLogin\n')
+    # Placeholder variable to store user information
+    user:Staff|None = print('\nLogin\n')
 
     # Taking and checking input
     while user == None:
 
-        # Input StaffID and get the corresponding info
+        # Input StaffID and get the corresponding staff info
         user = Staff.getStaff(getValidInput('StaffID: ',(Staff.staffInRecord,'\nInvalid StaffID!\n')))
 
         # Block access to accounts with too many login attempts
@@ -48,39 +56,58 @@ def login() -> Staff:
             else:
                 user.attempts = 0
                 Staff.updateRecord()
+
+    # Returns user information after succesful login.
     return user
 
 def viewCar(constraint = lambda x:True):
-    print()
-    header = f"|{'Plate No.':^20}|{'Manufacturer':^15}|{'Model':^15}|{'Manufacture Year':^20}|{'Capacity':^20}|{'Last Service Date':^20}|{'Insurance No.':^20}|{'Insurance Exp. Date':^20}|{'Road Tax Exp. Date':^20}|{'Rental Rate':^20}|{'Availability':^15}|"
-    print('Car Record'.center(len(header)),'\n','-' * (len(header)-2))
-    print(header,'\n','-' * (len(header) - 2))
-    for car in Car.getCarList():
-        if constraint(car):
-            print(car)
-    print(f'{"-" * (len(header) - 2)}'.center(len(header)))
+    # Checking if any car fits the criteria
+    if any(map(constraint,Car.getCarList())):
+
+        # Header
+        print()
+        header = f"|{'Plate No.':^20}|{'Manufacturer':^15}|{'Model':^15}|{'Manufacture Year':^20}|{'Capacity':^20}|{'Last Service Date':^20}|{'Insurance No.':^20}|{'Insurance Exp. Date':^20}|{'Road Tax Exp. Date':^20}|{'Rental Rate':^20}|{'Availability':^15}|"
+        print('Car Record'.center(len(header)),'\n','-' * (len(header)-2))
+        print(header,'\n','-' * (len(header) - 2))
+        
+        # Car Info
+        for car in Car.getCarList():
+            if constraint(car):
+                print(car)
+
+        # Footer
+        print(f' {"-" * (len(header) - 2)} ')
+        
+    else:
+        print('\nNo car record found!\n')
 
 def viewRental(constraint = lambda x:True):
-  print('\n' + 148*'-')
-  print(f"|{'Transaction ID':^20}|{'Car Plate No.':^20}|{'Customer ID':^20}|{'Rental Date':^20}|{'Return Date':^20}|{'Rental Fee':^20}|{'Status':^20}|")
-  print(148*'-')
-  for rental in Rental.getRentalList():
-    if constraint(rental):
-      print(rental)
-  print(148*'-'+'\n')
+    # Checking if any rental request fits the criteria
+    if any(map(constraint,Rental.getRentalList())):
+
+        # Header
+        print('\n' + 148*'-')
+        print(f"|{'Transaction ID':^20}|{'Car Plate No.':^20}|{'Customer ID':^20}|{'Rental Date':^20}|{'Return Date':^20}|{'Rental Fee':^20}|{'Status':^20}|")
+        print(148*'-')
+
+        # Rental info
+        for rental in Rental.getRentalList():
+            if constraint(rental):
+              print(rental)
+
+        # Footer
+        print(148*'-'+'\n')
+
+    else:
+        print('\nNo rental record found!\n')
 
 def validDate(dateInput):
-  # if im bothered enough i avoid try-except but for now this is fine
+  # Checking for valid date in the form YYYY-MM-DD
   try:
     datetime.strptime(dateInput,'%Y-%m-%d')
     return True
   except ValueError:
     return False
-
-"""For Staff"""
-
-# for all roles
-ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
 
 def updateProfile(user:Staff):
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
@@ -123,6 +150,3 @@ def updateProfile(user:Staff):
             print(dataChange.capitalize(), ' is not in match list')
     if dataChange.capitalize() != 'Exit':
         print('\nProfile has been update','\n')
-
-"""Staff function end"""
-

@@ -88,6 +88,7 @@ def delete_CarRecord():
 
 def carMenu(user:Staff):
   while True:
+    # Menu selection
     print('1.\tUpdate own profile')
     print('2.\tRegister new car')
     print('3.\tView registered cars')
@@ -97,8 +98,8 @@ def carMenu(user:Staff):
     print('7.\tDelete car record')
     print('8.\tExit program')
   
+    # Determining operation
     operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6','7','8'),'\nInvalid operation number!'))
-
     match operation:
       case '1':
         updateProfile(user)
@@ -133,8 +134,3 @@ if __name__ == '__main__':
   Rental.readRecord()
 
   carMenu(Staff.getStaff('Eric'))
-
-  Staff.updateRecord()
-  Customer.updateRecord()
-  Car.updateRecord()
-  Rental.updateRecord()
