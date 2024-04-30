@@ -31,19 +31,20 @@ def registerCar():
                                    (lambda x:x.isdigit(),'\nManufacture year must be in format (YYYY)'),
                                    (lambda x:len(x) == 4, '\nManufacture year must be a 4-digit number'),
                                    (lambda x:int(x) >= 1803,'\nThe time not even got an engine car yet'),
-                                   (lambda x:int(x) <= (datetime.today().year) + 2, '\nManufacture year cannot exits 2 year above from current year')))
+                                   (lambda x:int(x) <= (datetime.today().year), '\nManufacture year cannot exits current year')))
       
       capacity = int(getValidInput('\n-> capacity: ', 
                      (lambda x:x != '', '\nInput cannot be empty!'),
                      (lambda x:x.isdigit(), '\nCapacity must be in number'),
                      (lambda x:int(x) in (2, 4, 5, 6, 7, 8, 9), '\nCapacity is not recognise')))
       
-      # Convert the valid date string to a datetime object
-      last_service_date = datetime.strptime(getValidInput('\nWhat is the car last service date? (YYYY-MM-DD): ', 
+      # if manufacture year
+      if manufacture_year != datetime.today().year:
+        last_service_date = datetime.strptime(getValidInput('\nWhat is the car last service date? (YYYY-MM-DD): ', 
                                         (lambda x:x != '', '\nLast service date cannot be empty'),
                                         (validDate,'\nMust be in date format')), '%Y-%m-%d')
 
-      insurance_policy_number = getValidInput('\n', 
+      insurance_policy_number = getValidInput('\nWhat is the car insurance policy number? ', 
                                         (lambda x:x != '', '\nInput cannot be empty!'),
                                         (lambda x:8 >= len(x) <= 13, '\nInsurance policy number must be 10 characters long'),
                                         (lambda x:x.isalnum(), '\nInsurance policy number must contain only alphanumeric characters')).upper()
