@@ -91,7 +91,7 @@ def deleteRental():
     confirmation = getValidInput(f'\nDelete record of {rental.transactionID}? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'\nInvalid Input!')).upper()
 
     if confirmation == 'Y':
-      # Delete rental info from record
+      # Delete rental info from the records
       rental.delete()
       Rental.updateRecord()
       print('\nRental request has been deleted successfully.\n')

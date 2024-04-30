@@ -54,7 +54,7 @@ def viewCustomer(constraint = lambda x:True):
 
 def updateCustomer():
 
-  # Querying customer from record
+  # Querying customer from the records
   customer:Customer = Customer.getCustomer(getValidInput('\nEnter Customer ID: ',(Customer.customerInRecord,'\nInvalid Customer ID!')))
   
   # Info update options
@@ -113,7 +113,7 @@ def deleteCustomer():
     confirmation = getValidInput(f'\nDelete record of {customer.name}? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'\nInvalid Input!')).upper()
 
     if confirmation == 'Y':
-    # Delete customer info from record
+    # Delete customer info from the records
       customer.delete()
       Customer.updateRecord()
       print('\nCustomer has been deleted successfully.\n')
