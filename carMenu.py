@@ -1,16 +1,6 @@
 from DataStructures import *
 from function import *
 
-#registration_no:str
-#manufacturer:str
-#model:str
-#manufacture_year:int
-#capacity:int
-#last_service_date:datetime
-#insurance_policy_number:str
-#insurance_expiry:datetime
-#road_tax_expiry:datetime
-
 #This is use to check is the car plate match the rule that provide by JBJ
 """def is_valid_malaysian_plate(plate: str) -> bool:
   return re.fullmatch(r'[A-Z]{1,3}\s?\d{1,4}\s?[A-Z]{1,3}', plate) is not None"""
@@ -30,28 +20,47 @@ def registerCar():
                                       (lambda x:x != '', '\nInput cannot be empty!'), 
                                       (lambda plate:is_valid_malaysian_plate(plate.upper()), '\nCar Plate does not follow the Malaysia JBJ rules')).upper()
       
-      manufacturer = getValidInput('\n-> Manufacturer: ', 
-                                   (lambda x:x != '', '\nInput cannot be empty!'))
+      manufacture = getValidInput('\n-> Manufacturer: ', 
+                                   (lambda x:x != '', '\nInput cannot be empty!')).upper()
       
       model = getValidInput('\n-> Model: ', 
-                                   (lambda x:x != '', '\nInput cannot be empty!'))
+                                   (lambda x:x != '', '\nInput cannot be empty!')).upper()
       
-      manufacture_year = int(getValidInput('\n-> Manufacture year: ', 
+      manufacture_year = int(getValidInput('\n-> Manufacture year : ', 
                                    (lambda x:x != '', '\nInput cannot be empty!'),
-                                   (lambda x:x.isdigit(),'\nManufacture year must be number')))
+                                   (lambda x:x.isdigit(),'\nManufacture year must be in format (YYYY)'),
+                                   (lambda x:len(x) == 4, '\nManufacture year must be a 4-digit number'),
+                                   (lambda x:int(x) >= 1803,'\nThe time not even got an engine car yet'),
+                                   (lambda x:int(x) <= (datetime.today().year) + 2, '\nManufacture year cannot exits 2 year above from current year')))
       
       capacity = int(getValidInput('\n-> capacity: ', 
                      (lambda x:x != '', '\nInput cannot be empty!'),
                      (lambda x:x.isdigit(), '\nCapacity must be in number'),
-                     (lambda x:x in (2, 4, 5, 6, 7, 8, 9), '\nCapacity is not recognise')))
+                     (lambda x:int(x) in (2, 4, 5, 6, 7, 8, 9), '\nCapacity is not recognise')))
       
-      last_service_date = getValidInput('\nWhat is the class last service date? ', 
+      # Convert the valid date string to a datetime object
+      last_service_date = datetime.strptime(getValidInput('\nWhat is the car last service date? (YYYY-MM-DD): ', 
                                         (lambda x:x != '', '\nLast service date cannot be empty'),
-                                        (lambda x:x.validdate()))
+                                        (validDate,'\nMust be in date format')), '%Y-%m-%d')
 
-      #for checking
-      print(registration_no)
-      print(manufacturer)
+      insurance_policy_number = getValidInput('\n', 
+                                        (lambda x:x != '', '\nInput cannot be empty!'),
+                                        (lambda x:8 >= len(x) <= 13, '\nInsurance policy number must be 10 characters long'),
+                                        (lambda x:x.isalnum(), '\nInsurance policy number must contain only alphanumeric characters')).upper()
+      
+      # Convert the valid date string to a datetime object
+      insurance_expiry = datetime.strptime(getValidInput('\nWhat is the car insurance expiry date? (YYYY-MM-DD): ', 
+                                        (lambda x:x != '', '\nInsurance expiry date cannot be empty'),
+                                        (validDate,'\nMust be in date format')), '%Y-%m-%d')
+      
+      # Convert the valid date string to a datetime object
+      road_tax_expiry = datetime.strptime(getValidInput('\nWhat is the car road tax expiry date? (YYYY-MM-DD): ', 
+                                        (lambda x:x != '', '\nRoad tax expiry date cannot be empty'),
+                                        (validDate,'\nMust be in date format')), '%Y-%m-%d')
+
+      Car(registration_no,manufacture,model,manufacture_year,capacity,last_service_date,insurance_policy_number,insurance_expiry,road_tax_expiry)
+      
+      Car.getCarList(registration_no)
 
 def update_carRecord():
   pass
