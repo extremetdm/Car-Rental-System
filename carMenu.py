@@ -47,7 +47,7 @@ def registerCar():
       
       last_service_date = getValidInput('\nWhat is the class last service date? ', 
                                         (lambda x:x != '', '\nLast service date cannot be empty'),
-                                        (lambda x:x.validdate()))
+                                        (lambda x:x.validDate()))
 
       #for checking
       print(registration_no)
