@@ -1,6 +1,9 @@
 from DataStructures import *
 from function import *
 
+# for all roles
+ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
+
 def registerStaff(user:Staff):
     ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
     id = getValidInput('\nEnter new Staff id: ',(lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!'), (lambda id:not Staff.staffInRecord(id), '\nStaff ID already exist'))
@@ -23,6 +26,7 @@ def registerStaff(user:Staff):
             role = ROLES[3]  
     
     Staff(id, name, role, id, registration_date = datetime.now())
+    Staff.updateRecord()
     print("\n")
     header = f"|{'Staff ID':^20}|{'Name':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
     print('New Staff detail'.center(len(header)),'\n','-' * (len(header) - 2))
@@ -79,12 +83,15 @@ def updateExitingStaff(user:Staff):
         staff.role = getValidInput('\nEnter Staff role (\'1\',\'2\',\'3\',\'4\'): ',
                             (lambda x:x != '','\nStaff role cannot be empty!'),
                             (lambda x:x in ('1','2','3','4','Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'), '\nUnexpected role given'))
+        
+        Staff.updateRecord()
         print(f'\n<{staff_id}> has been updated')
         print("\n")
         header = f"|{'Staff ID':^20}|{'Name':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
         print('Staff detail'.center(len(header)),'\n','-' * (len(header) - 2))
         print(header,'\n','-' * (len(header) - 2))
         print(user.getStaff(id),'\n')
+
         
         
     elif action.lower() == 'exit':
@@ -100,11 +107,12 @@ def deleteStaff_Record(user:Staff):
         print(f"|{staff.name:^20}|{staff.id:^20}|{staff.role:^30}|")
     while True:
         id = getValidInput('\nEnter Staff Id to delete record: ',(lambda x:x != '','\nStaff Id cannot be empty!'))
-        if id in user._staffList:
+        if Staff.staffInRecord(id):
             print(f'Staff id with <{id}> found')
             run = getValidInput('\nDo you want to delete this record? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!'))
             if run.upper() == 'Y':
-                del user._staffList[id]
+                Staff.getStaff(id).delete()
+                Staff.updateRecord()
                 print(f"\nStaff ID <{id}> has been deleted.")
             else:
                 print(f'Deletion process for Staff id <{id}> has cancel')
@@ -218,6 +226,7 @@ def monthlyRevenue():
 
 def managerMenu(user:Staff):
   while True:
+    # Menu selection
     print('1.\tUpdate own profile')
     print('2.\tRegister new staff')
     print('3.\tUpdate existing staff record')
@@ -226,8 +235,8 @@ def managerMenu(user:Staff):
     print('6.\tView monthly revenue report')
     print('7.\tExit program')
     
+    # Determining operation
     operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6','7'),'\nInvalid operation number!'))
-
     match operation:
       case '1':
         updateProfile(user)
@@ -258,8 +267,3 @@ if __name__ == '__main__':
   Rental.readRecord()
 
   managerMenu(Staff.getStaff('mohdali'))
-
-  Staff.updateRecord()
-  Customer.updateRecord()
-  Car.updateRecord()
-  Rental.updateRecord()

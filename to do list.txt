@@ -77,23 +77,23 @@ o	Update customer details - phone number, address, license no and passport no (i
 
 3.	Customer Service Staff II
 
-o Check the availability of a car to be rented.
+o Check the availability of a car to be rented. (Done)
 Example, customer request a car that can take certain number of passengers, and
 customer service staff must check any cars that can serves number of passengers
 given by the customer
 
-o	Accept and record rental details from customers.
+o	Accept and record rental details from customers. (Done)
 
-o	Generate bills to customers, accept payment from customer and generate receipt. 
+o	Generate bills to customers, accept payment from customer and generate receipt. (Done)
 
-- Update the following rental availability in car record,
+- Update the following rental availability in car record, (Done automatically)
 o “Reserved” when a customer books a car.
 o “Rented” when a customer rents a car.
 o “Available” when a customer returns a car.
 
--	View the list rental transactions according to given date.
+-	View the list rental transactions according to given date. (Done)
 
-- Delete the cancelled car rental transactions.
+- Delete the cancelled car rental transactions. (Done)
 
 
 
