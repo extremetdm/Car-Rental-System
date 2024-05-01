@@ -145,7 +145,9 @@ def updateProfile(user:Staff):
     # Depending on the user's choice, update the corresponding attribute of the user
     match dataChange.capitalize():
         case 'Id':
-            user.id = getValidInput('\nEnter your new Staff ID: ',(lambda x:((x != '')),'\nStaff ID cannot be empty!'))
+            user.id = getValidInput('\nEnter your new Staff ID: ',
+                                    (lambda x:((x != '')),'\nStaff ID cannot be empty!'), 
+                                    (lambda x:not(Staff.staffInRecord(x), '\nStaff id has been use')))
         case 'Name':
             user.name = getValidInput('\nEnter your new Name: ',(lambda x:((x != '')),'\nStaff name cannot be empty!'))
         case 'Password':
