@@ -136,7 +136,7 @@ def customer2Menu(user:Staff):
 
       case '7':
         return
-      
+
 # For debugging purposes only
 if __name__ == '__main__':
   Staff.readRecord()

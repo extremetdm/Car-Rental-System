@@ -180,7 +180,7 @@ def deleteStaff_Record(user:Staff):
         # If the staff ID is in the records
         if Staff.staffInRecord(id):
             #To prevent user delete his own or delete a Manager
-            if (Staff.getStaff(id).role == 'Manager') or (user.id == id):
+            if user.id == id:
                 print('\nYou cannot delete Manager or delete yourself')
                 continue
             # Inform the user that the staff ID was found

@@ -6,3 +6,4 @@ Gabriel|Gabril How|Manager|Gabriel|2024-04-22|0
 Eric|Vollerai|Car Service Staff|Eric1|2024-04-22|3
 hello|hello world|Customer Service Staff I|hello|2024-04-23|0
 oguess1|oguess car|Car Service Staff|oguess1|2024-04-27|0
+simple|simple|Manager|simple|2024-05-06|0
