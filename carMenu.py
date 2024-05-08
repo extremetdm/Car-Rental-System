@@ -22,7 +22,7 @@ def registerCar():
       # Validate each input as necessary
       registration_no = getValidInput('\n-> Car plate: ', 
                                       (lambda x:x != '', '\nInput cannot be empty!'), 
-                                      (lambda plate:is_valid_malaysian_plate(plate.upper()), '\nCar Plate does not follow the Malaysia JBJ rules')).upper()
+                                      (lambda plate:is_valid_malaysian_plate(plate.upper()), '\nCar Plate does not follow the Malaysia JPJ rules')).upper()
       
       manufacture = getValidInput('\n-> Manufacturer: ', 
                                    (lambda x:x != '', '\nInput cannot be empty!')).upper()
