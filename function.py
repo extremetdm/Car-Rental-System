@@ -146,16 +146,19 @@ def updateProfile(user:Staff):
     match dataChange.capitalize():
         case 'Id':
             user.id = getValidInput('\nEnter your new Staff ID: ',
-                                    (lambda x:((x != '')),'\nStaff ID cannot be empty!'), 
-                                    (lambda x:not(Staff.staffInRecord(x), '\nStaff id has been use')))
+                        (lambda x: x != '', '\nStaff ID cannot be empty!'), 
+                        (lambda x: not Staff.staffInRecord(x), '\nStaff id has been use'))
+            Staff.updateRecord()
         case 'Name':
             user.name = getValidInput('\nEnter your new Name: ',(lambda x:((x != '')),'\nStaff name cannot be empty!'))
+            Staff.updateRecord()
         case 'Password':
             # Ask the user to enter their new password twice for confirmation
             while True:
                 password1 = getValidInput('\nEnter your new Password: ',(lambda x:((x != '')),'\nPassword cannot be empty!'))
                 password2 = getValidInput('\nPlease comfirm your Password: ',(lambda x:((x != '')),'\nPassword Incorrect!'))
                 if password1 == password2:
+                    Staff.updateRecord()
                     break
             user.password = password1
         case 'Exit':
