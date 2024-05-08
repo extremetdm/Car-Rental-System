@@ -168,6 +168,5 @@ def updateProfile(user:Staff):
     
     # If the user didn't choose to exit, print a confirmation message
     if dataChange.capitalize() != 'Exit':
-        Staff.updateRecord()
         print('\nProfile has been update','\n')
 
