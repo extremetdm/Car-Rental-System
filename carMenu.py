@@ -291,12 +291,3 @@ def carMenu(user:Staff):
 
       case '8':
         return
-      
-# For debugging purposes only
-if __name__ == '__main__':
-  Staff.readRecord()
-  Customer.readRecord()
-  Car.readRecord()
-  Rental.readRecord()
-
-  carMenu(Staff.getStaff('Eric'))

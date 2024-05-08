@@ -344,16 +344,4 @@ class Rental:
                 else:
                     rentalFee = f'{rental.rental_fee:.2f}'
                 f.write(f"{rental.car.registration_no}|{rental.customer.id}|{rental.rental_date.strftime('%Y-%m-%d')}|{rental.return_date.strftime('%Y-%m-%d')}|{rental.transactionID}|{rental.status}|{rentalFee}\n")
-
-# For debugging purposes only
-if __name__ == '__main__':
-  
-    Staff.readRecord()
-    Customer.readRecord()
-    Car.readRecord()
-    Rental.readRecord()
-
-    Staff.updateRecord()
-    Customer.updateRecord()
-    Car.updateRecord()
-    Rental.updateRecord()
+                
