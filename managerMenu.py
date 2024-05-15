@@ -248,8 +248,9 @@ def Update_rentingRate():
                                         (lambda x:x != '' ,'Capacity cannot be empty!'),
                                         (lambda x:x.isalnum(), 'Invalid input'),
                                         (lambda x:Car.carInRecord, 'The car is not register'),
-                                        (lambda x:x in (2, 4, 5, 6, 7, 8, 9), '\nCapacity not found.')))
+                                        (lambda x:x in ('2', '4', '5', '6', '7', '8', '9'), '\nCapacity not found.')))
 
+#rmb check
             # Ask the user for the new rental rate
             updateRate = float(getValidInput('\nThe latest rental rate: RM',
                                              (lambda x:x!= '','\nRental rate cannot be empty'),
