@@ -247,6 +247,7 @@ def Update_rentingRate():
             updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',
                                         (lambda x:x != '' ,'Capacity cannot be empty!'),
                                         (lambda x:x.isalnum(), 'Invalid input'),
+                                        (lambda x:Car.carInRecord)
                                         (lambda x:x not in (2, 4, 5, 6, 7, 8, 9), '\nCapacity not found.')))
 
             # Ask the user for the new rental rate
