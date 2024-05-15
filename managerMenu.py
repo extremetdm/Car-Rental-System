@@ -257,9 +257,7 @@ def Update_rentingRate():
                                              (lambda x: x.replace('.','',1).isdigit(), '\nNew Rental rate must be number')))
                 
             # Update the default rental rate for the specified capacity
-            for car in Car.getCarList():
-                if car.capacity == updateCapacity:
-                    Car.updateDefaultRentalRate(updateCapacity, updateRate)
+            Car.updateDefaultRentalRate(updateCapacity, updateRate)
     
         # If the user chose to update by model
         elif updateCheck.lower() == 'model':
