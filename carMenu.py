@@ -41,16 +41,7 @@ def registerCar():
                      (lambda x:x != '', '\nInput cannot be empty!'),
                      (lambda x:x.isdigit(), '\nCapacity must be in number'),
                      (lambda x:int(x) in (2, 4, 5, 6, 7, 8, 9), '\nCapacity is not recognise')))
-      """
-      # If the manufacture year is this year, skip asking for the last service date
-      if manufacture_year != datetime.today().year:
-        last_service_date = datetime.strptime(getValidInput('\nWhat is the car last service date? (YYYY-MM-DD): ', 
-                                        (lambda x:x != '', '\nLast service date cannot be empty'),
-                                        (lambda x:validDate(x) and int(x[:4]) >= 1804,'\nMust be in date format and year must be 1804 or later')), '%Y-%m-%d')
-      else:
-        last_service_date = ''
-      """
-      
+
       last_service_date = datetime.strptime(getValidInput('\nWhat is the car last service date? (YYYY-MM-DD): ', 
                                         (lambda x:x != '', '\nLast service date cannot be empty'),
                                         (lambda x:validDate(x) and int(x[:4]) >= 1804,'\nMust be in date format and year must be 1804 or later')), '%Y-%m-%d')
