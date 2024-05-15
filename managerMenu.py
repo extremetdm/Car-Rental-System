@@ -88,7 +88,7 @@ def updateExitingStaff(user:Staff):
         staff_id = getValidInput('\nEnter Staff ID: ',
                         (lambda x:x != '', '\nStaff ID cannot be empty!'),
                         (lambda x:x != user, '\nStaff ID cannot be the current id'),
-                        (lambda x:Staff.staffInRecord, '\nStaff id is not in record'),
+                        (lambda x:Staff.staffInRecord(x), '\nStaff id is not in record'),
                         (lambda x:Staff.getStaff(x).role != 'Manager', '\nManager cannot change their own role'))
 
         # Get the staff member's details
@@ -247,7 +247,6 @@ def Update_rentingRate():
             updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',
                                         (lambda x:x != '' ,'Capacity cannot be empty!'),
                                         (lambda x:x.isalnum(), 'Invalid input'),
-                                        (lambda x:Car.carInRecord, 'The car is not register'),
                                         (lambda x:x in ('2', '4', '5', '6', '7', '8', '9'), '\nCapacity not found.')))
 
 #rmb check
@@ -257,7 +256,7 @@ def Update_rentingRate():
                                              (lambda x: x.replace('.','',1).isdigit(), '\nNew Rental rate must be number')))
                 
             # Update the default rental rate for the specified capacity
-            Car.updateDefaultRentalRate(updateCapacity, updateRate)
+            Car.updateDefaultRentalRate(updateCapacity, f'{updateRate:.2f}')
     
         # If the user chose to update by model
         elif updateCheck.lower() == 'model':
