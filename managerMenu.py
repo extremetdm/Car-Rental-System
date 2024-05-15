@@ -88,6 +88,7 @@ def updateExitingStaff(user:Staff):
         staff_id = getValidInput('\nEnter Staff ID: ',
                         (lambda x:x != '', '\nStaff ID cannot be empty!'),
                         (lambda x:x != user, '\nStaff ID cannot be the current id'),
+                        (lambda x:Staff.staffInRecord, '\nStaff id is not in record')
                         (lambda x:Staff.getStaff(x).role != 'Manager', '\nManager cannot change their own role'))
 
         # Get the staff member's details
