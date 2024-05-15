@@ -88,7 +88,7 @@ def updateExitingStaff(user:Staff):
         staff_id = getValidInput('\nEnter Staff ID: ',
                         (lambda x:x != '', '\nStaff ID cannot be empty!'),
                         (lambda x:x != user, '\nStaff ID cannot be the current id'),
-                        (lambda x:Staff.staffInRecord, '\nStaff id is not in record')
+                        (lambda x:Staff.staffInRecord, '\nStaff id is not in record'),
                         (lambda x:Staff.getStaff(x).role != 'Manager', '\nManager cannot change their own role'))
 
         # Get the staff member's details
@@ -247,11 +247,13 @@ def Update_rentingRate():
             updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',
                                         (lambda x:x != '' ,'Capacity cannot be empty!'),
                                         (lambda x:x.isalnum(), 'Invalid input'),
-                                        (lambda x:Car.carInRecord)
-                                        (lambda x:x not in (2, 4, 5, 6, 7, 8, 9), '\nCapacity not found.')))
+                                        (lambda x:Car.carInRecord, 'The car is not register'),
+                                        (lambda x:x in (2, 4, 5, 6, 7, 8, 9), '\nCapacity not found.')))
 
             # Ask the user for the new rental rate
-            updateRate = float(getValidInput('\nThe latest rental rate: RM', (lambda x:x!= '','\nRental rate cannot be empty')))
+            updateRate = float(getValidInput('\nThe latest rental rate: RM',
+                                             (lambda x:x!= '','\nRental rate cannot be empty'),
+                                             (lambda x: x.replace('.','',1).isdigit(), '\nNew Rental rate must be number')))
                 
             # Update the default rental rate for the specified capacity
             for car in Car.getCarList():
@@ -314,7 +316,8 @@ def monthlyRevenue():
 
     # Get the user's choice
     month_year_input = getValidInput("Enter your choice: ", 
-                                    (lambda x: x.isdigit() and 1 <= int(x) <= len(all_month_years) + 1, "Invalid choice. Please enter a number from the list."))
+                                    (lambda x: x.isdigit() and 1 <= int(x) <= len(all_month_years) + 1, "\nInvalid choice. Please enter a number from the list."),
+                                    (lambda x: x!='', "\nInput cannot be empty"))
 
     # If the user chose 'All months', set month_year_input to 'all'
     month_year_input = all_month_years[int(month_year_input) - 1] if month_year_input != str(len(all_month_years) + 1) else 'all'
