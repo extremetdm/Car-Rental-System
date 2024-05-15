@@ -88,6 +88,7 @@ def updateExitingStaff(user:Staff):
         staff_id = getValidInput('\nEnter Staff ID: ',
                         (lambda x:x != '', '\nStaff ID cannot be empty!'),
                         (lambda x:x != user, '\nStaff ID cannot be the current id'),
+                        (lambda x:Staff.staffInRecord, '\nStaff id is not in record')
                         (lambda x:Staff.getStaff(x).role != 'Manager', '\nManager cannot change their own role'))
 
         # Get the staff member's details
@@ -246,6 +247,7 @@ def Update_rentingRate():
             updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',
                                         (lambda x:x != '' ,'Capacity cannot be empty!'),
                                         (lambda x:x.isalnum(), 'Invalid input'),
+                                        (lambda x:Car.carInRecord)
                                         (lambda x:x not in (2, 4, 5, 6, 7, 8, 9), '\nCapacity not found.')))
 
             # Ask the user for the new rental rate
