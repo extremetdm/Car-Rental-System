@@ -70,7 +70,7 @@ def updateCustomer():
     validInputList = ('1','2','3')
 
   # Determining which info needs updating
-  toUpdate = int(getValidInput('\n-> ',(lambda x:x in validInputList,'\nInvalid input!')))
+  toUpdate = getValidInput('\n-> ',(lambda x:x in validInputList,'\nInvalid input!'))
 
   # Accepting new info to update existing info
   match toUpdate:
