@@ -24,7 +24,7 @@ def registerCar():
                                       (lambda x:x != '', '\nInput cannot be empty!'), 
                                       (lambda plate:is_valid_malaysian_plate(plate.upper()), '\nCar Plate does not follow the Malaysia JPJ rules')).upper()
       
-      manufacture = getValidInput('\n-> Manufacturer: ', 
+      manufacturer = getValidInput('\n-> Manufacturer: ', 
                                    (lambda x:x != '', '\nInput cannot be empty!')).upper()
       
       model = getValidInput('\n-> Model: ', 
@@ -41,10 +41,11 @@ def registerCar():
                      (lambda x:x != '', '\nInput cannot be empty!'),
                      (lambda x:x.isdigit(), '\nCapacity must be in number'),
                      (lambda x:int(x) in (2, 4, 5, 6, 7, 8, 9), '\nCapacity is not recognise')))
-
-      last_service_date = datetime.strptime(getValidInput('\nWhat is the car last service date? (YYYY-MM-DD): ', 
-                                        (lambda x:x != '', '\nLast service date cannot be empty'),
-                                        (lambda x:validDate(x) and int(x[:4]) >= 1804,'\nMust be in date format and year must be 1804 or later')), '%Y-%m-%d')
+      
+      if manufacture_year != datetime.today().year:
+        last_service_date = datetime.strptime(getValidInput('\nWhat is the car last service date? (YYYY-MM-DD): ', 
+                                          (lambda x:x != '', '\nLast service date cannot be empty'),
+                                          (lambda x:validDate(x) and int(x[:4]) >= 1804,'\nMust be in date format and year must be 1804 or later')), '%Y-%m-%d')
 
       insurance_policy_number = getValidInput('\nWhat is the car insurance policy number? ', 
                                         (lambda x:x != '', '\nInput cannot be empty!'),
@@ -64,9 +65,10 @@ def registerCar():
       
       # If all inputs are valid, create a new Car object and add it to the record
       if manufacture_year != datetime.today().year:
-        Car(registration_no=registration_no,manufacture=manufacture,model=model,manufacture_year=manufacture_year,capacity=capacity,insurance_policy_number=insurance_policy_number,insurance_expiry=insurance_expiry,road_tax_expiry=road_tax_expiry)
+        Car(registration_no,manufacturer,model,manufacture_year,capacity,last_service_date,insurance_policy_number,insurance_expiry,road_tax_expiry)
       else:
-        Car(registration_no,manufacture,model,manufacture_year,capacity,last_service_date,insurance_policy_number,insurance_expiry,road_tax_expiry)
+        Car(registration_no,manufacturer,model,manufacture_year,capacity,None,insurance_policy_number,insurance_expiry,road_tax_expiry)
+
       Car.updateRecord()
       
       # Print the new car record
