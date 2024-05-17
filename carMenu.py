@@ -49,7 +49,7 @@ def registerCar():
 
       insurance_policy_number = getValidInput('\nWhat is the car insurance policy number? ', 
                                         (lambda x:x != '', '\nInput cannot be empty!'),
-                                        (lambda x:8 >= len(x) <= 13, '\nInsurance policy number must be 10 characters long'),
+                                        (lambda x:not(8 >= len(x) <= 13), '\nInsurance policy number must be 8 to 13 characters long'),
                                         (lambda x:x.isalnum(), '\nInsurance policy number must contain only alphanumeric characters')).upper()
       
       insurance_expiry = datetime.strptime(getValidInput('\nWhat is the car insurance expiry date? (YYYY-MM-DD): ', 
