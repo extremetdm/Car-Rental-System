@@ -24,7 +24,7 @@ def registerStaff() -> None:
     # Ask the user for the new staff role
     role = getValidInput('\nEnter Staff role (\'1\',\'2\',\'3\',\'4\'): ',
                             (lambda enteredInput:enteredInput != '','\nStaff role cannot be empty'),
-                            (lambda enteredInput:enteredInput in ('1','2','3','4','Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'), '\nUnexpected role given'),)
+                            (lambda enteredInput:enteredInput in ('1','2','3','4','Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'), '\nUnexpected role given'))
 
     # Convert the user's input to the corresponding role
     match role:
