@@ -274,15 +274,15 @@ def Update_rentingRate() -> None:
                 if car.model == updateModel:
                     car.setSpecificRentalRate(round(updateRate,2))
 
-    # Print the updated table
-    print('After update'.center(len(header)),'\n','-' * (len(header) - 2))
-    print(header,'\n','-' * (len(header) - 2))
-    for car in Car.getCarList():
-        print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.getRentalRate():^20}|')
-    
-    # Update the car records
-    Car.updateRecord()
-    print('\n')
+        # Print the updated table
+        print('After update'.center(len(header)),'\n','-' * (len(header) - 2))
+        print(header,'\n','-' * (len(header) - 2))
+        for car in Car.getCarList():
+            print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.getRentalRate():^20}|')
+        
+        # Update the car records
+        Car.updateRecord()
+        print('\n')
 
 
 #To see the revenue for each month
