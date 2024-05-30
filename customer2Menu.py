@@ -1,7 +1,7 @@
 from DataStructures import *
 from function import *
 
-def recordRental():
+def recordRental() -> None:
 
   # Checking for available cars
   if any(map(lambda car:car.availability == 'Available',Car.getCarList())):
@@ -28,14 +28,14 @@ def recordRental():
     
     # Generate bill if paying immediately
     paying = getValidInput('\nGenerate bill? (Y/N): ',
-                        (lambda x:x.upper() in ('Y','N'),'\nInvalid input!\n') ).upper()
+                        (lambda enteredInput:enteredInput.upper() in ('Y','N'),'\nInvalid input!\n') ).upper()
     if paying == 'Y':
       generateBill(rental)
 
   else:
     print('\nNo available cars found!\n')
 
-def generateBill(rental:Rental|None = None):
+def generateBill(rental:Rental|None = None) -> None:
   
   # Checking for unresolved transactions
   if any(map(lambda rental:rental.status == 'Pending',Rental.getRentalList())):
@@ -62,7 +62,7 @@ def generateBill(rental:Rental|None = None):
 
     # Confirming whether customer has paid the bill
     paid = getValidInput('Customer Paid? (Y/N): ',
-                        (lambda x:x.upper() in ('Y','N'),'\nInvalid input!\n') ).upper()
+                        (lambda enteredInput:enteredInput.upper() in ('Y','N'),'\nInvalid input!\n') ).upper()
     if paid == 'Y':
       # Update transaction status
       rental.status = 'Paid'
@@ -73,7 +73,7 @@ def generateBill(rental:Rental|None = None):
   else:
     print('\nNo unresolved transactions found!\n')
 
-def deleteRental():
+def deleteRental() -> None:
   
   # Checking for unresolved transactions
   if any(map(lambda rental:rental.status == 'Pending',Rental.getRentalList())):
@@ -88,7 +88,7 @@ def deleteRental():
                                                   (lambda transactionID:Rental.getRental(transactionID).status == 'Pending','\nTransaction already resolved!\n')))
 
     # Confirm deletion
-    confirmation = getValidInput(f'\nDelete record of {rental.transactionID}? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'\nInvalid Input!')).upper()
+    confirmation = getValidInput(f'\nDelete record of {rental.transactionID}? (Y/N): ',(lambda enteredInput:enteredInput.upper() in ('Y','N'),'\nInvalid Input!')).upper()
 
     if confirmation == 'Y':
       # Delete rental info from the records
@@ -102,7 +102,7 @@ def deleteRental():
   else:
     print('\nNo unresolved transactions found!\n')
 
-def customer2Menu(user:Staff):
+def customer2Menu(user:Staff) -> None:
   while True:
     # Menu selection
     print('1.\tUpdate own profile')
@@ -114,7 +114,7 @@ def customer2Menu(user:Staff):
     print('7.\tExit program')
     
     # Determining operation
-    operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6','7'),'\nInvalid operation number!'))
+    operation = getValidInput('\nEnter operation number: ',(lambda enteredInput:enteredInput in ('1','2','3','4','5','6','7'),'\nInvalid operation number!'))
     match operation:
       case '1':
         updateProfile(user)

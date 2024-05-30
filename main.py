@@ -30,7 +30,7 @@ if __name__ == '__main__':
       if rental.car.availability == 'Rented':
         rental.car.availability = 'Available'
   # Delete cancelled transactions
-  toDeleteList = list(map(lambda rental:rental.delete(),toDeleteList))
+  toDeleteList = list(map(Rental.delete,toDeleteList))
   
   Car.updateRecord()
   Rental.updateRecord()

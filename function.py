@@ -1,7 +1,8 @@
 from DataStructures import *
+from typing import Callable
 import os
 
-def getValidInput(inputMsg:str,*validConditionAndErrorMsg:tuple[any,str]) -> str:
+def getValidInput(inputMsg:str,*validConditionAndErrorMsg:tuple[Callable[[str],bool],str]) -> str:
 
     # Placeholder variable for checking input validity
     invalidInput:bool = True
@@ -60,7 +61,7 @@ def login() -> Staff:
     # Returns user information after succesful login.
     return user
 
-def viewCar(constraint = lambda x:True):
+def viewCar(constraint:Callable[[Car],bool] = lambda car:True) -> None:
     # Checking if any car fits the criteria
     if any(map(constraint,Car.getCarList())):
 
@@ -81,7 +82,7 @@ def viewCar(constraint = lambda x:True):
     else:
         print('\nNo car record found!\n')
 
-def viewRental(constraint = lambda x:True):
+def viewRental(constraint:Callable[[Rental],bool] = lambda rental:True) -> None:
     # Checking if any rental request fits the criteria
     if any(map(constraint,Rental.getRentalList())):
 
@@ -101,7 +102,7 @@ def viewRental(constraint = lambda x:True):
     else:
         print('\nNo rental record found!\n')
 
-def validDate(dateInput):
+def validDate(dateInput:str) -> bool:
   # Checking for valid date in the form YYYY-MM-DD
   try:
     datetime.strptime(dateInput,'%Y-%m-%d')
@@ -109,7 +110,7 @@ def validDate(dateInput):
   except ValueError:
     return False
 
-def updateProfile(user:Staff):
+def updateProfile(user:Staff) -> None:
     # Define the header for the display table
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
     

@@ -4,16 +4,18 @@ from function import *
 # define all roles
 ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
 
-#For adding a new staff into the records
-def registerStaff(user:Staff):
+# For adding a new staff into the records
+def registerStaff() -> None:
     # Define the roles
     ROLES = 'Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'
     
     # Ask the user for the new staff ID
-    id = getValidInput('\nEnter new Staff id: ',(lambda x:((x != '') and (' ' not in x )),'\nStaff id cannot be empty or having space!'), (lambda id:not Staff.staffInRecord(id), '\nStaff ID already exist'))
+    id = getValidInput('\nEnter new Staff id: ',
+                       (lambda enteredInput:((enteredInput != '') and (' ' not in enteredInput)),'\nStaff id cannot be empty or having space!'), 
+                       (lambda id:not Staff.staffInRecord(id), '\nStaff ID already exist'))
     
     # Ask the user for the new staff name
-    name = getValidInput('\nEnter Staff name: ',(lambda x:x != '','\nStaff name cannot be empty!'))
+    name = getValidInput('\nEnter Staff name: ',(lambda enteredInput:enteredInput != '','\nStaff name cannot be empty!'))
     
     # Print the roles
     print('\n','Role'.center((max(len(s) for s in ROLES)) + 2, '-'))
@@ -21,8 +23,8 @@ def registerStaff(user:Staff):
     
     # Ask the user for the new staff role
     role = getValidInput('\nEnter Staff role (\'1\',\'2\',\'3\',\'4\'): ',
-                            (lambda x:x != '','\nStaff role cannot be empty'),
-                            (lambda x:x in ('1','2','3','4','Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'), '\nUnexpected role given'),)
+                            (lambda enteredInput:enteredInput != '','\nStaff role cannot be empty'),
+                            (lambda enteredInput:enteredInput in ('1','2','3','4','Manager','Customer Service Staff I','Customer Service Staff II','Car Service Staff'), '\nUnexpected role given'),)
 
     # Convert the user's input to the corresponding role
     match role:
@@ -36,7 +38,7 @@ def registerStaff(user:Staff):
             role = ROLES[3]  # If the user input 4, change it to 'Car Service Staff'
     
     # Add the new staff to the record
-    Staff(id, name, role, id, registration_date = datetime.now())
+    staff = Staff(id, name, role, id, registration_date = datetime.now())
     
     # Update the staff record
     Staff.updateRecord()
@@ -46,11 +48,11 @@ def registerStaff(user:Staff):
     header = f"|{'Staff ID':^20}|{'Name':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
     print('New Staff detail'.center(len(header)),'\n','-' * (len(header) - 2))
     print(header,'\n','-' * (len(header) - 2))
-    print(user.getStaff(id),'\n')
+    print(staff,'\n')
 
 
 #update staff record like role and status
-def updateExitingStaff(user:Staff):
+def updateExitingStaff(user:Staff) -> None:
     # Define the header for the table
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|{'Status':^20}|"
     
@@ -69,7 +71,7 @@ def updateExitingStaff(user:Staff):
 
     # Ask the user which action they would like to perform
     action = getValidInput('\nWhich action you would like to use?\n\n->\tblock\n->\tunblock\n->\trole\n->\texit\n\naction: ', 
-                           (lambda x:x.lower() in ('block','unblock','role','exit','1','2','3','4'), 'Invalid input!'))
+                           (lambda enteredInput:enteredInput.lower() in ('block','unblock','role','exit','1','2','3','4'), 'Invalid input!'))
     
     # Convert the user's input to the corresponding option
     match action:
@@ -86,10 +88,9 @@ def updateExitingStaff(user:Staff):
     if action.lower() in ('block','unblock'):
         # Ask the user for the ID of the staff member to block/unblock
         staff_id = getValidInput('\nEnter Staff ID: ',
-                        (lambda x:x != '', '\nStaff ID cannot be empty!'),
-                        (lambda x:x != user, '\nStaff ID cannot be the current id'),
-                        (lambda x:Staff.staffInRecord(x), '\nStaff id is not in record'),
-                        (lambda x:Staff.getStaff(x).role != 'Manager', '\nManager cannot change their own role'))
+                        (lambda enteredInput:enteredInput != '', '\nStaff ID cannot be empty!'),
+                        (lambda enteredInput:enteredInput != user.id, '\nStaff ID cannot be the current id'),
+                        (Staff.staffInRecord, '\nStaff id is not in record'))
 
         # Get the staff member's details
         staffDetail = Staff.getStaff(staff_id)
@@ -111,9 +112,8 @@ def updateExitingStaff(user:Staff):
     elif action.lower() == 'role':
         # Ask the user for the ID of the staff member whose role they want to change
         staff_id = getValidInput('\nWhich staff role you whould like to change?\nInsert the staff ID to update his role\n\nStaff ID: ',
-                            (lambda x:x != '', '\nStaff ID cannot be empty'), 
-                            (lambda id:Staff.staffInRecord(id), '\nInvalid Staff ID'),
-                            (lambda x:Staff.getStaff(x).role != 'Manager', '\nManager cannot change their own role'))
+                            (lambda enteredInput:enteredInput != '', '\nStaff ID cannot be empty'), 
+                            (Staff.staffInRecord, '\nInvalid Staff ID'))
         # Get the staff member's details
         staff = Staff.getStaff(staff_id)
         
@@ -124,10 +124,9 @@ def updateExitingStaff(user:Staff):
     
         # Ask the user to enter a role
         role = getValidInput('\nEnter Staff role (\'1\',\'2\',\'3\',\'4\'): ',
-                            (lambda x:x != '','\nStaff role cannot be empty!'),
-                            (lambda x:str(x).isdigit() and 1 <= int(x) <= len(ROLES), '\nShould be enter the number provide'))
+                            (lambda enteredInput:enteredInput != '','\nStaff role cannot be empty!'),
+                            (lambda enteredInput:enteredInput.isdigit() and 1 <= int(enteredInput) <= len(ROLES), '\nShould be enter the number provide'))
 
-        
         # Convert the user's input to the corresponding role
         match role:
             case '1':
@@ -149,7 +148,7 @@ def updateExitingStaff(user:Staff):
         header = f"|{'Staff ID':^20}|{'Name':^20}|{'Staff Role':^30}|{'Register Date':^20}|"
         print('Staff detail'.center(len(header)),'\n','-' * (len(header) - 2))
         print(header,'\n','-' * (len(header) - 2))
-        print(user.getStaff(staff_id),'\n')
+        print(staff,'\n')
 
     # If the user chose to exit, inform them that the update process has been cancelled
     elif action.lower() == 'exit':
@@ -158,7 +157,7 @@ def updateExitingStaff(user:Staff):
 
 
 #To delete staff which is in staff record
-def deleteStaff_Record(user:Staff):
+def deleteStaff_Record(user:Staff) -> None:
     # Define the header for the table
     header = f"|{'Name':^20}|{'Staff ID':^20}|{'Staff Role':^30}|"
     
@@ -176,18 +175,18 @@ def deleteStaff_Record(user:Staff):
     # Start a loop to delete staff records
     while True:
         # Ask the user for the ID of the staff record to delete
-        id = getValidInput('\nEnter Staff Id to delete record: ',(lambda x:x != '','\nStaff Id cannot be empty!'))
+        id = getValidInput('\nEnter Staff Id to delete record: ',(lambda enteredInput:enteredInput != '','\nStaff Id cannot be empty!'))
         
         # If the staff ID is in the records
         if Staff.staffInRecord(id):
             #To prevent user delete his own or delete a Manager
             if user.id == id:
-                print('\nYou cannot delete Manager or delete yourself')
+                print('\nYou cannot delete yourself')
                 continue
             # Inform the user that the staff ID was found
             print(f'Staff id with <{id}> found')
             # Ask the user to confirm the deletion
-            run = getValidInput('\nDo you want to delete this record? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!'))
+            run = getValidInput('\nDo you want to delete this record? (Y/N): ',(lambda enteredInput:enteredInput.upper() in ('Y','N'),'Invalid input!'))
             # If the user confirmed the deletion
             if run.upper() == 'Y':
                 # Delete the staff record
@@ -203,7 +202,7 @@ def deleteStaff_Record(user:Staff):
             # If the staff ID is not in the records, inform the user
             print(f"\nNo staff found with ID <{id}>.")
         # Ask the user if they want to delete another staff record
-        run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!'))
+        run = getValidInput('\nDo you still want to delete staff record? (Y/N): ',(lambda enteredInput:enteredInput.upper() in ('Y','N'),'Invalid input!'))
         
         # If the user does not want to delete another staff record, break the loop
         if run.upper() == 'N':
@@ -212,7 +211,7 @@ def deleteStaff_Record(user:Staff):
 
     
 #Update the renting rate for each car, or update the base rate base on car capacity
-def Update_rentingRate():
+def Update_rentingRate() -> None:
     # Define the header for the table
     header = f"|{'Car Plate':^20}|{'Manufacturer':^20}|{'Model':^20}|{'Capacity':^20}|{'Rental Rate':^20}|"
     
@@ -228,10 +227,10 @@ def Update_rentingRate():
         print(f'|{car.registration_no:^20}|{car.manufacturer:^20}|{car.model:^20}|{car.capacity:^20}|{car.getRentalRate():^20}|')
     
     # Ask the user if they want to update the rental rate
-    if getValidInput('\nDo you want to change the rental rate? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'Invalid input!')).upper() == 'Y':
+    if getValidInput('\nDo you want to change the rental rate? (Y/N): ',(lambda enteredInput:enteredInput.upper() in ('Y','N'),'Invalid input!')).upper() == 'Y':
         
         # Ask the user how they want to update the rental rate
-        updateCheck = getValidInput('\nHow would you like to be change? (capacity/model): ', (lambda x:(x != '') and (x.lower() in ('capacity','model','1','2')),'Invalid input!'))
+        updateCheck = getValidInput('\nHow would you like to be change? (capacity/model): ', (lambda enteredInput:(enteredInput != '') and (enteredInput.lower() in ('capacity','model','1','2')),'Invalid input!'))
         
         # Convert the user's input to the corresponding option
         match updateCheck:
@@ -245,34 +244,35 @@ def Update_rentingRate():
             
             # Ask the user which capacity's rental rate they want to change
             updateCapacity = int(getValidInput('\nWhich capacity rental rate you would like to change? ',
-                                        (lambda x:x != '' ,'Capacity cannot be empty!'),
-                                        (lambda x:x.isalnum(), 'Invalid input'),
-                                        (lambda x:x in ('2', '4', '5', '6', '7', '8', '9'), '\nCapacity not found.')))
+                                        (lambda enteredInput:enteredInput != '' ,'Capacity cannot be empty!'),
+                                        (str.isdigit, 'Invalid input'),
+                                        (lambda enteredInput:enteredInput in ('2', '4', '5', '6', '7', '8', '9'), '\nCapacity not found.')))
 
-#rmb check
             # Ask the user for the new rental rate
             updateRate = float(getValidInput('\nThe latest rental rate: RM',
-                                             (lambda x:x!= '','\nRental rate cannot be empty'),
-                                             (lambda x: x.replace('.','',1).isdigit(), '\nNew Rental rate must be number')))
+                                             (lambda enteredInput:enteredInput!= '','\nRental rate cannot be empty'),
+                                             (lambda enteredInput:enteredInput.replace('.','',1).isdigit(), '\nNew Rental rate must be number')))
                 
             # Update the default rental rate for the specified capacity
-            Car.updateDefaultRentalRate(updateCapacity, f'{updateRate:.2f}')
+            Car.updateDefaultRentalRate(updateCapacity, round(updateRate,2))
     
         # If the user chose to update by model
         elif updateCheck.lower() == 'model':
             
             # Ask the user which model's rental rate they want to change
             updateModel = getValidInput('\nWhich model rental rate you would like to change? ',
-                            (lambda x:(x != ''),'\nType of model cannot be empty'),
-                            (lambda x: any(car.model == x for car in Car.getCarList()), '\nModel not found.'))
+                            (lambda enteredInput:(enteredInput != ''),'\nType of model cannot be empty'),
+                            (lambda carModel: any(car.model == carModel for car in Car.getCarList()), '\nModel not found.'))
 
             # Ask the user for the new rental rate
-            updateRate = float(getValidInput('\nThe latest rental rate: RM', (lambda x:x!= '','\nRental rate cannot be empty')))
+            updateRate = float(getValidInput('\nThe latest rental rate: RM', 
+                                             (lambda enteredInput:enteredInput!= '','\nRental rate cannot be empty'),
+                                             (lambda enteredInput:enteredInput.replace('.','',1).isdigit(), '\nNew Rental rate must be number')))
                 
             # Update the rental rate for all cars of the specified model
             for car in Car.getCarList():
                 if car.model == updateModel:
-                    car.setSpecificRentalRate(f'{updateRate:.2f}')
+                    car.setSpecificRentalRate(round(updateRate,2))
 
     # Print the updated table
     print('After update'.center(len(header)),'\n','-' * (len(header) - 2))
@@ -286,12 +286,12 @@ def Update_rentingRate():
 
 
 #To see the revenue for each month
-def monthlyRevenue():  
-    from datetime import datetime
-    rentals_by_month = {}
+def monthlyRevenue() -> None:
+    
+    rentals_by_month:dict[str,list[Rental]] = {}
     
     # Loop through all rentals
-    for rental in Rental._rentalList.values():
+    for rental in Rental.getRentalList():
         # Only include rentals where the customer has paid
         if rental.status != 'Pending':  
             # Format the rental date to 'Month Year'
@@ -304,7 +304,7 @@ def monthlyRevenue():
 
     # Get a list of all month_years and sort it
     all_month_years = list(rentals_by_month.keys())
-    all_month_years = sorted(all_month_years, key=lambda x: datetime.strptime(x, '%B %Y'))
+    all_month_years = sorted(all_month_years, key=lambda month_year: datetime.strptime(month_year, '%B %Y'))
 
     # Prompt the user to select a month and year for the report
     print("Select the month and year for the report:")
@@ -314,8 +314,8 @@ def monthlyRevenue():
 
     # Get the user's choice
     month_year_input = getValidInput("Enter your choice: ", 
-                                    (lambda x: x.isdigit() and 1 <= int(x) <= len(all_month_years) + 1, "\nInvalid choice. Please enter a number from the list."),
-                                    (lambda x: x!='', "\nInput cannot be empty"))
+                                    (lambda enteredInput: enteredInput.isdigit() and 1 <= int(enteredInput) <= len(all_month_years) + 1, "\nInvalid choice. Please enter a number from the list."),
+                                    (lambda enteredInput: enteredInput != '', "\nInput cannot be empty"))
 
     # If the user chose 'All months', set month_year_input to 'all'
     month_year_input = all_month_years[int(month_year_input) - 1] if month_year_input != str(len(all_month_years) + 1) else 'all'
@@ -352,7 +352,7 @@ def monthlyRevenue():
     print('\n')
 
 
-def managerMenu(user:Staff):
+def managerMenu(user:Staff) -> None:
   while True:
     # Menu selection
     print('1.\tUpdate own profile')
@@ -364,13 +364,13 @@ def managerMenu(user:Staff):
     print('7.\tExit program')
     
     # Determining operation
-    operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6','7'),'\nInvalid operation number!'))
+    operation = getValidInput('\nEnter operation number: ',(lambda enteredInput:enteredInput in ('1','2','3','4','5','6','7'),'\nInvalid operation number!'))
     match operation:
       case '1':
         updateProfile(user)
 
       case '2':
-        registerStaff(user)
+        registerStaff()
 
       case '3':
         updateExitingStaff(user)

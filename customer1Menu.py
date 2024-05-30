@@ -1,30 +1,30 @@
 from DataStructures import *
 from function import *
 
-def registerCustomer():
+def registerCustomer() -> None:
 
   # Gathering all neccessary customer infos
   name = getValidInput('\nEnter customer name: ',
-                       (lambda x:x != '','\nCustomer name cannot be empty!') )
+                       (lambda enteredInput:enteredInput != '','\nCustomer name cannot be empty!') )
   # Determining whether customer is a local or a foreigner
   localness = getValidInput('\nIs customer a local? (Y/N): ',
-                            (lambda x:x.upper() in ('Y','N'),'Invalid input!') ).upper()
+                            (lambda enteredInput:enteredInput.upper() in ('Y','N'),'Invalid input!') ).upper()
   if localness == 'Y':
     # Get NRIC if local customer
     nric = getValidInput('\nEnter customer NRIC (without -): ',
-                         (lambda x:x.isnumeric() & (len(x) == 12),'\nInvalid NRIC!') )
+                         (lambda enteredInput:enteredInput.isnumeric() & (len(enteredInput) == 12),'\nInvalid NRIC!') )
     passportNumber = 'None'
   else:
     # Get Passport Number if foreign customer
     nric = 'None'
     passportNumber = getValidInput('\nEnter customer passport number: ',
-                                   (lambda x:x.isalnum(),'\nInvalid passport number!') )
+                                   (str.isalnum,'\nInvalid passport number!') )
   licenseNo = getValidInput('\nEnter customer driving license card number: ',
-                            (lambda x:x.isalnum(),'\nInvalid driving license card number!') )
+                            (str.isalnum,'\nInvalid driving license card number!') )
   address = getValidInput('\nEnter customer address: ',
-                          (lambda x:x != '','\nAddress cannot be empty!') )
+                          (lambda enteredInput:enteredInput != '','\nAddress cannot be empty!') )
   phone = getValidInput('\nEnter customer phone number: ',
-                        (lambda x:x.isnumeric(),'\nInvalid phone number!') )
+                        (str.isnumeric,'\nInvalid phone number!') )
   registrationDate = datetime.today()
 
   # Add customer to the record
@@ -32,7 +32,7 @@ def registerCustomer():
   Customer.updateRecord()
   print('\nCustomer has been successfully registered.\n')
 
-def viewCustomer(constraint = lambda x:True):
+def viewCustomer(constraint:Callable[[Customer],bool] = lambda customer:True) -> None:
   # Checking if any customer fits the criteria
   if any(map(constraint,Customer.getCustomerList())):
 
@@ -52,50 +52,56 @@ def viewCustomer(constraint = lambda x:True):
   else:
     print('\nNo customer record found!\n')
 
-def updateCustomer():
+def updateCustomer() -> None:
 
-  # Querying customer from the records
-  customer:Customer = Customer.getCustomer(getValidInput('\nEnter Customer ID: ',(Customer.customerInRecord,'\nInvalid Customer ID!')))
+  # Checking if customer record is not empty
+  if Customer.getCustomerList():
+
+    # Querying customer from the records
+    customer = Customer.getCustomer(getValidInput('\nEnter Customer ID: ',(Customer.customerInRecord,'\nInvalid Customer ID!')))
+    
+    # Info update options
+    print(f'\nWhich info of {customer.name} would you like to change?\n')
+    print('1.\tPhone number')
+    print('2.\tAddress')
+    print('3.\tLicense number')
+    if customer.nric == 'None':
+      # If customer is foreigner add update passport option
+      validInputList = ('1','2','3','4')
+      print('4.\tPassport number')
+    else:
+      validInputList = ('1','2','3')
+
+    # Determining which info needs updating
+    toUpdate = getValidInput('\n-> ',(lambda enteredInput:enteredInput in validInputList,'\nInvalid input!'))
+
+    # Accepting new info to update existing info
+    match toUpdate:
+      case '1':
+        updatedDetail = 'phone number'
+        customer.phone = getValidInput('\nEnter new customer phone number: ',
+                                      (str.isnumeric,'\nInvalid phone number!') )
+      case '2':
+        updatedDetail = 'address'
+        customer.address = getValidInput('\nEnter new customer address: ',
+                                        (lambda enteredInput:enteredInput != '','\nAddress cannot be empty!') )
+      case '3':
+        updatedDetail = 'driving license card number'
+        customer.license_no = getValidInput('\nEnter new customer driving license card number: ',
+                                            (str.isalnum,'\nInvalid driving license card number!') )
+      case '4':
+        updatedDetail = 'passport number'
+        customer.passport_number = getValidInput('\nEnter new customer passport number: ',
+                                                (str.isalnum,'\nInvalid passport number!') )
+    
+    # Update customer info in the record
+    Customer.updateRecord()
+    print(f"\n{customer.name}'s {updatedDetail} has been changed successfully.\n")
   
-  # Info update options
-  print(f'\nWhich info of {customer.name} would you like to change?\n')
-  print('1.\tPhone number')
-  print('2.\tAddress')
-  print('3.\tLicense number')
-  if customer.nric == 'None':
-    # If customer is foreigner add update passport option
-    validInputList = ('1','2','3','4')
-    print('4.\tPassport number')
   else:
-    validInputList = ('1','2','3')
+    print('\nNo customer record found!\n')
 
-  # Determining which info needs updating
-  toUpdate = getValidInput('\n-> ',(lambda x:x in validInputList,'\nInvalid input!'))
-
-  # Accepting new info to update existing info
-  match toUpdate:
-    case '1':
-      updatedDetail = 'phone number'
-      customer.phone = getValidInput('\nEnter new customer phone number: ',
-                                     (lambda x:x.isnumeric(),'\nInvalid phone number!') )
-    case '2':
-      updatedDetail = 'address'
-      customer.address = getValidInput('\nEnter new customer address: ',
-                                       (lambda x:x != '','\nAddress cannot be empty!') )
-    case '3':
-      updatedDetail = 'driving license card number'
-      customer.license_no = getValidInput('\nEnter new customer driving license card number: ',
-                                          (lambda x:x.isalnum(),'\nInvalid driving license card number!') )
-    case '4':
-      updatedDetail = 'passport number'
-      customer.passport_number = getValidInput('\nEnter new customer passport number: ',
-                                               (lambda x:x.isalnum(),'\nInvalid passport number!') )
-  
-  # Update customer info in the record
-  Customer.updateRecord()
-  print(f"\n{customer.name}'s {updatedDetail} has been changed successfully.\n")
-
-def deleteCustomer():
+def deleteCustomer() -> None:
 
   # Checking for any inactive customers
   if all(map(Rental.customerInRecord,Customer.getCustomerList())):
@@ -110,10 +116,10 @@ def deleteCustomer():
                                                           (lambda customerId:not Rental.customerInRecord(Customer.getCustomer(customerId)),'\nCustomer is still active!\n')))
     
     # Confirm deletion
-    confirmation = getValidInput(f'\nDelete record of {customer.name}? (Y/N): ',(lambda x:x.upper() in ('Y','N'),'\nInvalid Input!')).upper()
+    confirmation = getValidInput(f'\nDelete record of {customer.name}? (Y/N): ',(lambda enteredInput:enteredInput.upper() in ('Y','N'),'\nInvalid Input!')).upper()
 
     if confirmation == 'Y':
-    # Delete customer info from the records
+      # Delete customer info from the records
       customer.delete()
       Customer.updateRecord()
       print('\nCustomer has been deleted successfully.\n')
@@ -124,7 +130,7 @@ def deleteCustomer():
   else:
     print('\nNo inactive customers found!\n')
 
-def customer1Menu(user:Staff):
+def customer1Menu(user:Staff) -> None:
   while True:
     # Menu operation
     print('1.\tUpdate own profile')
@@ -135,7 +141,7 @@ def customer1Menu(user:Staff):
     print('6.\tExit program')
 
     # Determining operation
-    operation = getValidInput('\nEnter operation number: ',(lambda x:x in ('1','2','3','4','5','6'),'\nInvalid operation number!'))
+    operation = getValidInput('\nEnter operation number: ',(lambda enteredInput:enteredInput in ('1','2','3','4','5','6'),'\nInvalid operation number!'))
     match operation:
       case '1':
         updateProfile(user)
