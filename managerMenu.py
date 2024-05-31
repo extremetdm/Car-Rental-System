@@ -113,6 +113,7 @@ def updateExitingStaff(user:Staff) -> None:
         # Ask the user for the ID of the staff member whose role they want to change
         staff_id = getValidInput('\nWhich staff role you whould like to change?\nInsert the staff ID to update his role\n\nStaff ID: ',
                             (lambda enteredInput:enteredInput != '', '\nStaff ID cannot be empty'), 
+                            (lambda enteredInput:enteredInput != user.id, '\nStaff ID cannot be the current id'),
                             (Staff.staffInRecord, '\nInvalid Staff ID'))
         # Get the staff member's details
         staff = Staff.getStaff(staff_id)
