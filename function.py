@@ -126,7 +126,7 @@ def updateProfile(user:Staff) -> None:
     print('\nWhich data would you like to edit?', '\n-> '.join(['\n-> ID', 'Name', 'Password','Exit']))
     
     # Get the user's choice
-    dataChange = getValidInput('\nEnter your choice: ',(lambda x:(x != ''), '\nchoice cannot be empty!'), (lambda x:x.capitalize() in ('Id','Name','Password','Exit','1','2','3','4'), '\nInvalid choice input'))
+    dataChange = getValidInput('\nEnter your choice: ',(lambda enteredInput:(enteredInput != ''), '\nchoice cannot be empty!'), (lambda enteredInput:enteredInput.capitalize() in ('Id','Name','Password','Exit','1','2','3','4'), '\nInvalid choice input'))
     
     # Remove any spaces from the user's choice
     dataChange = dataChange.replace(' ','')
@@ -147,17 +147,17 @@ def updateProfile(user:Staff) -> None:
     match dataChange.capitalize():
         case 'Id':
             user.id = getValidInput('\nEnter your new Staff ID: ',
-                        (lambda x: x != '', '\nStaff ID cannot be empty!'), 
-                        (lambda x: not Staff.staffInRecord(x), '\nStaff id has been use'))
+                        (lambda enteredInput: enteredInput != '', '\nStaff ID cannot be empty!'), 
+                        (lambda enteredID: not Staff.staffInRecord(enteredID), '\nStaff id has been use'))
             Staff.updateRecord()
         case 'Name':
-            user.name = getValidInput('\nEnter your new Name: ',(lambda x:((x != '')),'\nStaff name cannot be empty!'))
+            user.name = getValidInput('\nEnter your new Name: ',(lambda enteredInput:enteredInput != '','\nStaff name cannot be empty!'))
             Staff.updateRecord()
         case 'Password':
             # Ask the user to enter their new password twice for confirmation
             while True:
-                password1 = getValidInput('\nEnter your new Password: ',(lambda x:((x != '')),'\nPassword cannot be empty!'))
-                password2 = getValidInput('\nPlease comfirm your Password: ',(lambda x:((x != '')),'\nPassword Incorrect!'))
+                password1 = getValidInput('\nEnter your new Password: ',(lambda enteredInput:enteredInput != '','\nPassword cannot be empty!'))
+                password2 = getValidInput('\nPlease comfirm your Password: ',(lambda enteredInput:enteredInput != '','\nPassword Incorrect!'))
                 if password1 == password2:
                     Staff.updateRecord()
                     break
