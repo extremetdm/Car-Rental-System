@@ -104,7 +104,7 @@ def updateCustomer() -> None:
 def deleteCustomer() -> None:
 
   # Checking for any inactive customers
-  if all(map(Rental.customerInRecord,Customer.getCustomerList())):
+  if any(map(Rental.customerInRecord,Customer.getCustomerList())):
 
     # Showing list of inactive customers
     print('\nList of inactive customers:')
