@@ -159,9 +159,9 @@ def updateProfile(user:Staff) -> None:
                 password1 = getValidInput('\nEnter your new Password: ',(lambda enteredInput:enteredInput != '','\nPassword cannot be empty!'))
                 password2 = getValidInput('\nPlease comfirm your Password: ',(lambda enteredInput:enteredInput != '','\nPassword Incorrect!'))
                 if password1 == password2:
+                    user.password = password1
                     Staff.updateRecord()
                     break
-            user.password = password1
         case 'Exit':
             print('\nUpdate profile has been cancel.\n')
         case _:
