@@ -184,7 +184,7 @@ def update_carRecord() -> None:
       # Update the insurance policy number
       car.insurance_policy_number = getValidInput('\n-> New Insurance Policy Number: ', 
                                         (lambda enteredInput:enteredInput != '', '\nInput cannot be empty!'),
-                                        (lambda enteredInput:8 <= len(enteredInput) <= 13, '\nInsurance policy number must be 10 characters long'),
+                                        (lambda enteredInput:8 <= len(enteredInput) <= 13, '\nInsurance policy number must be 8-13 characters long'),
                                         (str.isalnum, '\nInsurance policy number must contain only alphanumeric characters')).upper()
     case '2':
       # Update the insurance expiry date
