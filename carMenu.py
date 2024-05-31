@@ -152,7 +152,7 @@ def update_carRecord() -> None:
   
   # Get the user's choice
   option = getValidInput('\nYour choice: ',
-                        (lambda enteredInput:enteredInput in options, '\nInvalid option! Please enter a number from 1 to 6.'),
+                        (lambda enteredInput:enteredInput in options, '\nInvalid option! Please enter a number from 1 to 5.'),
                         (lambda enteredInput:enteredInput != '', '\nInput cannot be empty'))
   
   # If the user chose to exit, return immediately
